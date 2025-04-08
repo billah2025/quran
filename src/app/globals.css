@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri&family=Hind+Siliguri&display=swap');
+
+
 @import "tailwindcss";
 
 :root {
@@ -23,4 +26,45 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+/* globals.css */
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.bg-gray-900 {
+  background-color: #1a202c;
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-black {
+  color: black;
+}
+.font-arabic {
+  font-family: 'Amiri', serif, sans-serif;
+
+}
+@font-face {
+  font-family: 'IndopakFont';
+  src: url('/fonts/IndopakFont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.font-indopak {
+  font-family: 'IndopakFont', serif;
+}
+/* globals.css */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
