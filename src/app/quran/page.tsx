@@ -33,8 +33,9 @@ export default function QuranPage() {
         }))
 
         setSurahs(surahsData)
-      } catch (err: any) {
-        console.error('Error fetching data:', err.message)
+      } catch (err: unknown) {
+        const error = err as Error
+        console.error('Error fetching data:', error.message)
         setError('Failed to load Surah list. Please try again later.')
       }
     }
