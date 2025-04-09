@@ -3,14 +3,39 @@ import { useState, useEffect, useRef } from "react";
 import SideDrawer from "@/app/components/SideDrawer";
 import { notFound, useParams } from "next/navigation";
 
+interface Ayah {
+  number: number;
+  numberInSurah: number;
+  text: string;
+  audio?: string;
+}
+
+interface SurahData {
+  arabicAyahs: Ayah[];
+  banglaAyahs: Ayah[];
+  audioAyahs: Ayah[];
+  surahInfo: {
+    name: string;
+    englishName: string;
+    englishNameTranslation: string;
+    number: number;
+  };
+}
+
+
+
 export default function SurahPage() {
   const { id } = useParams();
-  const [data, setData] = useState<any>(null);
+
+const [data, setData] = useState<SurahData | null>(null);
   const [error, setError] = useState(false);
   const [currentAyahIndex, setCurrentAyahIndex] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ayahRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [textType, setTextType] = useState("default");
+const [arabicScript, setArabicScript] = useState("default");
+
 
   // Dark Mode state
   const [darkMode, setDarkMode] = useState(false);
@@ -57,21 +82,20 @@ export default function SurahPage() {
   }, [id]);
 
   useEffect(() => {
-    if (audioRef.current) {
-      if (currentAyahIndex !== null && isPlaying) {
-        playCurrentAyah();
-        audioRef.current.addEventListener("ended", handleAudioEnd);
-      }
-
-      scrollToCurrentAyah();
-
-      return () => {
-        if (audioRef.current) {
-          audioRef.current.removeEventListener("ended", handleAudioEnd);
-        }
-      };
+    if (!data || !audioRef.current) return;
+  
+    if (currentAyahIndex !== null && isPlaying) {
+      playCurrentAyah();
+      audioRef.current.addEventListener("ended", handleAudioEnd);
     }
-  }, [currentAyahIndex]);
+  
+    scrollToCurrentAyah();
+  
+    return () => {
+      audioRef.current?.removeEventListener("ended", handleAudioEnd);
+    };
+  }, [currentAyahIndex, isPlaying, data]);
+  
 
   const scrollToCurrentAyah = () => {
     if (currentAyahIndex !== null && ayahRefs.current[currentAyahIndex]) {
@@ -85,7 +109,7 @@ export default function SurahPage() {
   const handleAudioEnd = () => {
     if (
       currentAyahIndex !== null &&
-      currentAyahIndex + 1 < data.audioAyahs.length
+      currentAyahIndex + 1 < data!.audioAyahs.length
     ) {
       setCurrentAyahIndex(currentAyahIndex + 1);
     } else {
@@ -95,10 +119,14 @@ export default function SurahPage() {
 
   const playCurrentAyah = () => {
     if (audioRef.current && currentAyahIndex !== null) {
-      audioRef.current.src = data.audioAyahs[currentAyahIndex].audio;
-      audioRef.current.play();
+      const currentAudio = data!.audioAyahs[currentAyahIndex]?.audio;
+      if (currentAudio) {
+        audioRef.current.src = currentAudio;
+        audioRef.current.play();
+      }
     }
   };
+  
 
   const playSpecificAyah = (index: number) => {
     setCurrentAyahIndex(index);
@@ -175,7 +203,8 @@ export default function SurahPage() {
 
       {/* Surah Verses */}
 <div className="space-y-6">
-  {arabicAyahs.map((ayah: any, index: number) => (
+{arabicAyahs.map((ayah: Ayah, index: number) => (
+
     <div
       key={ayah.number}
       ref={(el) => {
@@ -212,19 +241,16 @@ export default function SurahPage() {
           }`}
           style={{ fontSize: `${banglaFontSize}px` }}
         >
-          {banglaAyahs[index]?.text}
+        {banglaAyahs[index]?.text || "লোড হচ্ছে..."}
+
         </div>
       </div>
     </div>
   ))}
 </div>
-<div
-  className="font-indopak"
-  style={{ fontSize: '28px', color: darkMode ? '#ffffff' : '#000000' }}
->
-  {/* Define or replace indopakScript here if needed */}
 
-</div>
+
+
 
       
     </div>

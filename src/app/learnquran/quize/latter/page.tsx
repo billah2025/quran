@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie } from "recharts";
+import {  Tooltip, ResponsiveContainer, PieChart, Pie } from "recharts";
 
 
 const questions = [
@@ -47,7 +47,7 @@ type Props = {
 
 
 
-export default function QuizPage({ isQuizFinished }: Props) {
+export default function QuizPage() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<number, string>>({});
     const [timeLeft, setTimeLeft] = useState(25 * 60);
@@ -75,7 +75,7 @@ export default function QuizPage({ isQuizFinished }: Props) {
 
 
 
-    const [correctAnswers, setCorrectAnswers] = useState<number>(0); // Define the state here
+   
 
 
 
@@ -243,26 +243,10 @@ export default function QuizPage({ isQuizFinished }: Props) {
 
 
       
-      useEffect(() => {
-        const savedResults = localStorage.getItem('quizResults');
-        if (savedResults) {
-          const result = JSON.parse(savedResults);
-          setCorrectAnswers(result.correctAnswers);  // Update the state with saved correct answers
-        }
-      }, []);
+      
       
 
-      const finishQuiz = (correct: number) => {
-        const result = {
-            correctAnswers: correct,
-            totalQuestions: 29,
-        };
-    
-        localStorage.setItem('quizResults', JSON.stringify(result)); // Save result to localStorage
-    
-        setCorrectAnswers(correct); // Update the correctAnswers state
-        setIsFinished(true);
-    };
+      
     
 
 

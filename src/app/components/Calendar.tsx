@@ -4,8 +4,23 @@ import Calendar from "react-calendar"; // Third-party React Calendar
 import "react-calendar/dist/Calendar.css"; // Default styles for React Calendar
 import moment from "moment-hijri";
 
+// Define types for cities and prayer times
+interface City {
+  name: string;
+  id: string;
+}
+
+interface PrayerTimes {
+  Fajr: string;
+  Dhuhr: string;
+  Asr: string;
+  Maghrib: string;
+  Isha: string;
+  [key: string]: string; // Allow additional keys for other prayer times
+}
+
 // Sample cities and their prayer time API identifiers
-const cities = [
+const cities: City[] = [
   { name: "Dhaka", id: "dhaka" },
   { name: "Chattogram", id: "chattogram" },
   { name: "Khulna", id: "khulna" },
@@ -14,17 +29,23 @@ const cities = [
 ];
 
 export default function PrayerCalendar() {
-  const [selectedCity, setSelectedCity] = useState("dhaka");
-  const [prayerTimes, setPrayerTimes] = useState<any>(null);
-  const [date, setDate] = useState(new Date());
+  const [selectedCity, setSelectedCity] = useState<string>("dhaka");
+  const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
+  const [date, setDate] = useState<Date>(new Date());
 
   // Fetch prayer times when city changes
   useEffect(() => {
     async function fetchPrayerTimes() {
       try {
-        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${selectedCity}&country=BD&method=2`);
+        const response = await fetch(
+          `https://api.aladhan.com/v1/timingsByCity?city=${selectedCity}&country=BD&method=2`
+        );
         const data = await response.json();
-        setPrayerTimes(data.data.timings);
+        if (data?.data?.timings) {
+          setPrayerTimes(data.data.timings);
+        } else {
+          console.error("Invalid response structure:", data);
+        }
       } catch (error) {
         console.error("Failed to fetch prayer times", error);
       }
@@ -73,7 +94,7 @@ export default function PrayerCalendar() {
               <li key={prayer} className="text-lg font-semibold">
                 {prayer}:{" "}
                 <span className="text-blue-600">
-                  {moment(time as string, "HH:mm").format("hh:mm A")} {/* Correct moment usage with type assertion */}
+                  {moment(time, "HH:mm").format("hh:mm A")} {/* Correct moment usage */}
                 </span>
               </li>
             ))}

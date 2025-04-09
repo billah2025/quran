@@ -7,7 +7,6 @@ export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -17,7 +16,8 @@ export default function Newsletter() {
     e.preventDefault();
 
     if (!email) {
-      alert("Please enter a valid email address.");
+      setMessage("Please enter a valid email address.");
+      setSuccess(false);
       return;
     }
 
@@ -33,16 +33,14 @@ export default function Newsletter() {
         templateParams,
         "NistrL4Rj1YxpHzI8" // Public Key for EmailJS
       )
-      .then(
-        (response) => {
-          setSuccess(true);
-          setMessage("Subscription successful! Check your inbox.");
-        },
-        (error) => {
-          setError(true);
-          setMessage("Something went wrong. Please try again later.");
-        }
-      );
+      .then(() => {
+        setSuccess(true);
+        setMessage("Subscription successful! Check your inbox.");
+      })
+      .catch(() => {
+        setSuccess(false);
+        setMessage("Something went wrong. Please try again later.");
+      });
   };
 
   return (
@@ -52,7 +50,10 @@ export default function Newsletter() {
         <p className="text-lg mb-6">
           Subscribe to our newsletter and receive the latest updates directly to your inbox.
         </p>
-        <form onSubmit={handleSubmit} className="flex border-2 border-indigo-600 rounded-md justify-center items-center gap-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex border-2 border-indigo-600 rounded-md justify-center items-center gap-4"
+        >
           <input
             type="email"
             placeholder="Enter your email"
@@ -70,7 +71,9 @@ export default function Newsletter() {
 
         {message && (
           <div
-            className={`mt-4 text-center text-lg ${success ? "text-green-400" : "text-red-400"}`}
+            className={`mt-4 text-center text-lg ${
+              success ? "text-green-400" : "text-red-400"
+            }`}
           >
             {message}
           </div>

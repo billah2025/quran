@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function ServiceSection() {
   return (
     <section id="services" className="py-16 bg-transparent text-white">
@@ -9,9 +11,11 @@ export default function ServiceSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Service Card 1 */}
           <div className="bg-transparent text-black rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300">
-            <img
+            <Image
               src="/quran.jpg"
               alt="Service 1"
+              width={500}
+              height={224}
               className="w-full h-56 object-cover"
             />
             <div className="p-6 text-center">
@@ -25,9 +29,11 @@ export default function ServiceSection() {
 
           {/* Service Card 2 */}
           <div className="bg-transparent text-black rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300">
-            <img
+            <Image
               src="/quran.jpg"
               alt="Service 2"
+              width={500}
+              height={224}
               className="w-full h-56 object-cover"
             />
             <div className="p-6 text-center">

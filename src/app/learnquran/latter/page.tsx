@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 
 import Link from 'next/link';
 type LetterData = {
@@ -54,7 +55,7 @@ export default function Home() {
     const [selectedSection, setSelectedSection] = useState<1 | 2 | 3>(1)
     const [darkMode, setDarkMode] = useState(false)
     const [popupIndex, setPopupIndex] = useState<number | null>(null)
-    const [isPlaying, setIsPlaying] = useState(false)
+    // const [isPlaying, setIsPlaying] = useState(false)
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
     const currentPopup = popupIndex !== null ? letters[popupIndex] : null
@@ -65,15 +66,15 @@ export default function Home() {
         if (audioRef.current) {
             audioRef.current.src = src
             audioRef.current.play()
-            setIsPlaying(true)
+           
         }
     }
 
-    const handleNext = () => {
-        if (popupIndex !== null && popupIndex < letters.length - 1) {
-            setPopupIndex(popupIndex + 1)
-        }
-    }
+    // const handleNext = () => {
+    //     if (popupIndex !== null && popupIndex < letters.length - 1) {
+    //         setPopupIndex(popupIndex + 1)
+    //     }
+    // }
 
     useEffect(() => {
         if (popupIndex !== null) {
@@ -250,10 +251,12 @@ export default function Home() {
                                 {/* ✅ Show imageSection2 if exists */}
                                 {item.imageSection2 && (
                                     <div className="mb-4">
-                                        <img
+                                        <Image
                                             src={item.imageSection2}
                                             alt={`Image for ${item.letter}`}
                                             className="mx-auto max-w-full rounded-xl shadow-lg"
+                                            width={500}
+                                            height={500}
                                         />
                                     </div>
                                 )}
@@ -332,10 +335,12 @@ export default function Home() {
                                 {/* ✅ Show imageSection2 (not image) */}
                                 {letters[popupIndexSection2].imageSection2 && (
                                     <div className="mt-6">
-                                        <img
-                                            src={letters[popupIndexSection2].imageSection2}
+                                        <Image
+                                            src={letters[popupIndexSection2].imageSection2 || ''}
                                             alt="Usage Image"
                                             className="mx-auto max-w-full rounded-xl shadow-lg"
+                                            width={500}
+                                            height={500}
                                         />
                                     </div>
                                 )}
@@ -389,13 +394,13 @@ export default function Home() {
                                 </div>
                                 <div className="text-5xl font-bold">{currentPopup.letter}</div>
                                 <div className="text-lg text-right leading-relaxed">{currentPopup.tajweed}</div>
-                                {currentPopup.imageSection1 && (
-                                    <img
-                                        src={currentPopup.imageSection1}
+                                    <Image
+                                        src={currentPopup.imageSection1 || '/default-image.png'}
                                         alt="Letter visual"
                                         className="mx-auto h-32 object-contain rounded-lg border"
-                                    />
-                                )}
+                                        width={128}
+                                        height={128}
+                                />
                             </div>
 
                             <div className="flex justify-between items-center border-t p-4">
@@ -416,7 +421,7 @@ export default function Home() {
                     </div>
                 )}
 
-                <audio ref={audioRef} onEnded={() => setIsPlaying(false)} />
+                <audio ref={audioRef} />
             </div>
 
 

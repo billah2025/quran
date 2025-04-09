@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const images = ["/slide1.jpg", "/gg.jpg", "/hh.png"];
 
@@ -30,11 +31,15 @@ const Slideshow = ({ navHeight }: { navHeight: number }) => {
       style={{ marginTop: `${navHeight}px` }}
     >
       {/* Image */}
-      <img
-        src={images[currentImage]}
-        alt={`Slide ${currentImage}`}
-        className="w-full h-full object-cover transition-all duration-700"
-      />
+      <div className="w-full h-full relative">
+        <Image
+          src={images[currentImage]}
+          alt={`Slide ${currentImage}`}
+          layout="fill"
+          objectFit="cover"
+          className="transition-all duration-700"
+        />
+      </div>
 
       {/* Left Button */}
       <button
