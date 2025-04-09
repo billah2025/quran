@@ -13,13 +13,12 @@ interface SideDrawerProps {
   banglaFont: string;
   setArabicFont: (font: string) => void;
   setBanglaFont: (font: string) => void;
-  arabicScript: string;
-  setArabicScript: (script: string) => void;
+
   darkMode: boolean;
   setDarkMode: (mode: boolean) => void;
   // Add these lines:
-  textType: string;
-  setTextType: (value: string) => void;
+
+ 
 }
 
 export default function SideDrawer({
@@ -31,8 +30,8 @@ export default function SideDrawer({
   banglaFont,
   setArabicFont,
   setBanglaFont,
-  arabicScript,
-  setArabicScript,
+ 
+  
   darkMode,
   setDarkMode,
   

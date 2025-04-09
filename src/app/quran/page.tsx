@@ -24,7 +24,8 @@ export default function QuranPage() {
           throw new Error('API data format is invalid')
         }
 
-        const surahsData = json.data.surahs.map((s: any) => ({
+        const surahsData = json.data.surahs.map((s: Surah) => ({
+
           number: s.number,
           name: s.name,
           englishName: s.englishName,

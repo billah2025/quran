@@ -33,8 +33,7 @@ const [data, setData] = useState<SurahData | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ayahRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [textType, setTextType] = useState("default");
-const [arabicScript, setArabicScript] = useState("default");
+
 
 
   // Dark Mode state
@@ -161,10 +160,7 @@ const [arabicScript, setArabicScript] = useState("default");
         setArabicFont={setArabicFont}
         setBanglaFont={setBanglaFont}
         setDarkMode={setDarkMode}
-        textType="default" // Replace with the appropriate value
-        setTextType={() => { }} // Replace with the appropriate function
-        arabicScript="default" // Replace with the appropriate value
-        setArabicScript={() => { }} // Replace with the appropriate function
+       
         darkMode={darkMode}
       />
 

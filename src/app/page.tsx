@@ -6,10 +6,8 @@ import TodayDate from "./components/TodayDate";
 import PrayerTimes from "./components/PrayerTime";
 import ServiceSection from "@/app/components/ServiceSection";
 import Footer from "@/app/components/Footer";
-import moment from "moment-hijri";
-import "moment/locale/ar-sa";
-import "moment/locale/en-gb";
-import "moment/locale/en-ca";
+
+
 import { Amiri } from 'next/font/google';
 
 const amiri = Amiri({ subsets: ['arabic'], weight: '400' });

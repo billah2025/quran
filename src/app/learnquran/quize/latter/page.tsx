@@ -38,9 +38,6 @@ const questions = [
     ;
 
 
-type Props = {
-    isQuizFinished: boolean;
-};
 
 
 
@@ -310,7 +307,7 @@ export default function QuizPage() {
 
     // ✅ RESULTS PAGE
     if (isFinished) {
-        const totalAnswered = Object.keys(answers).length;
+        
 
 
 
