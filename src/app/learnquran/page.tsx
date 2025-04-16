@@ -49,12 +49,12 @@ const LearnQuranPage: React.FC = () => {
       {/* Interactive Buttons Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-8 max-w-6xl pb-24">
         {[
-          { name: "Introduction", icon: "1️⃣", link: "/learnquran/latter" },
-          { name: "Tajweed Rules", icon: "2️⃣", link: "/tajweed-rules" },
-          { name: "Pronunciation", icon: "3️⃣", link: "/pronunciation" },
-          { name: "Quranic Grammar", icon: "4️⃣", link: "/quranic-grammar" },
-          { name: "Exercises", icon: "5️⃣", link: "/exercises" },
-          { name: "Final Quiz", icon: "6️⃣", link:  "/learnquran/quize/latter" },
+          { name: "আরবি বর্ণমালা", icon: "1️⃣", link: "/learnquran/latter" },
+          { name: "হারকাত ", icon: "2️⃣", link: "/learnquran/harkat" },
+          { name: "মাদ ", icon: "3️⃣", link: "/learnquran/mad" },
+          { name: "তাজবীদ", icon: "4️⃣", link: "/learnquran/tajbid" },
+          { name: "প্রাকটিস ", icon: "5️⃣", link: "/learnquran/practice" },
+          { name: "শেষ অধ্যায় ", icon: "6️⃣", link:  "/learnquran/quize/latter" },
         ].map((lesson, index) => (
           <Link href={lesson.link} key={index}>
             <div
@@ -74,11 +74,11 @@ const LearnQuranPage: React.FC = () => {
               </div>
               <h2 className="text-2xl font-bold mb-2">{lesson.name}</h2>
               <p
-                className={`text-sm transition-colors ${darkMode ? "text-gray-400 group-hover:text-gray-300" : "text-gray-600 group-hover:text-gray-800"
-                  }`}
-              >
-                Learn about {lesson.name} interactively.
-              </p>
+                                className={`text-sm transition-colors ${darkMode ? "text-gray-400 group-hover:text-gray-300" : "text-gray-600 group-hover:text-gray-800"
+                                    }`}
+                            >
+                                {lesson.name} শিখুন
+                            </p>
             </div>
           </Link>
         ))}

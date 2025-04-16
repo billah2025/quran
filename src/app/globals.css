@@ -68,3 +68,15 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/noorehuda_greentech.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.option-text {
+  font-family: 'CustomFont', sans-serif;
+  font-size: 1.5rem;
+  
+}

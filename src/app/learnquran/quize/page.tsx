@@ -14,27 +14,59 @@ const quizData = [
   },
   {
     id: 2,
-    title: "Science Quiz",
-    description: "Test your knowledge of science.",
-    duration: "45 mins",
-    totalQuestions: 29,
-    link: null,
+    title: " অক্ষরের ভিন্নরূপ পরিচিতি",
+    description: " কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।",
+    duration: "25 mins",
+    totalQuestions: 28,
+    link: "/learnquran/quize/latterform",
   },
   {
     id: 3,
-    title: "History Quiz",
-    description: "How well do you know history?",
-    duration: "40 mins",
-    totalQuestions: 29,
-    link: null,
+    title: "হারাকাত",
+    description: "কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।",
+    duration: "12 mins",
+    totalQuestions: 12,
+    link:"/learnquran/quize/harkatquiz",
   },
   {
     id: 4,
-    title: "Geography Quiz",
-    description: "Explore the world with this geography quiz.",
-    duration: "35 mins",
-    totalQuestions: 29,
-    link: null,
+    title: "তাশদীদ পরিচিতি",
+    description: "কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।",
+    duration: "5 mins",
+    totalQuestions: 5,
+    link:"/learnquran/quize/harkat/tashdid",
+  },
+  {
+    id: 5,
+    title: "প্রাকটিস পরীক্ষা",
+    description: "কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।",
+    duration: "10 mins",
+    totalQuestions: 10,
+    link: "/learnquran/quize/harkat/practice",
+  },
+  {
+    id: 6,
+    title: "মাদ পরিচিতি",
+    description: "কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।",
+    duration: "11 mins",
+    totalQuestions: 11,
+    link:' /learnquran/quize/maad',
+  },
+  {
+    id: 7,
+    title: "তাজবীদ পরিচিতি",
+    description: "কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।",
+    duration: "14 mins",
+    totalQuestions: 14,
+    link: "/learnquran/quize/tajweed",
+  },
+  {
+    id: 8,
+    title: "তাজবীদ পরিচিতি ২",
+    description: "কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।",
+    duration: "5 mins",
+    totalQuestions: 5,
+    link: "/learnquran/quize/tajweed2",
   },
 ];
 
@@ -72,7 +104,7 @@ const QuizCards = () => {
               <p className="text-sm mt-1">{quiz.description}</p>
               <div className="mt-3 text-sm text-gray-500 dark:text-gray-400">
                 <p>⏱ Duration: {quiz.duration}</p>
-                <p>❓ Total Questions: {quiz.totalQuestions}</p>
+                <p> Total Questions: {quiz.totalQuestions}</p>
               </div>
 
               {/* Action Button */}

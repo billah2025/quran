@@ -49,24 +49,35 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
   return (
     <header
       ref={headerRef}
-      className={`fixed top-0 left-0 w-full bg-white shadow-md transition-transform duration-500 z-50 ${
-        isHeaderVisible ? "translate-y-0" : "-translate-y-full"
-      } ${className}`}
+      className={`fixed top-0 left-0 w-full bg-white shadow-md transition-transform duration-500 z-50 ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+        } ${className}`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <div className="text-xl font-bold text-gray-800">Quran</div>
 
         {/* Navigation menu */}
+        {/* Navigation menu */}
         <nav
-          className={`absolute md:relative top-full left-0 w-full md:w-auto md:flex md:items-center md:space-x-8 bg-white md:bg-transparent transition-transform duration-300 ease-in-out ${
-            isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-          }`}
+          className={`absolute md:relative top-full left-0 w-full md:w-auto md:flex md:items-center md:space-x-8 bg-white md:bg-transparent transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+            }`}
         >
           <ul className="flex flex-col md:flex-row md:space-x-8 p-6 md:p-0">
-            {["Home", "Learn Quran", "Read Quran", "About Us", "Blog"].map((item) => (
-              <li key={item}>
-                <a href={`#${item.toLowerCase().replace(/\s+/g, "")}`} className="block py-2 px-4 text-gray-800 hover:text-indigo-500">
-                  {item}
+            {/* External Links */}
+            {[
+              { label: "Home", link: "/" },
+              { label: "Learn Quran", link: "/learnquran/" },
+              { label: "Read Quran", link: "/quran" },
+              { label: "About Us", link: "https://about.example.com" },
+              { label: "Blog", link: "https://blog.example.com" },
+            ].map((item) => (
+              <li key={item.label}>
+                <a
+                  href={item.link}
+                  className="block py-2 px-4 text-gray-800 hover:text-indigo-500"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.label}
                 </a>
               </li>
             ))}

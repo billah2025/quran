@@ -18,42 +18,42 @@ type LetterData = {
 
 
 const letters: LetterData[] = [
-    { letter: 'ا', bangla: 'আ', audio: '/audio/1.mp3', tajweed: 'হামযা: গলা থেকে উচ্চারিত হয়', usageTypes: ['وَإِذْ أَخَذْنَا مِيثَٰقَ بَنِىٓ إِسْرَٰٓءِيلَ لَا تَعْبُدُونَ', 'وَإِذْ أَخَذْنَا مِيثَٰقَ بَنِىٓ إِسْرَٰٓءِيلَ لَا تَعْبُدُونَ'], imageSection1: '/quran.jpg', imageSection2: '/1.png' },
-    { letter: 'ب', bangla: 'বা', audio: '/audio/2.mp3', tajweed: 'বিবরিত হরফ, ঠোঁটের ব্যবহার', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '/1.png', imageSection2: '/quran.jpg' },
+    { letter: 'ا', bangla: 'আ', audio: '/audio/1.mp3', tajweed: 'হামযা: গলা থেকে উচ্চারিত হয়', usageTypes: [], imageSection1: '/quran.jpg', imageSection2: '/image/alphabetForm/alif.png' },
+    { letter: 'ب', bangla: 'বা', audio: '/audio/2.mp3', tajweed: 'বিবরিত হরফ, ঠোঁটের ব্যবহার', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/ba.png' },
 
-    { letter: 'ت', bangla: 'তা', audio: '/audio/3.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['Usage 1', 'Usage 2'] },
-    { letter: 'ث', bangla: 'সা', audio: '/audio/4.mp3', tajweed: 'জিহ্বার আগা ও উপরের দাঁত', usageTypes: ['وَإِذْ أَخَذْنَا مِيثَٰقَ بَنِىٓ إِسْرَٰٓءِيلَ لَا تَعْبُدُونَ', 'وَإِذْ أَخَذْنَا مِيثَٰقَ بَنِىٓ إِسْرَٰٓءِيلَ لَا تَعْبُدُونَ'], image: '/ 1.png', },
-    { letter: 'ج', bangla: 'জা', audio: '/audio/5.mp3', tajweed: 'মধ্য জিহ্বা' },
-    { letter: 'ح', bangla: 'হা', audio: '/audio/6.mp3', tajweed: 'গলার মধ্যভাগ' },
-    { letter: 'خ', bangla: 'খা', audio: '/audio/7.mp3', tajweed: 'গলার শীর্ষভাগ' },
-    { letter: 'د', bangla: 'দাল', audio: '/audio/8.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া' },
-    { letter: 'ذ', bangla: 'যাল', audio: '/audio/9.mp3', tajweed: 'জিহ্বার আগা ও উপরের দাঁত' },
-    { letter: 'ر', bangla: 'র', audio: '/audio/10.mp3', tajweed: 'জিহ্বার আগা ও তালু' },
-    { letter: 'ز', bangla: 'য', audio: '/audio/11.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া' },
-    { letter: 'س', bangla: 'সীন', audio: '/audio/12.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['وَإِذْ أَخَذْنَا مِيثَٰقَ بَنِىٓ إِسْرَٰٓءِيلَ لَا تَعْبُدُونَ', 'وَإِذْ أَخَذْنَا مِيثَٰقَ بَنِىٓ إِسْرَٰٓءِيلَ لَا تَعْبُدُونَ'], image: '/1.png' },
-    { letter: 'ش', bangla: 'শীন', audio: '/audio/13.mp3', tajweed: 'মধ্য জিহ্বা' },
-    { letter: 'ص', bangla: 'সোয়াদ', audio: '/audio/14.mp3', tajweed: 'জিহ্বার আগা ও তালু' },
-    { letter: 'ض', bangla: 'দোয়াদ', audio: '/audio/15.mp3', tajweed: 'জিহ্বার পার্শ্ব ও মোলার দাঁত' },
-    { letter: 'ط', bangla: 'ত্বা', audio: '/audio/16.mp3', tajweed: 'জিহ্বার আগা ও তালু' },
-    { letter: 'ظ', bangla: 'যা', audio: '/audio/17.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া' },
-    { letter: 'ع', bangla: 'আইন', audio: '/audio/18.mp3', tajweed: 'গলার নিম্নভাগ' },
-    { letter: 'غ', bangla: 'গোয়াইন', audio: '/audio/19.mp3', tajweed: 'গলার শীর্ষভাগ' },
-    { letter: 'ف', bangla: 'ফা', audio: '/audio/20.mp3', tajweed: 'উপরের দাঁতের গোড়া ও নিচের ঠোঁট' },
-    { letter: 'ق', bangla: 'ক্বাফ', audio: '/audio/21.mp3', tajweed: 'জিহ্বার শীর্ষভাগ ও তালু' },
-    { letter: 'ك', bangla: 'কাফ', audio: '/audio/22.mp3', tajweed: 'জিহ্বার পেছনের অংশ ও তালু' },
-    { letter: 'ل', bangla: 'লাম', audio: '/audio/23.mp3', tajweed: 'জিহ্বার মধ্যভাগ ও উপরের তালু' },
-    { letter: 'م', bangla: 'মীম', audio: '/audio/24.mp3', tajweed: 'উভয় ঠোঁট' },
-    { letter: 'ن', bangla: 'নূন', audio: '/audio/25.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া' },
-    { letter: 'و', bangla: 'ওয়াও', audio: '/audio/26.mp3', tajweed: 'উভয় ঠোঁট' },
-    { letter: 'ه', bangla: 'হা', audio: '/audio/27.mp3', tajweed: 'গলার নিম্নভাগ' },
-    { letter: 'ء', bangla: 'হামযা', audio: '/audio/28.mp3', tajweed: 'গলার শূন্যস্থান', imageSection2: '/1.png' },
-    { letter: 'ي', bangla: 'ইয়া', audio: '/audio/29.mp3', tajweed: 'জিহ্বার মধ্যভাগ' },
+    { letter: 'ت', bangla: 'তা', audio: '/audio/3.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/ta.png' },
+    { letter: 'ث', bangla: 'সা', audio: '/audio/4.mp3', tajweed: 'জিহ্বার আগা ও উপরের দাঁত', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '/svg/tha_jal_jaw.svg', imageSection2: '/image/alphabetForm/sa.png' },
+    { letter: 'ج', bangla: 'জা', audio: '/audio/5.mp3', tajweed: 'মধ্য জিহ্বা', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/jim.png' },
+    { letter: 'ح', bangla: 'হা', audio: '/audio/6.mp3', tajweed: 'গলার মধ্যভাগ', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '/svg/_ha.svg', imageSection2: '/image/alphabetForm/_ha.png' },
+    { letter: 'خ', bangla: 'খা', audio: '/audio/7.mp3', tajweed: 'গলার শীর্ষভাগ', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/kha.png' },
+    { letter: 'د', bangla: 'দাল', audio: '/audio/8.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/dal.png' },
+    { letter: 'ذ', bangla: 'যাল', audio: '/audio/9.mp3', tajweed: 'জিহ্বার আগা ও উপরের দাঁত', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '/svg/tha_jal_jaw.svg', imageSection2: '/image/alphabetForm/jal.png' },
+    { letter: 'ر', bangla: 'র', audio: '/audio/10.mp3', tajweed: 'জিহ্বার আগা ও তালু', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/ra.png' },
+    { letter: 'ز', bangla: 'য', audio: '/audio/11.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/jha.png' },
+    { letter: 'س', bangla: 'সীন', audio: '/audio/12.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/sin.png' },
+    { letter: 'ش', bangla: 'শীন', audio: '/audio/13.mp3', tajweed: 'মধ্য জিহ্বা', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/shin.png' },
+    { letter: 'ص', bangla: 'সোয়াদ', audio: '/audio/14.mp3', tajweed: 'জিহ্বার আগা ও তালু', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/sawd.png' },
+    { letter: 'ض', bangla: 'দোয়াদ', audio: '/audio/15.mp3', tajweed: 'জিহ্বার পার্শ্ব ও মোলার দাঁত', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/dawd.png' },
+    { letter: 'ط', bangla: 'ত্বা', audio: '/audio/16.mp3', tajweed: 'জিহ্বার আগা ও তালু', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/taw.png' },
+    { letter: 'ظ', bangla: 'যা', audio: '/audio/17.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '/svg/tha_jal_jaw.svg', imageSection2: '/image/alphabetForm/jaw.png' },
+    { letter: 'ع', bangla: 'আইন', audio: '/audio/18.mp3', tajweed: 'গলার নিম্নভাগ', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '/svg/ain_qaf.svg', imageSection2: '/image/alphabetForm/ain.png' },
+    { letter: 'غ', bangla: 'গোয়াইন', audio: '/audio/19.mp3', tajweed: 'গলার শীর্ষভাগ', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/gawin.png' },
+    { letter: 'ف', bangla: 'ফা', audio: '/audio/20.mp3', tajweed: 'উপরের দাঁতের গোড়া ও নিচের ঠোঁট', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/fa.png' },
+    { letter: 'ق', bangla: 'ক্বাফ', audio: '/audio/21.mp3', tajweed: 'জিহ্বার শীর্ষভাগ ও তালু', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/qaf.png' },
+    { letter: 'ك', bangla: 'কাফ', audio: '/audio/22.mp3', tajweed: 'জিহ্বার পেছনের অংশ ও তালু', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '/svg/tha_jal_jaw.svg', imageSection2: '/image/alphabetForm/kaf.png' },
+    { letter: 'ل', bangla: 'লাম', audio: '/audio/23.mp3', tajweed: 'জিহ্বার মধ্যভাগ ও উপরের তালু', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/lam.png' },
+    { letter: 'م', bangla: 'মীম', audio: '/audio/24.mp3', tajweed: 'উভয় ঠোঁট', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/mim.png' },
+    { letter: 'ن', bangla: 'নূন', audio: '/audio/25.mp3', tajweed: 'জিহ্বার আগা ও দাঁতের গোড়া', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/nun.png' },
+    { letter: 'و', bangla: 'ওয়াও', audio: '/audio/26.mp3', tajweed: 'উভয় ঠোঁট', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/oao.png' },
+    { letter: 'ه', bangla: 'হা', audio: '/audio/27.mp3', tajweed: 'গলার নিম্নভাগ', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/ha.png' },
+    { letter: 'ء', bangla: 'হামযা', audio: '/audio/28.mp3', tajweed: 'গলার শূন্যস্থান', usageTypes: [], imageSection1: '', imageSection2: '' },
+    { letter: 'ي', bangla: 'ইয়া', audio: '/audio/29.mp3', tajweed: 'জিহ্বার মধ্যভাগ', usageTypes: ['Usage 1', 'Usage 2'], imageSection1: '', imageSection2: '/image/alphabetForm/ya.png' },
 
 ]
 
 export default function Home() {
     const [selectedSection, setSelectedSection] = useState<1 | 2 | 3>(1)
-    const [darkMode, setDarkMode] = useState(false)
+    const [darkMode, setDarkMode] = useState(true)
     const [popupIndex, setPopupIndex] = useState<number | null>(null)
     // const [isPlaying, setIsPlaying] = useState(false)
     const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -66,7 +66,7 @@ export default function Home() {
         if (audioRef.current) {
             audioRef.current.src = src
             audioRef.current.play()
-           
+
         }
     }
 
@@ -117,7 +117,7 @@ export default function Home() {
 
 
                 <h1 className="text-3xl font-bold mb-6 text-center">
-                    {selectedSection === 3 ? 'পরীক্ষা' : selectedSection === 2 ? 'আল-ফালাহ তাজবিদ ব্যবহার' : 'আরবি বর্ণমালা'}
+                    {selectedSection === 3 ? 'পরীক্ষা' : selectedSection === 2 ? ' অক্ষরের ভিন্নরূপ পরিচিতি' : 'আরবি বর্ণমালা'}
                 </h1>
 
 
@@ -157,16 +157,16 @@ export default function Home() {
                                     </div>
 
                                     <div className="text-right">
-                                        <h3 className="text-xl font-bold mb-2">1️⃣ Introduction</h3>
+                                        <h3 className="text-xl font-bold mb-2">1️⃣ আরবি বর্ণমালা</h3>
                                         <p className="text-sm group-hover:underline">
-                                            Get started with the basics.
+                                            কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।
                                         </p>
                                     </div>
                                 </div>
                             </Link>
 
                             {/* Card 2 */}
-                            <Link href="/tajweed-rules" passHref>
+                            <Link href="/learnquran/quize/latterform" passHref>
                                 <div
                                     className={`relative group p-6 rounded-2xl shadow-xl transition-transform transform ${darkMode
                                         ? "bg-gray-800 text-gray-200 hover:scale-105 hover:shadow-lg"
@@ -184,9 +184,9 @@ export default function Home() {
                                     </div>
 
                                     <div className="text-right">
-                                        <h3 className="text-xl font-bold mb-2">2️⃣ Tajweed Rules</h3>
+                                        <h3 className="text-xl font-bold mb-2">2️⃣ অক্ষরের ভিন্নরূপ পরিচিতি</h3>
                                         <p className="text-sm group-hover:underline">
-                                            Master the rules of Tajweed.
+                                        কুইজ দিয়ে নিজের জ্ঞান যাচাই করুন।
                                         </p>
                                     </div>
                                 </div>
@@ -394,12 +394,12 @@ export default function Home() {
                                 </div>
                                 <div className="text-5xl font-bold">{currentPopup.letter}</div>
                                 <div className="text-lg text-right leading-relaxed">{currentPopup.tajweed}</div>
-                                    <Image
-                                        src={currentPopup.imageSection1 || '/default-image.png'}
-                                        alt="Letter visual"
-                                        className="mx-auto h-32 object-contain rounded-lg border"
-                                        width={128}
-                                        height={128}
+                                <Image
+                                    src={currentPopup.imageSection1 || '/default-image.png'}
+                                    alt="Letter visual"
+                                    className="mx-auto h-32 object-contain rounded-lg border"
+                                    width={250}
+                                    height={250}
                                 />
                             </div>
 
@@ -408,13 +408,13 @@ export default function Home() {
                                     onClick={() => popupIndex! < letters.length - 1 && setPopupIndex(popupIndex! + 1)}
                                     className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                                 >
-                                    পরবর্তী →
+                                     →পরবর্তী
                                 </button>
                                 <button
                                     onClick={() => popupIndex! > 0 && setPopupIndex(popupIndex! - 1)}
                                     className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
                                 >
-                                    ← পূর্ববর্তী
+                                    পূর্ববর্তী ← 
                                 </button>
                             </div>
                         </div>
