@@ -31,12 +31,11 @@ const letters: LetterData[] = [
 export default function Home() {
     const [selectedSection, setSelectedSection] = useState<1 | 2 | 3>(1)
     const [darkMode, setDarkMode] = useState(true)
-    const [popupIndex, setPopupIndex] = useState<number | null>(null)
+    const [popupIndex, ] = useState<number | null>(null)
     // const [isPlaying, setIsPlaying] = useState(false)
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
-    const currentPopup = popupIndex !== null ? letters[popupIndex] : null
-  
+    
 
     const playAudio = (src: string) => {
         if (audioRef.current) {
@@ -46,11 +45,7 @@ export default function Home() {
         }
     }
 
-    // const handleNext = () => {
-    //     if (popupIndex !== null && popupIndex < letters.length - 1) {
-    //         setPopupIndex(popupIndex + 1)
-    //     }
-    // }
+   
 
     useEffect(() => {
         if (popupIndex !== null) {
@@ -165,6 +160,7 @@ export default function Home() {
                                             alt={`Image for ${item.letter}`}
                                             className="mx-auto max-w-full rounded-lg shadow-md"
                                         />
+                                        
                                     </div>
                                 )}
 

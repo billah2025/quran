@@ -74,7 +74,7 @@ export default function QuizPage() {
   const [timeLeft, setTimeLeft] = useState( 12 * 60);
   const [isFinished, setIsFinished] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+ 
 
   const current = questions[currentIndex];
   const total = questions.length;

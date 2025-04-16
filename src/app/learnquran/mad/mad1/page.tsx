@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
 import Image from 'next/image';
 import { FaPlayCircle } from 'react-icons/fa';
 import Link from 'next/link';

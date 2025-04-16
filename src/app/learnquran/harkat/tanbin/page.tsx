@@ -57,7 +57,7 @@ export default function Home() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
     const currentPopup = popupIndex !== null ? letters[popupIndex] : null
-    const [popupIndexSection2, setPopupIndexSection2] = useState<number | null>(null)
+    
 
 
     const playAudio = (src: string) => {
@@ -68,12 +68,7 @@ export default function Home() {
         }
     }
 
-    // const handleNext = () => {
-    //     if (popupIndex !== null && popupIndex < letters.length - 1) {
-    //         setPopupIndex(popupIndex + 1)
-    //     }
-    // }
-
+   
     useEffect(() => {
         if (popupIndex !== null) {
             const letter = letters[popupIndex]
@@ -206,7 +201,7 @@ export default function Home() {
                    <h1 className=' text-justify   text-3xl leading-15   '>
                    কখনো কখনো অক্ষরে দুই যবর, দুই যের, দুই পেশ ব্যাবহার হতে পারে, একে <strong>তানবিন</strong> বলে। 
                    এর উচ্চারন এক যবর, এক যের, এক পেশ এর মতই হবে তবে একটা আলাদা 
-                   <span className="text-red-500 font-bold m-1.5 text-3xl "> 'ন' </span> যুক্ত হবে। এটি তাজবীদের নিয়ম অনুযায়ী বেশ স্পষ্ট করে উচ্চারণ করা হয়, যা কুরআন পাঠে বিশেষ গুরত্বপূর্ণ।
+                   <span className="text-red-500 font-bold m-1.5 text-3xl "> &apos;ন&apos; </span> যুক্ত হবে। এটি তাজবীদের নিয়ম অনুযায়ী বেশ স্পষ্ট করে উচ্চারণ করা হয়, যা কুরআন পাঠে বিশেষ গুরত্বপূর্ণ।
                 
                   
                  </h1>

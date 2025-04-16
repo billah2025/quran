@@ -776,12 +776,7 @@ export default function Home() {
         }
     }
 
-    // const handleNext = () => {
-    //     if (popupIndex !== null && popupIndex < letters.length - 1) {
-    //         setPopupIndex(popupIndex + 1)
-    //     }
-    // }
-
+  
     useEffect(() => {
         if (popupIndex !== null) {
             const letter = letters[popupIndex]
@@ -900,16 +895,7 @@ export default function Home() {
                                     ?
                                 </button>
 
-                                {/* ❌ REMOVE this block if you don’t want to show imageSection1 in card */}
-                                {/* {item.imageSection1 && (
-          <div className="mt-4">
-            <img
-              src={item.imageSection1}
-              alt={`Image for ${item.letter}`}
-              className="mx-auto max-w-full rounded-xl shadow-lg"
-            />
-          </div>
-        )} */}
+           
                             </div>
                         ))}
                     </div>
