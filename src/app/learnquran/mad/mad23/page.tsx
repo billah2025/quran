@@ -141,7 +141,7 @@ export default function Home() {
   {/* Image */}
  
   <Image
-    src="/svg/maad/Maad_page2_part1.svg"
+    src="/svg/maad/maad_page2_part1.svg"
     alt="Maad Part 1"
     width={0}
     height={0}

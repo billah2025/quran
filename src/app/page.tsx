@@ -12,6 +12,11 @@ import { Amiri } from 'next/font/google';
 
 const amiri = Amiri({ subsets: ['arabic'], weight: '400' });
 
+
+
+
+
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
@@ -27,7 +32,11 @@ export default function Home() {
   };
 
   return (
+    
     <div className={`${amiri.className} ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"} min-h-screen`}>
+     
+     
+     
       {/* Global Dark Mode Toggle */}
       <div className="fixed top-4 right-4 z-10">
         <button
