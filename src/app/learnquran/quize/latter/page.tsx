@@ -278,22 +278,38 @@ export default function QuizPage() {
         if (currentIndex < total - 1) {
             setTimeout(() => setCurrentIndex(currentIndex + 1), 300);
         } else {
-            finishExam();
+            finishExam(); 
         }
     };
+    
 
     const finishExam = () => {
         const totalAnswered = Object.keys(answers).length;
-
+        const correctCount = questions.filter((q) => answers[q.id] === q.answer).length;
+        const wrongCount = questions.filter((q) => answers[q.id] && answers[q.id] !== q.answer).length;
+        const unansweredCount = total - correctCount - wrongCount;
+    
+        // Save quiz summary with a unique ID (e.g., "quiz-latter")
+        const quizId = "quiz-latter"; // Replace with dynamic quiz ID
+        localStorage.setItem(
+            quizId,
+            JSON.stringify({
+                totalQuestions: total,
+                correct: correctCount,
+                wrong: wrongCount,
+                unanswered: unansweredCount,
+                timestamp: new Date().toISOString(),
+            })
+        );
+    
         if (totalAnswered === 0) {
             alert("⚠️ Exam finished! You didn't answer any questions.");
         } else {
             alert("✅ Exam finished!");
         }
-
         setIsFinished(true);
     };
-
+    
 
     const goToQuestion = (index: number) => {
         setCurrentIndex(index);

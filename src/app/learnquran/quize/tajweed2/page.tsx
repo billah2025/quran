@@ -166,15 +166,33 @@ export default function QuizPage() {
     }
   };
 
+  
   const finishExam = () => {
     const totalAnswered = Object.keys(answers).length;
+    const correctCount = questions.filter((q) => answers[q.id] === q.ansIndex).length;
+    const wrongCount = questions.filter((q) => answers[q.id] !== undefined && answers[q.id] !== q.ansIndex).length;
+    const unansweredCount = total - correctCount - wrongCount;
+
+    // Save quiz summary with a unique ID (e.g., "quiz-latter")
+    const quizId = "tajweed2"; // Replace with dynamic quiz ID
+    localStorage.setItem(
+        quizId,
+        JSON.stringify({
+            totalQuestions: total,
+            correct: correctCount,
+            wrong: wrongCount,
+            unanswered: unansweredCount,
+            timestamp: new Date().toISOString(),
+        })
+    );
+
     if (totalAnswered === 0) {
-      alert("⚠️ Exam finished! You didn't answer any questions.");
+        alert("⚠️ Exam finished! You didn't answer any questions.");
     } else {
-      alert("✅ Exam finished!");
+        alert("✅ Exam finished!");
     }
     setIsFinished(true);
-  };
+};
 
   const goToQuestion = (index: number) => setCurrentIndex(index);
   const formatTime = (seconds: number) => `${Math.floor(seconds / 60).toString().padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
