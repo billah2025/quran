@@ -1,11 +1,10 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 
 // Sample Quiz Data
 const quizData = [
     {
-        id: "quiz-latter", // Unique ID for the first quiz
+        id: "quiz-latter",
         title: "অক্ষর পরিচিতি",
         description: "Learn the letters of the Arabic alphabet.",
         duration: "25 mins",
@@ -13,7 +12,7 @@ const quizData = [
         link: "/learnquran/quize/latter",
     },
     {
-        id: "quiz-latterform", // Unique ID for the second quiz
+        id: "quiz-latterform",
         title: "অক্ষরের ভিন্নরূপ পরিচিতি",
         description: "Identify different forms of Arabic letters.",
         duration: "25 mins",
@@ -70,7 +69,6 @@ const quizData = [
     },
 ];
 
-// Define the type for the quiz summary
 interface QuizSummary {
     totalQuestions: number;
     correct: number;
@@ -81,21 +79,30 @@ interface QuizSummary {
 
 const QuizCards = () => {
     const [darkMode, setDarkMode] = useState(false);
+    const [quizSummaries, setQuizSummaries] = useState<Record<string, QuizSummary | null>>({});
 
-    // Function to reset all quiz progress
+    useEffect(() => {
+        // Only runs in the browser
+        const summaries: Record<string, QuizSummary | null> = {};
+        quizData.forEach((quiz) => {
+            const storedSummary = localStorage.getItem(quiz.id);
+            summaries[quiz.id] = storedSummary ? JSON.parse(storedSummary) : null;
+        });
+        setQuizSummaries(summaries);
+    }, []);
+
     const resetProgress = () => {
         if (window.confirm("Are you sure you want to reset all quiz progress?")) {
             quizData.forEach((quiz) => {
-                localStorage.removeItem(quiz.id); // Remove each quiz result
+                localStorage.removeItem(quiz.id);
             });
             alert("All quiz progress has been reset!");
-            window.location.reload(); // Reload the page to reflect changes
+            window.location.reload();
         }
     };
 
     return (
         <div className={`${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"} min-h-screen p-6 transition-all relative`}>
-            {/* Header with Title and Dark Mode Toggle */}
             <div className={`flex justify-between items-center mb-6 px-4 py-3 rounded-lg ${darkMode ? "bg-gray-800" : "bg-gray-100"}`}>
                 <h1 className="text-2xl font-bold">📚 Quiz Exams</h1>
                 <button
@@ -106,14 +113,9 @@ const QuizCards = () => {
                 </button>
             </div>
 
-            {/* Quiz Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {quizData.map((quiz) => {
-                    // Retrieve quiz summary from localStorage using the unique ID
-                    const storedSummary = localStorage.getItem(quiz.id);
-                    const quizSummary: QuizSummary | null = storedSummary ? JSON.parse(storedSummary) : null;
-
-                    // Determine progress for the current quiz
+                    const quizSummary = quizSummaries[quiz.id];
                     const progress = quizSummary
                         ? `${quizSummary.correct}/${quizSummary.totalQuestions}`
                         : "Not Taken";
@@ -126,22 +128,15 @@ const QuizCards = () => {
                             }`}
                         >
                             <div className="relative p-4">
-                                {/* Progress Bar */}
                                 <div className="mb-4">
                                     <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
                                         <span>Progress:</span>
                                         <span>{progress}</span>
                                     </div>
-                                    <div
-                                        className={`h-2 rounded-full ${
-                                            darkMode ? "bg-gray-700" : "bg-gray-200"
-                                        }`}
-                                    >
+                                    <div className={`h-2 rounded-full ${darkMode ? "bg-gray-700" : "bg-gray-200"}`}>
                                         {quizSummary && (
                                             <div
-                                                className={`h-full rounded-full ${
-                                                    darkMode ? "bg-green-500" : "bg-green-400"
-                                                }`}
+                                                className={`h-full rounded-full ${darkMode ? "bg-green-500" : "bg-green-400"}`}
                                                 style={{
                                                     width: `${(quizSummary.correct / quizSummary.totalQuestions) * 100}%`,
                                                 }}
@@ -150,7 +145,6 @@ const QuizCards = () => {
                                     </div>
                                 </div>
 
-                                {/* Content */}
                                 <h2 className="text-xl font-semibold">{quiz.title}</h2>
                                 <p className="text-sm mt-1">{quiz.description}</p>
                                 <div className="mt-3 text-sm text-gray-500 dark:text-gray-400">
@@ -158,7 +152,6 @@ const QuizCards = () => {
                                     <p>Total Questions: {quiz.totalQuestions}</p>
                                 </div>
 
-                                {/* Action Button */}
                                 <div className="mt-4 text-center">
                                     {quiz.link ? (
                                         <a
@@ -185,7 +178,6 @@ const QuizCards = () => {
                 })}
             </div>
 
-            {/* Reset Progress Button */}
             <button
                 onClick={resetProgress}
                 className="fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-red-600 transition"

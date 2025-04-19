@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import SideDrawer from "@/app/components/SideDrawer";
 import { notFound, useParams } from "next/navigation";
+import { useCallback } from "react"; // Import useCallback
 
 interface Ayah {
   number: number;
@@ -80,52 +81,84 @@ const [data, setData] = useState<SurahData | null>(null);
     }
   }, [id]);
 
-  useEffect(() => {
-    if (!data || !audioRef.current) return;
+ 
   
-    if (currentAyahIndex !== null && isPlaying) {
-      playCurrentAyah();
-      audioRef.current.addEventListener("ended", handleAudioEnd);
-    }
-  
-    scrollToCurrentAyah();
-  
-    return () => {
-      audioRef.current?.removeEventListener("ended", handleAudioEnd);
-    };
-  }, [currentAyahIndex, isPlaying, data]);
-  
+// Memoize scrollToCurrentAyah
+const scrollToCurrentAyah = useCallback(() => {
+  if (currentAyahIndex !== null && ayahRefs.current[currentAyahIndex]) {
+    ayahRefs.current[currentAyahIndex].scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }
+}, [currentAyahIndex]);
 
-  const scrollToCurrentAyah = () => {
-    if (currentAyahIndex !== null && ayahRefs.current[currentAyahIndex]) {
-      ayahRefs.current[currentAyahIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-  };
+// Memoize handleAudioEnd
+const handleAudioEnd = useCallback(() => {
+  if (
+    currentAyahIndex !== null &&
+    currentAyahIndex + 1 < data!.audioAyahs.length
+  ) {
+    setCurrentAyahIndex(currentAyahIndex + 1);
+  } else {
+    setIsPlaying(false);
+  }
+}, [currentAyahIndex, data]);
 
-  const handleAudioEnd = () => {
-    if (
-      currentAyahIndex !== null &&
-      currentAyahIndex + 1 < data!.audioAyahs.length
-    ) {
-      setCurrentAyahIndex(currentAyahIndex + 1);
-    } else {
-      setIsPlaying(false);
+// Memoize playCurrentAyah
+const playCurrentAyah = useCallback(() => {
+  if (audioRef.current && currentAyahIndex !== null) {
+    const currentAudio = data!.audioAyahs[currentAyahIndex]?.audio;
+    if (currentAudio) {
+      audioRef.current.src = currentAudio;
+      audioRef.current.play();
     }
-  };
+  }
+}, [currentAyahIndex, data]);
 
-  const playCurrentAyah = () => {
-    if (audioRef.current && currentAyahIndex !== null) {
-      const currentAudio = data!.audioAyahs[currentAyahIndex]?.audio;
-      if (currentAudio) {
-        audioRef.current.src = currentAudio;
-        audioRef.current.play();
-      }
-    }
+// Update useEffect (moved below the declarations)
+useEffect(() => {
+  if (!data || !audioRef.current) return;
+
+  if (currentAyahIndex !== null && isPlaying) {
+    playCurrentAyah();
+    audioRef.current.addEventListener("ended", handleAudioEnd);
+  }
+
+  scrollToCurrentAyah();
+
+  return () => {
+    audioRef.current?.removeEventListener("ended", handleAudioEnd);
   };
-  
+}, [currentAyahIndex, isPlaying, data, handleAudioEnd, playCurrentAyah, scrollToCurrentAyah]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const playSpecificAyah = (index: number) => {
     setCurrentAyahIndex(index);

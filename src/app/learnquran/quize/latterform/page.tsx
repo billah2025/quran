@@ -3,6 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tooltip, ResponsiveContainer, PieChart, Pie } from "recharts";
 
+import { useCallback } from "react"; // Import useCallback
+
+ 
+    
 const questions = [
   {
     "id": 1,
@@ -440,35 +444,49 @@ export default function QuizPage() {
     }
   };
 
-  const finishExam = () => {
-    const totalAnswered = Object.keys(answers).length;
-    const correctCount = questions.filter((q) => answers[q.id] === q.ansIndex).length;
-    const wrongCount = questions.filter((q) => answers[q.id] !== undefined && answers[q.id] !== q.ansIndex).length;
-    const unansweredCount = total - correctCount - wrongCount;
 
-    // Save quiz summary with a unique ID (e.g., "quiz-latter")
-    const quizId = "quiz-latterform"; // Replace with dynamic quiz ID
-    localStorage.setItem(
-        quizId,
-        JSON.stringify({
-            totalQuestions: total,
-            correct: correctCount,
-            wrong: wrongCount,
-            unanswered: unansweredCount,
-            timestamp: new Date().toISOString(),
-        })
-    );
+// Memoize the finishExam function
+const finishExam = useCallback(() => {
+  const totalAnswered = Object.keys(answers).length;
+  const correctCount = questions.filter((q) => answers[q.id] === q.ansIndex).length;
+  const wrongCount = questions.filter((q) => answers[q.id] !== undefined && answers[q.id] !== q.ansIndex).length;
+  const unansweredCount = total - correctCount - wrongCount;
 
-    if (totalAnswered === 0) {
-        alert("⚠️ Exam finished! You didn't answer any questions.");
-    } else {
-        alert("✅ Exam finished!");
-    }
-    setIsFinished(true);
-};
+  // Save quiz summary with a unique ID (e.g., "quiz-latterform")
+  const quizId = "quiz-latterform"; // Replace with dynamic quiz ID if needed
+  localStorage.setItem(
+      quizId,
+      JSON.stringify({
+          totalQuestions: total,
+          correct: correctCount,
+          wrong: wrongCount,
+          unanswered: unansweredCount,
+          timestamp: new Date().toISOString(),
+      })
+  );
 
+  if (totalAnswered === 0) {
+      alert("⚠️ Exam finished! You didn't answer any questions.");
+  } else {
+      alert("✅ Exam finished!");
+  }
+  setIsFinished(true);
+}, [answers, total]); // Add dependencies
 
-
+// Update the useEffect hook
+useEffect(() => {
+  const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+          if (prev <= 1) {
+              clearInterval(interval);
+              finishExam(); // Use the memoized function
+              return 0;
+          }
+          return prev - 1;
+      });
+  }, 1000);
+  return () => clearInterval(interval);
+}, [finishExam]); // Add finishExam as a dependency
 
 
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'; // Import Next.js Image component
 
 
 import Link from 'next/link';
@@ -145,39 +146,42 @@ export default function Home() {
 
 
                 {/* Section 1: Letter Cards */}
-                {selectedSection === 1 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                        {letters.map((item, index) => (
-                            <div
-                                key={index}
-                                className={`p-4 rounded-xl shadow-lg transition transform hover:scale-105 relative ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
-                            >
-                                {/* Image Only */}
-                                {item.imageSection1 && (
-                                    <div className="mb-4">
-                                        <img
-                                            src={item.imageSection1}
-                                            alt={`Image for ${item.letter}`}
-                                            className="mx-auto max-w-full rounded-lg shadow-md"
-                                        />
-                                        
-                                    </div>
-                                )}
-
-                                {/* Audio Play Button */}
-                                <div className="text-center">
-                                    <button
-                                        onClick={() => playAudio(item.audio)}
-                                        className="bg-indigo-500 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
-                                    >
-                                        🔊 Play
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
+                
+{/* Section 1: Letter Cards */}
+{selectedSection === 1 && (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+        {letters.map((item, index) => (
+            <div
+                key={index}
+                className={`p-4 rounded-xl shadow-lg transition transform hover:scale-105 relative ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
+            >
+                {/* Image Only */}
+                {item.imageSection1 && (
+                    <div className="mb-4">
+                        <Image
+                            src={item.imageSection1}
+                            alt={`Image for ${item.letter}`}
+                            className="mx-auto rounded-lg shadow-md"
+                            width={300} // Set appropriate width
+                            height={300} // Set appropriate height
+                            priority={index === 0} // Prioritize the first image for faster LCP
+                        />
                     </div>
                 )}
 
+                {/* Audio Play Button */}
+                <div className="text-center">
+                    <button
+                        onClick={() => playAudio(item.audio)}
+                        className="bg-indigo-500 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
+                    >
+                        🔊 Play
+                    </button>
+                </div>
+            </div>
+        ))}
+    </div>
+)}
 
 
                 <audio ref={audioRef} />
