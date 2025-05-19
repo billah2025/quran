@@ -1,108 +1,162 @@
-"use client";
-import { useState, useEffect } from "react";
-import Calendar from "react-calendar"; // Third-party React Calendar
-import "react-calendar/dist/Calendar.css"; // Default styles for React Calendar
-import moment from "moment-hijri";
+'use client'
 
-// Define types for cities and prayer times
-interface City {
-  name: string;
-  id: string;
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
+// Type definition for a single calendar day
+type CalendarDay = {
+  date: {
+    gregorian: { date: string; day: string; month: { en: string; number: number }; year: string }
+    hijri: {
+      date: string
+      day: string
+      month: { en: string }
+      year: string
+      holidays: string[]
+    }
+  }
 }
 
-interface PrayerTimes {
-  Fajr: string;
-  Dhuhr: string;
-  Asr: string;
-  Maghrib: string;
-  Isha: string;
-  [key: string]: string; // Allow additional keys for other prayer times
-}
+export default function IslamicCalendar() {
+  const [calendar, setCalendar] = useState<CalendarDay[]>([])
+  const [month, setMonth] = useState(new Date().getMonth() + 1)
+  const [year, setYear] = useState(new Date().getFullYear())
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-// Sample cities and their prayer time API identifiers
-const cities: City[] = [
-  { name: "Dhaka", id: "dhaka" },
-  { name: "Chattogram", id: "chattogram" },
-  { name: "Khulna", id: "khulna" },
-  { name: "Rajshahi", id: "rajshahi" },
-  { name: "Sylhet", id: "sylhet" },
-];
-
-export default function PrayerCalendar() {
-  const [selectedCity, setSelectedCity] = useState<string>("dhaka");
-  const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
-  const [date, setDate] = useState<Date>(new Date());
-
-  // Fetch prayer times when city changes
   useEffect(() => {
-    async function fetchPrayerTimes() {
+    const fetchCalendar = async () => {
       try {
-        const response = await fetch(
-          `https://api.aladhan.com/v1/timingsByCity?city=${selectedCity}&country=BD&method=2`
-        );
-        const data = await response.json();
-        if (data?.data?.timings) {
-          setPrayerTimes(data.data.timings);
-        } else {
-          console.error("Invalid response structure:", data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch prayer times", error);
+        setLoading(true)
+        const res = await axios.get(
+          `https://api.aladhan.com/v1/calendar?month=${month}&year=${year}&latitude=23.78&longitude=90.38&method=2`
+        )
+        setCalendar(res.data.data || [])
+        setError(null)
+      } catch (err) {
+        setError('Failed to load calendar data.')
+        setCalendar([])
+      } finally {
+        setLoading(false)
       }
     }
-    fetchPrayerTimes();
-  }, [selectedCity]);
+
+    fetchCalendar()
+  }, [month, year])
+
+  const handlePrevMonth = () => {
+    if (month === 1) {
+      setMonth(12)
+      setYear((prev) => prev - 1)
+    } else {
+      setMonth((prev) => prev - 1)
+    }
+  }
+
+  const handleNextMonth = () => {
+    if (month === 12) {
+      setMonth(1)
+      setYear((prev) => prev + 1)
+    } else {
+      setMonth((prev) => prev + 1)
+    }
+  }
+
+  const hijriHeader =
+    calendar.length > 0
+      ? calendar[0]?.date?.hijri?.month?.en + ' ' + calendar[0]?.date?.hijri?.year
+      : ''
+
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const today = new Date()
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-lg">
-      {/* 📅 Calendar Section */}
-      <div className="w-full lg:w-1/2 bg-white text-black p-4 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold text-center mb-2">📅 ইংরেজি ও হিজরি ক্যালেন্ডার</h2>
-        <Calendar
-          onChange={(value) => setDate(value as Date)}
-          value={date}
-          tileContent={({ date }) => (
-            <span className="text-sm text-gray-700">
-              {moment(date).format("iD iMMMM iYYYY")} {/* Hijri date format */}
-            </span>
-          )}
-          className="w-full"
-        />
-      </div>
-
-      {/* 🕌 Prayer Times Section */}
-      <div className="w-full lg:w-1/2 bg-white text-black p-4 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold text-center mb-2">🕌 নামাজের সময়সূচী</h2>
-        <div className="flex justify-center mb-4">
-          <select
-            className="p-2 bg-blue-600 text-white rounded-md cursor-pointer"
-            value={selectedCity}
-            onChange={(e) => setSelectedCity(e.target.value)}
-          >
-            {cities.map((city) => (
-              <option key={city.id} value={city.id}>
-                {city.name}
-              </option>
-            ))}
-          </select>
+    <div className="max-w-6xl mx-auto p-4 bg-gradient-to-br from-emerald-100 to-white shadow-lg rounded-xl border border-emerald-300">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-2">
+        <button
+          onClick={handlePrevMonth}
+          className="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-md"
+        >
+          ◀ Previous
+        </button>
+        <div className="text-center">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
+            {new Date(year, month - 1).toLocaleString('default', {
+              month: 'long',
+              year: 'numeric',
+            })}
+          </h2>
+          <p className="text-green-700 font-medium">{hijriHeader}</p>
         </div>
-
-        {/* Display Prayer Times */}
-        {prayerTimes ? (
-          <ul className="text-center">
-            {Object.entries(prayerTimes).map(([prayer, time]) => (
-              <li key={prayer} className="text-lg font-semibold">
-                {prayer}:{" "}
-                <span className="text-blue-600">
-                  {moment(time, "HH:mm").format("hh:mm A")} {/* Correct moment usage */}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-center text-gray-600">Loading prayer times...</p>
-        )}
+        <button
+          onClick={handleNextMonth}
+          className="bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-md"
+        >
+          Next ▶
+        </button>
       </div>
+
+      {/* Calendar Grid */}
+      {loading && <p className="text-center text-sm text-gray-500">Loading calendar...</p>}
+      {error && <p className="text-center text-red-600 font-medium">{error}</p>}
+
+      {!loading && !error && (
+        <>
+          <div className="grid grid-cols-7 gap-1 text-center text-sm font-bold text-green-800 mb-2">
+            {dayNames.map((day, idx) => (
+              <div key={idx} className="py-1">{day}</div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-7 gap-2">
+            {/* Empty cells for the first week */}
+            {calendar.length > 0 &&
+              Array(
+                new Date(
+                  Number(calendar[0].date.gregorian.year),
+                  calendar[0].date.gregorian.month.number - 1,
+                  1
+                ).getDay()
+              )
+                .fill(null)
+                .map((_, idx) => <div key={`empty-${idx}`} />)}
+
+            {calendar.map((dayObj, i) => {
+              const { gregorian, hijri } = dayObj.date
+              const isToday =
+                parseInt(gregorian.day) === today.getDate() &&
+                parseInt(gregorian.month.number.toString()) === today.getMonth() + 1 &&
+                parseInt(gregorian.year) === today.getFullYear()
+
+              return (
+                <div
+                  key={i}
+                  className={`relative flex flex-col items-center justify-center px-2 py-3 text-sm border rounded-lg shadow-sm transition-all duration-200 ${
+                    isToday
+                      ? 'bg-green-100 border-green-400 ring-2 ring-green-300'
+                      : 'bg-white hover:bg-green-50'
+                  }`}
+                >
+                  <div className="font-bold text-gray-800 text-base leading-none">
+                    {gregorian.day}
+                  </div>
+                  <div className="text-green-700 mt-1 text-sm leading-none">
+                    {hijri.day}
+                  </div>
+                  {hijri.holidays.length > 0 && (
+                    <div className="text-red-500 text-xs mt-1 text-center">
+                      {hijri.holidays.join(', ')}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </>
+      )}
+
+      
     </div>
-  );
+  )
 }

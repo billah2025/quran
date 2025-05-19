@@ -369,7 +369,8 @@ useEffect(() => {
 
 
         return (
-            <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white p-4 transition-colors duration-300">
+            <div className="min-h-screen bg-gradient-to-br from-green-900 to-green-700 text-white p-4 transition-colors duration-300 font-[Noto_Naskh_Arabic]">
+
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-3xl font-bold">📊 Exam Summary</h1>
                     <button
@@ -382,7 +383,7 @@ useEffect(() => {
                 </div>
 
                 {/* Progress Ring */}
-                <div className="flex justify-center items-center mb-6">
+                <div className="flex justify-center items-center mb-6 p-4  ">
                     <ResponsiveContainer width={200} height={200}>
                         <PieChart>
                             <Pie
@@ -408,13 +409,15 @@ useEffect(() => {
                     {questions.map((q, index) => (
                         <div
                             key={index}
-                            className="p-4 border rounded-lg dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md"
+                           className="  shadow backdrop-blur-md bg-gradient-to-br from-green-900 to-green-700 text-white p-4 transition-colors duration-300 font-[Noto_Naskh_Arabic]"
+
                         >
                             <div className="flex items-center justify-between mb-2">
                                 <h2 className="font-semibold text-lg">Q{index + 1}: 🎧 Audio Question</h2>
                                 <button
                                     onClick={() => new Audio(q.audio).play()}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    className="px-3 py-1 bg-emerald-700 text-white rounded shadow hover:bg-emerald-600"
+
                                 >
                                     ▶️ Play
                                 </button>
@@ -444,7 +447,8 @@ useEffect(() => {
                             setCurrentIndex(0);
                             setTimeLeft(180);
                         }}
-                        className="px-6 py-3 bg-yellow-400 text-black rounded-full font-semibold shadow hover:bg-yellow-300 transition"
+                        className="px-6 py-3 bg-yellow-500 text-black rounded-full font-semibold shadow-lg hover:bg-yellow-400 transition"
+
                     >
                         🔁 Restart Exam
                     </button>
@@ -454,22 +458,25 @@ useEffect(() => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-600 to-purple-800 text-white relative p-4">
+        <div className="min-h-screen bg-gradient-to-br from-green-800 to-emerald-600 text-white font-[Noto_Naskh_Arabic] relative p-4">
+
             {/* Header */}
-            <h1 className="text-2xl font-bold text-center m-8 ">📝 প্রাকটিস পরীক্ষা </h1>
+            <h1 className="text-3xl font-extrabold text-center m-8 text-yellow-300 drop-shadow-lg">🕌 প্রাকটিস ইসলামিক কুইজ</h1>
+
             <div className="flex justify-between items-center mb-6 p-4 bg-white/10 rounded-xl shadow backdrop-blur-md">
                 <div>
-                    <p className="bg-green-400 text-black px-3 py-1 rounded-full mb-1 font-semibold">
+                <p className="bg-green-600 text-white px-3 py-1 rounded-full mb-1 font-semibold shadow">
                         ✅ Answered: {answered}
                     </p>
-                    <p className="bg-red-400 text-black px-3 py-1 rounded-full font-semibold">
+                    <p className="bg-red-600 text-white px-3 py-1 rounded-full font-semibold shadow">
                         ❌ Not Answered: {notAnswered}
                     </p>
                 </div>
 
                 <div className="text-right">
                     <p className="text-sm">Timer</p>
-                    <p className="text-xl font-mono bg-white text-black px-4 py-1 rounded shadow">
+                    <p className="text-xl font-mono bg-yellow-200 text-black px-4 py-1 rounded shadow-inner border border-yellow-400">
+
                         {formatTime(timeLeft)}
                     </p>
                     <button

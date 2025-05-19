@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Amiri&family=Hind+Siliguri&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
 
 @import "tailwindcss";
 
@@ -87,4 +87,56 @@ body {
 
 .nav-btn {
   @apply bg-white border border-blue-400 text-blue-700 font-medium px-4 py-2 rounded shadow hover:bg-blue-100 transition;
+}
+/* styles.css or global.css */
+.editor-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.editor-content {
+  min-height: 200px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  outline: none;
+}
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+}
+
+.resize-image {
+  position: relative;
+}
+
+.resize-image::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: gray;
+  right: 0;
+  bottom: 0;
+  cursor: nwse-resize;
+}
+
+
+.font-arabic {
+  font-family: 'Amiri', serif;
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
 }

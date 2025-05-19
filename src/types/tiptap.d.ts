@@ -1,0 +1,27 @@
+declare module '@tiptap/extension-table';
+declare module '@tiptap/extension-table-row';
+declare module '@tiptap/extension-table-cell';
+declare module '@tiptap/extension-table-header';
+declare module '@tiptap/extension-image';   
+declare module '@tiptap/starter-kit';
+declare module '@tiptap/react';
+declare module '@tiptap/extension-text-align';
+declare module '@tiptap/extension-underline';
+declare module '@tiptap/extension-highlight';
+declare module '@tiptap/extension-underline' 
+declare module '@tiptap/extension-link';
+declare module '@tiptap/extension-code-block-lowlight';
+declare module '@tiptap/extension-horizontal-rule';
+declare module '@tiptap/extension-blockquote';
+declare module '@tiptap/extension-bullet-list';
+declare module '@tiptap/extension-ordered-list';
+declare module '@tiptap/extension-list-item';
+declare module '@tiptap/extension-text-color';
+declare module '@tiptap/extension-text-style';
+declare module '@tiptap/extension-character-count';
+declare module '@tiptap/extension-color';
+declare module 'framer-motion';
+
+declare module  '@tiptap/extension-font-size';
+declare module 'tiptap-fontsize-extension';
+declare module 'tiptap-extension-resize-image';

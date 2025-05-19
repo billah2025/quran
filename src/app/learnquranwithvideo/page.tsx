@@ -5,10 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { videos } from '@/data/videos';
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
+
 
 export default function ListingPage() {
   // State for dark mode
   const [darkMode, setDarkMode] = useState(false);
+  const [navHeight, setNavHeight] = useState(0);
 
   // Apply or remove dark mode class on the body element
   useEffect(() => {
@@ -20,7 +24,12 @@ export default function ListingPage() {
   }, [darkMode]);
 
   return (
+
+    <div>
+            <Navbar setNavHeight={setNavHeight} />
+     < div   style={{ paddingTop: `${navHeight}px` }}>       
     <div
+
       className={`min-h-screen transition-colors duration-500 ${
         darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-[#fdfcf8] to-[#fefefe] text-gray-800'
       } p-6`}
@@ -77,6 +86,9 @@ export default function ListingPage() {
                 See Progress
             </button>
       </Link>
+    </div>
+    <Footer/>
+    </div>
     </div>
   );
 }
