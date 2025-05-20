@@ -44,7 +44,7 @@ interface PageProps {
 
 export async function generateMetadata(
   { params }: PageProps,
-  _parent?: ResolvingMetadata
+
 ): Promise<Metadata> {
   const snap = await getDoc(doc(db, "blogs", params.id));
   if (!snap.exists()) return {};
