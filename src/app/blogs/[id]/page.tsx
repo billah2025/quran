@@ -64,7 +64,7 @@ type PageProps = {
 };
 
 export default async function BlogDetail({ params }: PageProps) {
-  const { id } = params;
+
   const docRef = doc(db, "blogs", params.id);
   const snap = await getDoc(docRef);
   if (!snap.exists()) return <div className="p-6 text-red-600 font-semibold">Blog not found.</div>;
