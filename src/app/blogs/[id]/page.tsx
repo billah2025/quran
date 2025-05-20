@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+
 import {
   doc,
   getDoc,
@@ -39,9 +39,17 @@ interface BlogData {
   category?: string;
   keyword?: string;
 }
+import { type Metadata, type ResolvingMetadata } from "next";
+
+interface PageProps {
+  params: { id: string };
+}
 
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: PageProps,
+  _parent?: ResolvingMetadata
+): Promise<Metadata> {
   const snap = await getDoc(doc(db, "blogs", params.id));
   if (!snap.exists()) return {};
 
@@ -53,15 +61,11 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     openGraph: {
       title: blog.title,
       description: blog.subtitle,
-      images: [blog.coverImage],
+      images: blog.coverImage ? [blog.coverImage] : [],
     },
   };
 }
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
+
 
 export default async function BlogDetail({ params }: PageProps) {
   const { id } = params; // ✅ Correct
