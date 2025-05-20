@@ -22,7 +22,7 @@ import { FaRegEye } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import ShareButtons from "../../components/ShareButtons";
-import { type Metadata,  } from "next";
+import type { Metadata } from "next";
 
 interface BlogData {
   id: string;
@@ -42,14 +42,11 @@ interface PageProps {
   params: { id: string };
 }
 
-export async function generateMetadata(
-  { params }: PageProps,
-
-): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const snap = await getDoc(doc(db, "blogs", params.id));
   if (!snap.exists()) return {};
 
-  const blog = snap.data();
+  const blog = snap.data() as BlogData;
   return {
     title: blog.title,
     description: blog.subtitle,
@@ -215,10 +212,7 @@ export default async function BlogDetail({ params }: PageProps) {
                     {item.title}
                   </h4>
                   <p className="text-sm text-gray-700">
-                    ✍️{" "}
-                    <span className="font-medium">
-                      {item.writer || "Unknown"}
-                    </span>
+                    ✍️ <span className="font-medium">{item.writer || "Unknown"}</span>
                   </p>
                   <p className="text-sm text-gray-600">📅 {itemDate}</p>
                 </div>
