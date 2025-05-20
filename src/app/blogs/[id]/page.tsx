@@ -22,7 +22,7 @@ import { FaRegEye } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import ShareButtons from "../../components/ShareButtons";
-import { type Metadata, type ResolvingMetadata } from "next";
+import { type Metadata,  } from "next";
 
 interface BlogData {
   id: string;
