@@ -38,11 +38,12 @@ interface BlogData {
   keyword?: string;
 }
 
-interface PageProps {
+type Props = {
   params: { id: string };
-}
+};
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const snap = await getDoc(doc(db, "blogs", params.id));
   if (!snap.exists()) return {};
 
@@ -59,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function BlogDetail({ params }: PageProps) {
+export default async function BlogDetail({ params }: Props) {
   const { id } = params;
   const docRef = doc(db, "blogs", id);
   const snap = await getDoc(docRef);
