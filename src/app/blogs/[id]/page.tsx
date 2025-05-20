@@ -1,4 +1,4 @@
-
+import React from "react";
 import {
   doc,
   getDoc,
@@ -22,9 +22,7 @@ import { FaRegEye } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import ShareButtons from "../../components/ShareButtons";
-
-// ... All previous imports remain the same ...
-
+import { type Metadata, type ResolvingMetadata } from "next";
 
 interface BlogData {
   id: string;
@@ -39,12 +37,10 @@ interface BlogData {
   category?: string;
   keyword?: string;
 }
-import { type Metadata, type ResolvingMetadata } from "next";
 
 interface PageProps {
   params: { id: string };
 }
-
 
 export async function generateMetadata(
   { params }: PageProps,
@@ -66,31 +62,32 @@ export async function generateMetadata(
   };
 }
 
-
 export default async function BlogDetail({ params }: PageProps) {
-  const { id } = params; // ✅ Correct
+  const { id } = params;
   const docRef = doc(db, "blogs", id);
   const snap = await getDoc(docRef);
-  if (!snap.exists()) return <div className="p-6 text-red-600 font-semibold">Blog not found.</div>;
+
+  if (!snap.exists()) {
+    return (
+      <div className="p-6 text-red-600 font-semibold">
+        Blog not found.
+      </div>
+    );
+  }
 
   const blog = snap.data() as BlogData;
   await updateDoc(docRef, { views: increment(1) });
 
   const wordCount = blog.content?.split(/\s+/).length || 0;
-  const readTime = Math.ceil(wordCount / 200); // ~200 words per minute
+  const readTime = Math.ceil(wordCount / 200);
 
-  const createdAt =
-    blog.createdAt?.toDate?.() instanceof Date
-      ? blog.createdAt.toDate().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })
-      : blog.createdAt.toDate().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        });
+  const createdAt = blog.createdAt?.toDate
+    ? blog.createdAt.toDate().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : "Unknown date";
 
   const popularSnap = await getDocs(
     query(collection(db, "blogs"), orderBy("views", "desc"), limit(5))
@@ -113,7 +110,9 @@ export default async function BlogDetail({ params }: PageProps) {
 
         <div className="p-6 space-y-6">
           <BreadcrumbsBlog title={blog.title} />
-          <h1 className="text-4xl font-bold text-center text-[#1e293b]">{blog.title}</h1>
+          <h1 className="text-4xl font-bold text-center text-[#1e293b]">
+            {blog.title}
+          </h1>
           <hr className="border-t border-yellow-300 mb-4" />
           <p className="text-lg text-center text-gray-700">{blog.subtitle}</p>
 
@@ -128,7 +127,8 @@ export default async function BlogDetail({ params }: PageProps) {
               <GiFeather /> {blog.writer || "Unknown"}
             </span>
             <span className="flex items-center gap-1">
-              <AiOutlineTag /> {blog.keyword?.split(",").filter(Boolean).join(", ")}
+              <AiOutlineTag />{" "}
+              {blog.keyword?.split(",").filter(Boolean).join(", ")}
             </span>
             <span className="flex items-center gap-1">
               <FaRegEye /> {blog.views || 0} views
@@ -136,7 +136,10 @@ export default async function BlogDetail({ params }: PageProps) {
             <p className="text-sm text-gray-600">⏱️ {readTime} min read</p>
           </div>
 
-          <ShareButtons title={blog.title} url={`https://yourdomain.com/blogs/${id}`} />
+          <ShareButtons
+            title={blog.title}
+            url={`https://yourdomain.com/blogs/${id}`}
+          />
 
           <div
             className="prose max-w-none prose-lg prose-headings:text-[#1e293b] prose-a:text-blue-600 prose-img:rounded-xl prose-img:border prose-img:border-yellow-300 prose-img:shadow"
@@ -161,11 +164,16 @@ export default async function BlogDetail({ params }: PageProps) {
               </div>
             </div>
           )}
-          <Link href="/blogs" className="text-blue-600 hover:underline text-sm">
+          <Link
+            href="/blogs"
+            className="text-blue-600 hover:underline text-sm"
+          >
             ← Back to all blogs
           </Link>
 
-          <p className="text-center italic text-gray-500 pt-6">جزاك اللهُ خيرًا for reading 🙏</p>
+          <p className="text-center italic text-gray-500 pt-6">
+            جزاك اللهُ خيرًا for reading 🙏
+          </p>
 
           <CusdisComments
             id={id}
@@ -176,21 +184,18 @@ export default async function BlogDetail({ params }: PageProps) {
       </div>
 
       <div className="max-w-5xl mx-auto mt-10 bg-white p-6 shadow-md rounded-xl">
-        <h3 className="text-2xl font-bold mb-4 text-center border-b pb-2">📈 Popular Blogs</h3>
+        <h3 className="text-2xl font-bold mb-4 text-center border-b pb-2">
+          📈 Popular Blogs
+        </h3>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
           {popularBlogs.map((item) => {
-            const itemDate =
-              item.createdAt?.toDate?.() instanceof Date
-                ? item.createdAt.toDate().toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })
-                : item.createdAt.toDate().toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  });
+            const itemDate = item.createdAt?.toDate
+              ? item.createdAt.toDate().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })
+              : "Unknown";
 
             return (
               <Link
@@ -210,7 +215,10 @@ export default async function BlogDetail({ params }: PageProps) {
                     {item.title}
                   </h4>
                   <p className="text-sm text-gray-700">
-                    ✍️ <span className="font-medium">{item.writer || "Unknown"}</span>
+                    ✍️{" "}
+                    <span className="font-medium">
+                      {item.writer || "Unknown"}
+                    </span>
                   </p>
                   <p className="text-sm text-gray-600">📅 {itemDate}</p>
                 </div>
