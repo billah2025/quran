@@ -64,8 +64,8 @@ type PageProps = {
 };
 
 export default async function BlogDetail({ params }: PageProps) {
-
-  const docRef = doc(db, "blogs", params.id);
+  const { id } = params; // ✅ Correct
+  const docRef = doc(db, "blogs", id);
   const snap = await getDoc(docRef);
   if (!snap.exists()) return <div className="p-6 text-red-600 font-semibold">Blog not found.</div>;
 
@@ -132,7 +132,7 @@ export default async function BlogDetail({ params }: PageProps) {
             <p className="text-sm text-gray-600">⏱️ {readTime} min read</p>
           </div>
 
-          <ShareButtons title={blog.title} url={`https://yourdomain.com/blogs/${params.id}`} />
+          <ShareButtons title={blog.title} url={`https://yourdomain.com/blogs/${id}`} />
 
           <div
             className="prose max-w-none prose-lg prose-headings:text-[#1e293b] prose-a:text-blue-600 prose-img:rounded-xl prose-img:border prose-img:border-yellow-300 prose-img:shadow"
@@ -164,9 +164,9 @@ export default async function BlogDetail({ params }: PageProps) {
           <p className="text-center italic text-gray-500 pt-6">جزاك اللهُ خيرًا for reading 🙏</p>
 
           <CusdisComments
-            id={params.id}
+            id={id}
             title={blog.title}
-            url={`http://localhost:3000/blogs/${params.id}`}
+            url={`http://localhost:3000/blogs/${id}`}
           />
         </div>
       </div>
