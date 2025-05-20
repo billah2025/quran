@@ -57,8 +57,14 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     },
   };
 }
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
 
-export default async function BlogDetail({ params }: { params: { id: string } }) {
+export default async function BlogDetail({ params }: PageProps) {
+  const { id } = params;
   const docRef = doc(db, "blogs", params.id);
   const snap = await getDoc(docRef);
   if (!snap.exists()) return <div className="p-6 text-red-600 font-semibold">Blog not found.</div>;
