@@ -18,6 +18,15 @@ import Underline from '@tiptap/extension-underline';
 import Highlight from '@tiptap/extension-highlight';
 import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
+interface QAItem {
+  id: string;
+  question: string;
+  answer: string;
+  answeredBy: string;
+  category: string;
+  date: string;
+  createdAt?: string; // You can refine this if you know the exact type returned by `serverTimestamp()`
+}
 
 import type { Editor } from '@tiptap/core';
 
@@ -31,8 +40,9 @@ export default function QAFormWithList() {
 
   const [categories, setCategories] = useState<string[]>([]);
   const [answeredByList, setAnsweredByList] = useState<string[]>([]);
-  const [qnaList, setQnaList] = useState<any[]>([]);
-  const [filteredList, setFilteredList] = useState<any[]>([]);
+  const [qnaList, setQnaList] = useState<QAItem[]>([]);
+  const [filteredList, setFilteredList] = useState<QAItem[]>([]);
+  
   const [uploading, setUploading] = useState(false);
 
   const [showList, setShowList] = useState(true);
@@ -59,15 +69,23 @@ export default function QAFormWithList() {
 
   const loadQAs = async () => {
     const snapshot = await getDocs(collection(db, 'qa'));
-    const list: any[] = [];
+    const list: QAItem[] = [];
     const cats = new Set<string>();
     const authors = new Set<string>();
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      list.push({ id: doc.id, ...data });
-      if (data.category) cats.add(data.category);
-      if (data.answeredBy) authors.add(data.answeredBy);
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const item: QAItem = {
+        id: docSnap.id,
+        question: data.question || '',
+        answer: data.answer || '',
+        answeredBy: data.answeredBy || '',
+        category: data.category || '',
+        date: data.date || '',
+        createdAt: data.createdAt,
+      };
+      list.push(item);
     });
+    
     setQnaList(list);
     setFilteredList(list); // default: show all
     setCategories(Array.from(cats));
@@ -113,7 +131,7 @@ export default function QAFormWithList() {
     setUploading(false);
   };
 
-  const handleEdit = (item: any) => {
+  const handleEdit = (item: QAItem) => {
     setEditingId(item.id);
     setQuestion(item.question || '');
     setAnswer(item.answer || '');
@@ -123,7 +141,7 @@ export default function QAFormWithList() {
     editor?.commands.setContent(item.answer || '');
   };
 
-  const handleDelete = async (item: any) => {
+  const handleDelete = async (item: QAItem ) => {
     const confirmation = prompt(`Type the category name (${item.category}) to confirm deletion`);
     if (confirmation === item.category) {
       try {

@@ -33,7 +33,7 @@ export default function IslamicCalendar() {
         )
         setCalendar(res.data.data || [])
         setError(null)
-      } catch (err) {
+      } catch {
         setError('Failed to load calendar data.')
         setCalendar([])
       } finally {

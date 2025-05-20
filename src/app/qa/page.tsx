@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+
 import { db } from "@/utils/firebase";
 import {
   collection,
@@ -8,12 +8,13 @@ import {
   limit,
   startAfter,
   getDocs,
-  doc,
-  updateDoc,
-  increment,
+ 
 } from "firebase/firestore";
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect, useState, useCallback } from "react";
+
 import { useRouter } from "next/navigation"; // add at the top
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 const Button = ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
     className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 w-full sm:w-auto"
@@ -32,7 +33,7 @@ interface QA {
   answeredBy: string;
   date: string;
   category: string;
-  createdAt: any;
+  createdAt: string;
   views?: number;
 }
 
@@ -42,25 +43,25 @@ export default function QAListPage() {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [lastVisible, setLastVisible] = useState<any>(null);
+  const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState<{ [id: string]: boolean }>({});
+
   const [hasMore, setHasMore] = useState(true); // New state to track if more data is available
 
-  const fetchQAs = async (reset = false) => {
+  const fetchQAs = useCallback(async (reset = false) => {
     if (loading) return;
     setLoading(true);
-
-    let q = query(
+  
+    const q = query(
       collection(db, "qa"),
       orderBy("createdAt", "desc"),
       ...(lastVisible && !reset ? [startAfter(lastVisible)] : []),
       limit(50)
     );
-
+  
     const snapshot = await getDocs(q);
     const items: QA[] = snapshot.docs.map((doc) => {
-      const data = doc.data();
+      const data = doc.data() as QA;
       return {
         id: doc.id,
         question: data.question ?? "Missing question",
@@ -72,7 +73,7 @@ export default function QAListPage() {
         views: data.views ?? 0,
       };
     });
-
+  
     const filtered = items.filter((item) => {
       const matchCategory = selectedCategory ? item.category === selectedCategory : true;
       const matchSearch = searchQuery
@@ -80,17 +81,18 @@ export default function QAListPage() {
         : true;
       return matchCategory && matchSearch;
     });
-
+  
     if (filtered.length === 0) {
       toast("No more Q&A found for this category/search.", { icon: "⚠️" });
-      setHasMore(false); // Prevent further fetches
+      setHasMore(false);
     } else {
       setQAs(reset ? filtered : [...qas, ...filtered]);
       setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
     }
-
+  
     setLoading(false);
-  };
+  }, [lastVisible, loading, qas, searchQuery, selectedCategory]);
+  
 
   const fetchCategories = async () => {
     const snapshot = await getDocs(collection(db, "qa"));
@@ -105,7 +107,7 @@ export default function QAListPage() {
   useEffect(() => {
     setHasMore(true); // Reset "hasMore" when filters change
     fetchQAs(true);
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, fetchQAs]);
 
  
   
@@ -138,34 +140,7 @@ export default function QAListPage() {
   ❓ {qa.question}
 </div>
 
-            {expanded[qa.id] && (
-              <div className="mt-3 text-gray-700 border-t pt-3">
-                <div
-                  className="mb-2 space-y-2 leading-relaxed"
-                  
-                ></div>
-
-                <p className="text-sm text-green-600 italic">
-                  Answered by {qa.answeredBy} on{" "}
-                  {qa.date ? new Date(qa.date).toLocaleDateString() : "Unknown"}
-                </p>
-                <div className="mt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <button
-                    onClick={() => {
-                      const text = `Q: ${qa.question}\nA: ${qa.answer}`;
-                      navigator.clipboard.writeText(text);
-                      alert("Q&A copied! You can now share it.");
-                    }}
-                    className="text-sm px-3 py-1 mt-2 bg-green-100 text-green-800 rounded hover:bg-green-200 w-full sm:w-auto"
-                  >
-                    🔗 Share
-                  </button>
-                  <span className="text-xs text-green-500 mt-2 sm:mt-0 sm:ml-4">
-                    👁️ {qa.views} views
-                  </span>
-                </div>
-              </div>
-            )}
+            
           </div>
         ))}
 

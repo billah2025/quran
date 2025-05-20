@@ -7,7 +7,16 @@ import duration from 'dayjs/plugin/duration'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import 'dayjs/locale/en'
 import { getDate } from 'bangla-calendar'
-
+type PrayerTimesData = {
+  Fajr: string
+  Sunrise: string
+  Dhuhr: string
+  Asr: string
+  Maghrib: string
+  Isha: string
+  Sunset: string
+  [key: string]: string
+}
 dayjs.extend(duration)
 dayjs.extend(advancedFormat)
 
@@ -28,7 +37,8 @@ const CITIES = [
 
 export default function PrayerTimes() {
   const [city, setCity] = useState('Dhaka')
-  const [times, setTimes] = useState<any>(null)
+  const [times, setTimes] = useState<PrayerTimesData | null>(null)
+
   const [loading, setLoading] = useState(true)
   const [now, setNow] = useState(dayjs())
   const [hijri, setHijri] = useState('')
@@ -196,18 +206,6 @@ export default function PrayerTimes() {
         <span>🌇 সূর্যাস্ত</span>
         <span>{format12(times.Sunset)}</span>
       </div>
-      <div className="text-center text-sm py-4">
-  Created by{" "}
-  <a
-    href="https://your-profile-link.com" // change this to your actual profile or GitHub
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-blue-600 hover:underline"
-  >
-    Motasim Billah Siam
-  </a>
-</div>
-
     </div>
   )
 }

@@ -24,12 +24,12 @@ export default function NotFoundPage() {
             <p className="text-base text-gray-600 mb-6">
               আপনি যে পৃষ্ঠাটি খুঁজছেন তা বিদ্যমান নেই অথবা সরানো হয়েছে।
             </p>
-            <a
+            <link
               href="/"
               className="inline-block px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300"
             >
               হোমপেইজে ফিরে যান
-            </a>
+            </link>
           </div>
         </main>
         <Footer />

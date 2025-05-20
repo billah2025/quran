@@ -1,16 +1,9 @@
 "use client";
 
 import {
-  FaStarAndCrescent,
-  FaMosque,
+
   FaBookReader,
-  FaPrayingHands,
-  FaHandsHelping,
-  FaClock,
-  FaCalendarAlt,
-  FaKaaba,
-  FaQuran,
-  FaHeart,
+ 
   FaPlayCircle,
   FaChalkboardTeacher,
   FaLaptopMedical,

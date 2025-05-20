@@ -15,11 +15,14 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/admin"); // or "/main" if needed
-    } catch (err: any) {
-      setError("Login failed. Please check your credentials.");
+      router.push("/admin");
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Login failed. Please try again.";
+      setError(errorMessage);
     }
   };
+  
 
   return (
     <div className="p-6 max-w-md mx-auto">

@@ -7,7 +7,16 @@ import duration from 'dayjs/plugin/duration'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import 'dayjs/locale/en'
 import { getDate } from 'bangla-calendar'
-
+type PrayerTimesData = {
+  Fajr: string
+  Sunrise: string
+  Dhuhr: string
+  Asr: string
+  Maghrib: string
+  Isha: string
+  Sunset: string
+  [key: string]: string
+}
 dayjs.extend(duration)
 dayjs.extend(advancedFormat)
 
@@ -28,7 +37,8 @@ const CITIES = [
 
 export default function PrayerTimes() {
   const [city, setCity] = useState('Dhaka')
-  const [times, setTimes] = useState<any>(null)
+  const [times, setTimes] = useState<PrayerTimesData | null>(null)
+
   const [loading, setLoading] = useState(true)
   const [now, setNow] = useState(dayjs())
   const [hijri, setHijri] = useState('')

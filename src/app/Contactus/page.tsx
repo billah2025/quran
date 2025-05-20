@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-import { FaEnvelope, FaPhoneAlt, FaLocationArrow } from "react-icons/fa";
+
 
 export default function ContactPage() {
   const [navHeight, setNavHeight] = useState(0);

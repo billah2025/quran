@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import Head from "next/head";
 import Link from "next/link";
-import { formatDate } from "@/utils/formatDate";
+
 import { FaTwitter, FaFacebookF, FaWhatsapp } from "react-icons/fa";
 interface QA {
   id: string;
@@ -74,35 +74,12 @@ export default function QADetailPage() {
     });
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString;
-
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
+  
 
 
   // Truncate question to first 5 words
-  const truncateQuestion = (text: string, words = 5) => {
-    const splitted = text.split(/\s+/);
-    if (splitted.length <= words) return text;
-    return splitted.slice(0, words).join(" ") + "...";
-  };
 
   // Share to social media URLs
-  const shareUrls = {
-    facebook: (url: string) =>
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-    twitter: (url: string, text: string) =>
-      `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        url
-      )}&text=${encodeURIComponent(text)}`,
-  };
 
 
   function decorateBanglaAnswer(answer: string) {

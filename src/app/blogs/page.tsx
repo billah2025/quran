@@ -14,7 +14,7 @@ import {
 import { db } from "@/utils/firebase";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
-import ShareButtons from "../components/ShareButtons";
+import { Timestamp ,QueryConstraint} from "firebase/firestore";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
 
@@ -23,7 +23,8 @@ type Blog = {
   title: string;
   subtitle: string;
   coverImage: string;
-  createdAt: any; // Firestore Timestamp or Date
+  // Then update the Blog type:
+  createdAt: Timestamp | Date;
   views: number;
   writer: string;
   category: string;
@@ -41,8 +42,9 @@ export default function BlogListPage() {
   const observerRef = useRef<HTMLDivElement>(null);
   //nav height 
   const [navHeight, setNavHeight] = useState(0);
-  const formatDate = (timestamp: any) => {
-    const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+  // Update formatDate:
+  const formatDate = (timestamp: Timestamp | Date) => {
+    const date = timestamp instanceof Timestamp ? timestamp.toDate() : new Date(timestamp);
     return date.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' });
   };
 
@@ -55,7 +57,7 @@ export default function BlogListPage() {
 
     try {
       const blogRef = collection(db, "blogs");
-      let constraints: any[] = [];
+      const constraints: QueryConstraint[] = [];
 
       if (category !== "all") {
         constraints.push(where("category", "==", category));
@@ -150,121 +152,121 @@ export default function BlogListPage() {
 
   return (
     <div>
-  <Navbar setNavHeight={setNavHeight} />
-  <div style={{ paddingTop: `${navHeight}px` }} >
-    <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-100 py-10 px-4 md:px-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-        {/* Main Blog Listing */}
-        <div className="col-span-2 space-y-6">
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-3 mb-4">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                className={`px-4 py-1 rounded-full border ${selectedCategory === cat
-                    ? "bg-green-600 text-white"
-                    : "bg-white text-green-700 hover:bg-green-100"
-                  } text-sm font-medium transition`}
-                onClick={() => setSelectedCategory(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {blogs.map((blog) => (
-            <div
-              key={blog.id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
-            >
-              <Link href={`/blogs/${blog.id}`}>
-
-                <div className="flex flex-col md:flex-row">
-                  <img
-                    src={blog.coverImage}
-                    alt={blog.title}
-                    className="w-full md:w-1/3 h-52 object-cover"
-                  />
-                  <div className="p-5 flex-1">
-                    <h2 className="text-2xl font-bold text-green-800">{blog.title}</h2>
-                    <p className="text-gray-600 mt-2">{blog.subtitle}</p>
-                    <p className="text-sm text-gray-500 mt-1">👤 Written by {blog.writer}</p>
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {blog.keyword?.split(",").map((tag) =>
-                        tag.trim() ? (
-                          <span
-                            key={tag}
-                            className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full"
-                          >
-                            #{tag.trim()}
-                          </span>
-                        ) : null
-                      )}
-                    </div>
-                    <div className="text-sm text-gray-500 mt-2">📅 {formatDate(blog.createdAt)}</div>
-
-                  </div>
-                  
-                </div>
-
-              </Link>
-           
-            </div>
-          ))}
-
-          <div ref={observerRef} className="h-10 flex justify-center items-center">
-            {loading && <span className="text-gray-500">Loading more...</span>}
-          </div>
-        </div>
-
-        {/* Sidebar: Popular + Categories */}
-        <div className="bg-white rounded-2xl shadow-md p-6 space-y-6">
-          <div>
-            <h3 className="text-xl font-semibold text-green-700 border-b pb-2">📚 Popular Blogs</h3>
-            {popularBlogs.map((blog) => (
-              <Link key={blog.id} href={`/blogs/${blog.id}`}>
-
-                <div className="flex items-start space-x-3 mt-3">
-                  <img
-                    src={blog.coverImage}
-                    alt={blog.title}
-                    className="w-16 h-16 object-cover rounded-md"
-                  />
-                  <div>
-                    <h4 className="font-medium text-green-800 text-sm line-clamp-2">{blog.title}</h4>
-                    <p className="text-xs text-gray-500">{formatDate(blog.createdAt)}</p>
-                    <p className="text-xs text-gray-500">{blog.views} views</p>
-                  </div>
-                </div>
-
-              </Link>
-
-            ))}
-          </div>
-
-          {/* Sidebar Categories */}
-          <div>
-            <h3 className="text-xl font-semibold text-green-700 border-b pb-2">📂 Categories</h3>
-            <div className="flex flex-wrap gap-2 mt-3">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  className={`text-sm px-3 py-1 rounded-full ${selectedCategory === cat
+      <Navbar setNavHeight={setNavHeight} />
+      <div style={{ paddingTop: `${navHeight}px` }} >
+        <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-100 py-10 px-4 md:px-10">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            {/* Main Blog Listing */}
+            <div className="col-span-2 space-y-6">
+              {/* Category Filter */}
+              <div className="flex flex-wrap gap-3 mb-4">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    className={`px-4 py-1 rounded-full border ${selectedCategory === cat
                       ? "bg-green-600 text-white"
-                      : "bg-gray-100 text-green-800"
-                    }`}
-                  onClick={() => setSelectedCategory(cat)}
+                      : "bg-white text-green-700 hover:bg-green-100"
+                      } text-sm font-medium transition`}
+                    onClick={() => setSelectedCategory(cat)}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              {blogs.map((blog) => (
+                <div
+                  key={blog.id}
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
                 >
-                  {cat}
-                </button>
+                  <Link href={`/blogs/${blog.id}`}>
+
+                    <div className="flex flex-col md:flex-row">
+                      <img
+                        src={blog.coverImage}
+                        alt={blog.title}
+                        className="w-full md:w-1/3 h-52 object-cover"
+                      />
+                      <div className="p-5 flex-1">
+                        <h2 className="text-2xl font-bold text-green-800">{blog.title}</h2>
+                        <p className="text-gray-600 mt-2">{blog.subtitle}</p>
+                        <p className="text-sm text-gray-500 mt-1">👤 Written by {blog.writer}</p>
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {blog.keyword?.split(",").map((tag) =>
+                            tag.trim() ? (
+                              <span
+                                key={tag}
+                                className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full"
+                              >
+                                #{tag.trim()}
+                              </span>
+                            ) : null
+                          )}
+                        </div>
+                        <div className="text-sm text-gray-500 mt-2">📅 {formatDate(blog.createdAt)}</div>
+
+                      </div>
+
+                    </div>
+
+                  </Link>
+
+                </div>
               ))}
+
+              <div ref={observerRef} className="h-10 flex justify-center items-center">
+                {loading && <span className="text-gray-500">Loading more...</span>}
+              </div>
+            </div>
+
+            {/* Sidebar: Popular + Categories */}
+            <div className="bg-white rounded-2xl shadow-md p-6 space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold text-green-700 border-b pb-2">📚 Popular Blogs</h3>
+                {popularBlogs.map((blog) => (
+                  <Link key={blog.id} href={`/blogs/${blog.id}`}>
+
+                    <div className="flex items-start space-x-3 mt-3">
+                      <img
+                        src={blog.coverImage}
+                        alt={blog.title}
+                        className="w-16 h-16 object-cover rounded-md"
+                      />
+                      <div>
+                        <h4 className="font-medium text-green-800 text-sm line-clamp-2">{blog.title}</h4>
+                        <p className="text-xs text-gray-500">{formatDate(blog.createdAt)}</p>
+                        <p className="text-xs text-gray-500">{blog.views} views</p>
+                      </div>
+                    </div>
+
+                  </Link>
+
+                ))}
+              </div>
+
+              {/* Sidebar Categories */}
+              <div>
+                <h3 className="text-xl font-semibold text-green-700 border-b pb-2">📂 Categories</h3>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      className={`text-sm px-3 py-1 rounded-full ${selectedCategory === cat
+                        ? "bg-green-600 text-white"
+                        : "bg-gray-100 text-green-800"
+                        }`}
+                      onClick={() => setSelectedCategory(cat)}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
-    </div>
-    <Footer/>
-    </div>
     </div>
   );
 }

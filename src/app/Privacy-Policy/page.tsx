@@ -1,7 +1,7 @@
 
 // app/privacy/page.tsx
 "use client";
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import { FaMoon } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
