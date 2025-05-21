@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -83,7 +82,7 @@
     "@types/estree": "^1.0.7",
     "@types/hast": "^3.0.4",
     "@types/json-schema": "^7.0.15",
-    "@types/node": "^20.17.46",
+    "@types/node": "^20.17.49",
     "@types/nodemailer": "^6.4.17",
     "@types/quill": "^2.0.14",
     "@types/react": "^19.1.4",
@@ -91,7 +90,6 @@
     "@types/recharts": "^1.8.29",
     "@types/trusted-types": "^2.0.7",
     "@types/unist": "^3.0.3",
-    "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "tailwindcss": "^4",
     "typescript": "^5.8.3"

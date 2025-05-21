@@ -72,19 +72,7 @@ export default function Home() {
         <ServiceSection />
       </div>
 
-      <div className="mt-10 flex justify-center px-4 md:px-0">
-        <iframe
-          src="http://localhost:3000/widget/prayertimes?city=Dhaka"
-          width="400"
-          height="600"
-          sandbox="allow-same-origin allow-scripts"
-          style={{
-            border: '0',
-            borderRadius: '16px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          }}
-        ></iframe>
-      </div>
+      
 
       <div className="mt-10">
         <Footer />
