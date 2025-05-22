@@ -38,6 +38,7 @@ export default function Home() {
   >
     <Head>
     <meta name="google-site-verification" content="lFkDv6j0V1H6bRU71y70Znt1KWG6Ci1hCnaDeKDjmZk" />
+    
     </Head>
     <SEO
         title="আল কুরআনের বাংলা ও আরবি শিক্ষা | muslims hub "
