@@ -10,6 +10,7 @@ import {
   getDocs,
  
 } from "firebase/firestore";
+import SEO from "@/app/components/seo";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useState, useCallback } from "react";
 
@@ -116,6 +117,23 @@ export default function QAListPage() {
 
   return (
     <div className="flex flex-col lg:flex-row p-4 sm:p-6 bg-green-50 min-h-screen">
+       <SEO
+        title="Islamic Q&A - Ask & Learn about Islam | MuslimsHub"
+        description="Browse and search through hundreds of Islamic questions and answers about faith, worship, Quran, Hadith, and more."
+        keywords={[
+          "Islamic questions",
+          "Islam Q&A",
+          "Islamic knowledge",
+          "Muslim questions",
+          "Quran questions",
+          "Hadith",
+          "Islamic answers",
+          "Islamic education"
+        ]}
+        url="https://muslimshub.vercel.app/qa"
+        image="https://muslimshub.vercel.app/cover.jpg"
+        type="website"
+      />
       <Toaster position="top-center" reverseOrder={false} />
       {/* Left - Q&A List */}
       <div className="lg:w-3/4 lg:pr-6">

@@ -9,6 +9,7 @@ import ServiceSection from "@/app/components/ServiceSection";
 import Footer from "@/app/components/Footer";
 import Calendar from "@/app/components/Calendar";
 import { Amiri } from 'next/font/google';
+import SEO from "@/app/components/seo";
 
 const amiri = Amiri({ subsets: ['arabic'], weight: '400' });
 
@@ -27,6 +28,7 @@ export default function Home() {
   };
 
   return (
+    
     <div
     className={`
       ${amiri.className}
@@ -34,6 +36,39 @@ export default function Home() {
       min-h-screen transition-colors duration-300
     `}
   >
+    <SEO
+        title="আল কুরআনের বাংলা ও আরবি শিক্ষা | কুরআন বাই সিয়াম"
+        description="বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।"
+        url="https://muslimshub.vercel.app"
+        image="/cover.jpg"
+        type="website"
+        keywords={[
+          "কুরআন শিক্ষা",
+          "কুরআন অডিও",
+          "ইসলামিক প্রশ্ন",
+          "বাংলা কুরআন",
+          "রুকিয়াহ",
+          "ইসলামিক বই",
+          "ইসলামিক নাশিদ",
+        ]}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "কুরআন বাই সিয়াম",
+          "url": "https://muslimshub.vercel.app",
+          "inLanguage": "bn",
+          "description":
+            "বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Quran by Siam",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://muslimshub.vercel.app/logo.png",
+            },
+          },
+        }}
+      />
   
       {/* Global Dark Mode Toggle */}
       <div className="fixed top-4 right-4 z-50">

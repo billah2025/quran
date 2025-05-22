@@ -3,12 +3,27 @@ import { FaMoon } from "react-icons/fa";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import SEO from "@/app/components/seo";
 export default function CopyrightPage() {
   const [navHeight, setNavHeight] = useState(0);
 
   return (
     <div>
+      <SEO
+  title="Copyright Notice - MuslimsHub"
+  description="Read the copyright policy of MuslimsHub. Educational sharing is allowed with attribution. Contact us for concerns."
+  url="https://muslimshub.vercel.app/copyright"
+  image="/copyright-cover.jpg" // Make sure this file exists in your /public folder
+  keywords={[
+    "Copyright",
+    "MuslimsHub policy",
+    "ইসলামিক কনটেন্ট কপিরাইট",
+    "Islamic copyright notice",
+    "MuslimsHub terms",
+    "Educational Islamic sharing"
+  ]}
+/>
+
       <Navbar setNavHeight={setNavHeight} />
       <div style={{ paddingTop: `${navHeight}px` }}>
         <main className="min-h-screen bg-gradient-to-b from-green-100 to-white text-gray-800 px-4 py-10">

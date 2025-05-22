@@ -5,7 +5,7 @@ export interface Book {
     pdf: string;
     category: string;
     writer: string;
-    title?: string;
+    title: string;
     year?: string; // Added the 'year' property
     page?: string; // Added the 'page' property
 }

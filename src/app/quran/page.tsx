@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-
+import SEO from '../components/seo'
 type Surah = {
   number: number
   name: string
@@ -53,6 +53,19 @@ export default function QuranPage() {
 
   return (
     <div className="min-h-screen bg-green-50 p-6">
+         <SEO
+        title="কুরআন সূরা তালিকা | Quranbysiam"
+        description="বাংলা ভাষায় কুরআনের সূরাগুলোর তালিকা এবং বর্ণনা। সূরা অনুসন্ধান, পড়া এবং শেখার জন্য এই পৃষ্ঠাটি ব্যবহার করুন।"
+        url="https://muslimshub.vercel.app/quran"
+        keywords={[
+          "কুরআন সূরা", 
+          "কুরআন বাংলা", 
+          "ইসলামিক শিক্ষা", 
+          "সূরা তালিকা", 
+          "কুরআন পড়া", 
+          "বাংলা ইসলামিক ওয়েবসাইট"
+        ]}
+      />
       <h1 className="text-3xl font-bold text-center mb-6 text-green-800">
         📖 List of Quran Surahs
       </h1>

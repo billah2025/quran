@@ -3,12 +3,27 @@ import { FaMoon } from "react-icons/fa";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
+import SEO from "@/app/components/seo";
 
 export default function AboutPage() {
   const [navHeight, setNavHeight] = useState(0);
 
   return (
     <div>
+      <SEO
+        title="আমাদের সম্পর্কে - MuslimsHub"
+        description="MuslimsHub একটি ইসলামিক প্ল্যাটফর্ম যা পবিত্র কোরআন, হাদীস, ইসলামিক প্রশ্নোত্তর এবং ব্লগের মাধ্যমে বিশুদ্ধ ইসলামি জ্ঞান ছড়িয়ে দেয়।"
+        url="https://muslimshub.vercel.app/about"
+        image="/about-cover.jpg"
+        keywords={[
+          "আমাদের সম্পর্কে",
+          "ইসলামিক জ্ঞান",
+          "কোরআন ও হাদীস",
+          "ইসলামিক প্ল্যাটফর্ম",
+          "MuslimsHub",
+          "বাংলা ইসলামিক সাইট"
+        ]}
+      />
       <Navbar setNavHeight={setNavHeight} />
       <div style={{ paddingTop: `${navHeight}px` }}>
         <main className="min-h-screen bg-gradient-to-b from-green-100 to-white text-gray-800 px-4 py-10">

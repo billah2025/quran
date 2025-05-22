@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import SideDrawer from "@/app/components/SideDrawer";
 import { notFound, useParams } from "next/navigation";
 import { useCallback } from "react"; // Import useCallback
+import SEO from "@/app/components/seo"; // adjust the path as needed
 
 interface Ayah {
   number: number;
@@ -183,6 +184,27 @@ useEffect(() => {
     <div
       className={`min-h-screen p-4 md:p-8 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-800"}`}
     >
+<SEO
+  title={`Surah ${surahInfo.englishName} (${surahInfo.name}) | Quran by Siam`}
+  description={`${surahInfo.englishNameTranslation} - Bangla translation and Arabic audio for Surah ${surahInfo.name}.`}
+  url={`https://muslimshub.vercel.app/surah/${surahInfo.number}`}
+  image="/cover.jpg"
+  type="article"
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": `Surah ${surahInfo.englishName} (${surahInfo.name})`,
+    "inLanguage": "bn",
+    "description": `${surahInfo.englishNameTranslation} - Bangla translation and audio.`,
+    "url": `https://muslimshub.vercel.app/surah/${surahInfo.number}`,
+    "author": {
+      "@type": "Organization",
+      "name": "Quran by Siam"
+    }
+  }}
+/>
+
+
       <SideDrawer
         arabicFontSize={arabicFontSize}
         banglaFontSize={banglaFontSize}

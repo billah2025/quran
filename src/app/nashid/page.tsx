@@ -5,7 +5,7 @@ import Image from "next/image";
 import { playlistData } from "@/data/playlist"; // adjust the path as needed
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import SEO from "@/app/components/seo";
 export default function CustomAudioPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -124,9 +124,40 @@ export default function CustomAudioPlayer() {
       setIsPlaying(true);
     }
   };
+//seo 
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "MusicRecording",
+  "name": playlist[currentTrackIndex].title,
+  "byArtist": {
+    "@type": "MusicGroup",
+    "name": playlist[currentTrackIndex].artist || "Unknown Artist"
+  },
+  "url": `https://muslimshub.vercel.app/nashid/${encodeURIComponent(playlist[currentTrackIndex].title.toLowerCase().replace(/\s+/g, '-'))}`,
+  "image": "/default-nashid-cover.jpg",
+  "duration": "PT3M45S", // You can add real duration if you have it
+};
 
   return (
     <div>
+      <SEO
+  title={`${playlist[currentTrackIndex].title} - Muslimshub Nashid`}
+  description={playlist[currentTrackIndex].src || `Listen to the Nashid titled "${playlist[currentTrackIndex].title}".`}
+  url={`https://muslimshub.vercel.app/nashid/${encodeURIComponent(playlist[currentTrackIndex].title.toLowerCase().replace(/\s+/g, '-'))}`}
+  image={ "/default-nashid-cover.jpg"}
+  type="music.song"
+  keywords={[
+    "Nashid",
+    "Islamic music",
+    "Bangla Nashid",
+    playlist[currentTrackIndex].category,
+    playlist[currentTrackIndex].title,
+  ]}
+  structuredData={structuredData}
+
+/>
+
       <Navbar setNavHeight={setNavHeight} />
       <div className="min-h-screen bg-gray-900 text-white p-6">
 

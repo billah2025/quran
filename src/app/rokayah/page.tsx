@@ -5,6 +5,7 @@ import Image from "next/image";
 import { playlistData } from "@/data/rukayah"; // adjust the path as needed
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
+import SEO from "@/app/components/seo";
 
 export default function CustomAudioPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -125,8 +126,32 @@ export default function CustomAudioPlayer() {
     }
   };
 
+   // Derive SEO title and description from current track
+   const currentTrack = playlist[currentTrackIndex];
+   const seoTitle = `${currentTrack.title} - Ruqyah Audio Player | MuslimsHub`;
+   const seoDescription = `Listen to "${currentTrack.title}" from the Ruqyah playlist. Stream and download Islamic ruqyah audio tracks for healing and peace.`;
+   const seoKeywords = [
+     "Ruqyah",
+     "Islamic audio",
+     "Muslim healing audio",
+     "Ruqyah audio player",
+     "Islamic playlist",
+     currentTrack.title,
+     currentTrack.category,
+   ];
+
   return (
+    
     <div>
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
+        url={`https://muslimshub.vercel.app/ruqyah?track=${encodeURIComponent(currentTrack.title)}`}
+        image="/album-cover.jpg"
+        type="website"
+      />
+
       <Navbar setNavHeight={setNavHeight} />
       <div className="min-h-screen bg-gray-900 text-white p-6">
 

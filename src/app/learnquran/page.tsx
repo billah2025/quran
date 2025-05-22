@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import SEO from "@/app/components/seo";
 const LearnQuranPage: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
@@ -11,6 +12,24 @@ const LearnQuranPage: React.FC = () => {
 
   return (
     <div>
+      <SEO
+  title="Learn Quran Online - MuslimsHub"
+  description="Start learning Quran with step-by-step lessons including Arabic alphabets, Harakat, Madd, Tajweed, practice quizzes, and more."
+  url="https://muslimshub.vercel.app/learnquran"
+  image="/learn-quran-banner.jpg" // Make sure this image exists in your /public folder
+  keywords={[
+    "Learn Quran",
+    "Quran lessons",
+    "আরবি শেখা",
+    "তাজবীদ শেখা",
+    "Quran Practice",
+    "MuslimsHub Quran course",
+    "Online Islamic education",
+    "Learn Arabic letters",
+    "Islamic learning for kids"
+  ]}
+/>
+
          <Navbar
           setNavHeight={setNavHeight}
           className={`tracking-wide ${darkMode

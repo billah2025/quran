@@ -3,12 +3,27 @@ import { FaMoon } from "react-icons/fa";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import SEO from "@/app/components/seo";
 export default function DisclaimerPage() {
   const [navHeight, setNavHeight] = useState(0);
 
   return (
     <div>
+      <SEO
+  title="Disclaimer - MuslimsHub"
+  description="Read the disclaimer of MuslimsHub. Content is for Islamic education and guidance. Always verify with qualified scholars."
+  url="https://muslimshub.vercel.app/disclaimer"
+  image="/disclaimer-cover.jpg" // Ensure this image is in your /public folder
+  keywords={[
+    "Disclaimer",
+    "MuslimsHub disclaimer",
+    "ইসলামিক ওয়েবসাইট ডিসক্লেইমার",
+    "Islamic knowledge site terms",
+    "Verify Islamic content",
+    "Religious disclaimer"
+  ]}
+/>
+
       <Navbar setNavHeight={setNavHeight} />
       <div style={{ paddingTop: `${navHeight}px` }}>
         <main className="min-h-screen bg-gradient-to-b from-green-100 to-white text-gray-800 px-4 py-10">

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { videos } from '@/data/videos';
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import SEO from "@/app/components/seo";
 
 export default function ListingPage() {
   // State for dark mode
@@ -26,6 +26,24 @@ export default function ListingPage() {
   return (
 
     <div>
+      
+      <SEO
+        title="কুরআন শেখার ভিডিওসমূহ | MuslimsHub"
+        description="আপনি সহজে ও সুন্দরভাবে কুরআন শেখার ভিডিও গুলো দেখতে পারেন MuslimsHub থেকে। বিভিন্ন বিষয়ভিত্তিক কোর্স ও শিক্ষা ভিডিওস।"
+        url="https://muslimshub.vercel.app/listing"
+        image="https://muslimshub.vercel.app/thumbnail-listing.jpg"
+        keywords={[
+          "কুরআন শেখা",
+          "কুরআন ভিডিও",
+          "Islamic videos",
+          "Quran learning",
+          "MuslimsHub",
+          "কুরআন কোর্স",
+          "আরবি শেখা",
+          "Islamic education",
+          "বাংলা কুরআন শেখা",
+        ]}
+      />
             <Navbar setNavHeight={setNavHeight} />
      < div   style={{ paddingTop: `${navHeight}px` }}>       
     <div

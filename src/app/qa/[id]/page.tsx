@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { db } from "@/utils/firebase";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import AskQuestionForm from "../../components/AskQuestionForm";
+import SEO from "@/app/components/seo";
 import {
   doc,
   getDoc,
@@ -74,7 +75,7 @@ export default function QADetailPage() {
     });
   };
 
-  
+
 
 
   // Truncate question to first 5 words
@@ -253,7 +254,39 @@ export default function QADetailPage() {
         </script>
 
       </Head>
-
+      <SEO
+        title={`${qa.question} - Islamic Q&A | MuslimsHub`}
+        description={qa.answer.slice(0, 160)} // first 160 chars of answer
+        keywords={[
+          "Islamic questions",
+          "Islam Q&A",
+          "Muslim knowledge",
+          qa.category,
+          ...qa.question.split(" ").slice(0, 10), // some keywords from question
+        ]}
+        url={`https://muslimshub.vercel.app/qa/${qa.id}`}
+        image="https://muslimshub.vercel.app/cover.jpg"
+        type="article"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "QAPage",
+          mainEntity: {
+            "@type": "Question",
+            name: qa.question,
+            text: qa.question,
+            answerCount: 1,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: qa.answer,
+              dateCreated: qa.date,
+              author: {
+                "@type": "Person",
+                name: qa.answeredBy,
+              },
+            },
+          },
+        }}
+      />
       <div className="flex flex-col lg:flex-row p-4 sm:p-6 bg-green-50 min-h-screen">
         {/* Left Content */}
         <div className="lg:w-3/4 lg:pr-6">
@@ -261,14 +294,14 @@ export default function QADetailPage() {
             ❓ {qa.question}
           </h1>
           {qa && (
-  <Breadcrumbs
-    title={qa.question}
-    pathSegments={[
-      { name: "প্রশ্নোত্তর", href: "/qa" },
-      { name: qa.category, href: `/qa?category=${qa.category}` },
-    ]}
-  />
-)}
+            <Breadcrumbs
+              title={qa.question}
+              pathSegments={[
+                { name: "প্রশ্নোত্তর", href: "/qa" },
+                { name: qa.category, href: `/qa?category=${qa.category}` },
+              ]}
+            />
+          )}
 
 
           <div className="text-sm text-gray-600 mb-4 flex flex-wrap items-center gap-3">

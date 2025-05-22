@@ -17,7 +17,7 @@ import { useEffect, useState, useRef } from "react";
 import { Timestamp ,QueryConstraint} from "firebase/firestore";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import SEO from "../components/seo";
 type Blog = {
   id: string;
   title: string;
@@ -152,6 +152,22 @@ export default function BlogListPage() {
 
   return (
     <div>
+      <SEO
+  title="ইসলামিক ব্লগ - সর্বশেষ ইসলামি তথ্য ও আলোচনা"
+  description="বাংলা ইসলামিক ব্লগ পড়ুন যেখানে ধর্ম, জীবনযাপন, ইসলামিক শিক্ষা, ও ইসলামি প্রাসঙ্গিক বিষয় নিয়ে আলোচনা করা হয়। আপনার পছন্দের ক্যাটাগরিতে ব্লগ ফিল্টার করুন।"
+  url="https://muslimshub.vercel.app/blogs"
+  image="/blog-cover.jpg" // Replace with an actual cover image relevant to blogs
+  keywords={[
+    "ইসলামিক ব্লগ",
+    "ইসলামিক তথ্য",
+    "ধর্মীয় আলোচনা",
+    "ইসলামিক শিক্ষা",
+    "বাংলা ইসলামিক ব্লগ",
+    "ইসলামিক জীবনযাপন",
+    "ব্লগ ক্যাটাগরি"
+  ]}
+/>
+
       <Navbar setNavHeight={setNavHeight} />
       <div style={{ paddingTop: `${navHeight}px` }} >
         <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-100 py-10 px-4 md:px-10">

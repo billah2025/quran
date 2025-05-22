@@ -2,7 +2,7 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { videos } from '@/data/videos';
-
+import SEO from "@/app/components/seo";
 // Define the type for the progress state
 interface Progress {
   timeSpent: number;
@@ -58,7 +58,13 @@ export default function VideoPage() {
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-white to-blue-50'} p-6 space-y-6`}>
-      {/* Dark Mode Toggle Button */}
+     
+     <SEO
+        title={`${video.title} | MuslimsHub`}
+        description={video.description}
+        image={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
+        type="video.other"
+      /> {/* Dark Mode Toggle Button */}
       <button
         onClick={() => setIsDarkMode(!isDarkMode)}
         className="fixed top-4 right-4 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition"

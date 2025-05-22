@@ -3,13 +3,28 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import SEO from "@/app/components/seo";
 
 export default function ContactPage() {
   const [navHeight, setNavHeight] = useState(0);
 
   return (
     <div>
+      <SEO
+  title="যোগাযোগ করুন - MuslimsHub"
+  description="MuslimsHub-এর সাথে যোগাযোগ করুন যেকোনো প্রশ্ন, পরামর্শ বা সহায়তার জন্য। আমরা আন্তরিকভাবে আপনার বার্তা গ্রহণ করি।"
+  url="https://muslimshub.vercel.app/contact"
+  image="/contact-cover.jpg" // Make sure this exists in your /public folder
+  keywords={[
+    "যোগাযোগ",
+    "ইসলামিক যোগাযোগ ফর্ম",
+    "MuslimsHub",
+    "ইসলামিক প্রশ্ন",
+    "বাংলা ইসলামিক ওয়েবসাইট",
+    "contact MuslimsHub"
+  ]}
+/>
+
       <Navbar setNavHeight={setNavHeight} />
       <div style={{ paddingTop: `${navHeight}px` }}>
         <main className="min-h-screen bg-gradient-to-br from-green-100 via-white to-green-50 text-gray-800 px-4 py-10">
