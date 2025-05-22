@@ -10,7 +10,7 @@ import Footer from "@/app/components/Footer";
 import Calendar from "@/app/components/Calendar";
 import { Amiri } from 'next/font/google';
 import SEO from "@/app/components/seo";
-
+import Head from "next/head";
 const amiri = Amiri({ subsets: ['arabic'], weight: '400' });
 
 export default function Home() {
@@ -36,6 +36,9 @@ export default function Home() {
       min-h-screen transition-colors duration-300
     `}
   >
+    <Head>
+    <meta name="google-site-verification" content="lFkDv6j0V1H6bRU71y70Znt1KWG6Ci1hCnaDeKDjmZk" />
+    </Head>
     <SEO
         title="আল কুরআনের বাংলা ও আরবি শিক্ষা | muslims hub "
         description="বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।"
