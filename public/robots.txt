@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://muslimshub.vercel.app
+
+# Sitemaps
+Sitemap: https://muslimshub.vercel.app/sitemap.xml

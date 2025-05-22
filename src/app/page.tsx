@@ -37,7 +37,7 @@ export default function Home() {
     `}
   >
     <SEO
-        title="আল কুরআনের বাংলা ও আরবি শিক্ষা | কুরআন বাই সিয়াম"
+        title="আল কুরআনের বাংলা ও আরবি শিক্ষা | muslims hub "
         description="বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।"
         url="https://muslimshub.vercel.app"
         image="/cover.jpg"
@@ -54,7 +54,7 @@ export default function Home() {
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "কুরআন বাই সিয়াম",
+          "name": "muslimshub",
           "url": "https://muslimshub.vercel.app",
           "inLanguage": "bn",
           "description":
