@@ -41,10 +41,10 @@ export default function Home() {
     
     </Head>
     <SEO
-        title="আল কুরআনের বাংলা ও আরবি শিক্ষা | muslims hub "
+        title="আল কুরআনের বাংলা ও আরবি শিক্ষা| | muslims hub "
         description="বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।"
         url="https://muslimshub.vercel.app"
-        image="/cover.jpg"
+        image="/favicon.ico"
         type="website"
         keywords={[
           "কুরআন শিক্ষা",
@@ -65,10 +65,10 @@ export default function Home() {
             "বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।",
           "publisher": {
             "@type": "Organization",
-            "name": "Quran by Siam",
+            "name": "muslimshub",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://muslimshub.vercel.app/logo.png",
+              "url": "https://muslimshub.vercel.app/favicon.ico",
             },
           },
         }}

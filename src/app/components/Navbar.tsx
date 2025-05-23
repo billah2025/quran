@@ -52,20 +52,47 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
 
   const navItems = [
     { label: "Home", link: "/" },
-    { label: "Learn Quran", link: "/learnquran/" },
+    {
+      label: "Learn Quran",
+      submenu: [
+        { label: "With text course", link: "/learnquran/" },
+        { label: "With video course", link: "/learnquranwithvideo/" },
+      ],
+    },
+
+
+    
+
     { label: "Read Quran", link: "/quran" },
-    { label: "Contact Us", link: "/Contactus" },
+   
+    { label: "Blog", link: "/blogs" },
+    
+    {
+      label: "Features",
+      submenu: [
+
+
+        { label: "Nashid", link: "/nashid" },
+        { label: "Rukaya", link: "/rokayah" },
+        { label: "Islamic Q&A", link: "/qa" },
+        { label: "Large Online Library", link: "/library" },
+      ],
+    },
+
     {
       label: "Resources",
       submenu: [
-        { label: "Blog", link: "/blogs" },
+        { label: "Contact Us", link: "/Contactus" },
         { label: "About Us", link: "/about-us" },
+
         { label: "privacy", link: "/Privacy-Policy" },
+        { label: "Copy Right", link: "/copyright" },
+        { label: "Disclaimer", link: "/disclaimer" },
+
       ],
     },
-    { label: "Copy Right", link: "/copyright" }, 
-    { label: "Disclaimer", link: "/disclaimer" },
-    
+
+
     //Contactus ,copyright,disclaimer
   ];
 
@@ -75,7 +102,7 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
       className={`fixed top-0 left-0 w-full bg-gradient-to-r from-emerald-900 to-emerald-700 text-white shadow-lg transition-transform duration-500 z-50 ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"} ${className}`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <div className="text-2xl font-bold tracking-wide font-serif text-yellow-300">📖 Al-Quran</div>
+        <div className="text-2xl font-bold tracking-wide font-serif text-yellow-300">Muslims Hub</div>
 
         {/* Nav Menu */}
         <nav

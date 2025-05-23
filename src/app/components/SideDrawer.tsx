@@ -1,5 +1,5 @@
 "use client";
-const arabicFonts = ["font-arabic", "font-serif", "font-sans", "font-indopak"];
+const arabicFonts = [ "font-indopak","font-arabic", "font-amiri", "font-ibn-khaldun", "font-ibn-khaldun-bold", "font-ibn-khaldun-light", "font-ibn-khaldun-thin", "font-ibn-khaldun-black", "font-ibn-khaldun-medium", "font-ibn-khaldun-semibold"]; // Added Arabic fonts
 const banglaFonts = ["font-bangla", "font-serif", "font-sans"]; // Added Bangla fonts
 import { useEffect, useRef, useState } from "react";
 import { ChevronRight, ChevronLeft, Moon, Sun } from "lucide-react";

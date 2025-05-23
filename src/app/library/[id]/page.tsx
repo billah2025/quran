@@ -6,6 +6,8 @@ import { useState, useRef } from "react";
 import { Download, Loader2, AlertTriangle, Maximize2, Minimize2 } from "lucide-react";
 import Image from "next/image";
 import SEO from "@/app/components/seo";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 export default function PdfPage() {
   const { id } = useParams();
@@ -14,7 +16,8 @@ export default function PdfPage() {
   const [loading, setLoading] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const viewerRef = useRef<HTMLDivElement>(null);
-
+  //nav height 
+  const [navHeight, setNavHeight] = useState(0);
   if (!book) {
     return (
       <div className="p-6 text-red-500 text-center">
@@ -64,7 +67,10 @@ export default function PdfPage() {
   };
 
   return (
-    <>
+    <div>
+          <Navbar setNavHeight={setNavHeight} />
+          <div style={{ paddingTop: `${navHeight}px` }} />
+  
       <SEO
         title={`${book.title} | ইসলামিক বই লাইব্রেরি`}
         description={seoDescription}
@@ -148,6 +154,7 @@ export default function PdfPage() {
           </div>
         </div>
       </div>
-    </>
+    <Footer />
+    </div>
   );
 }

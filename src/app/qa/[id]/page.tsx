@@ -5,6 +5,9 @@ import { db } from "@/utils/firebase";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import AskQuestionForm from "../../components/AskQuestionForm";
 import SEO from "@/app/components/seo";
+
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 import {
   doc,
   getDoc,
@@ -66,6 +69,8 @@ export default function QADetailPage() {
     setPopular(results);
   };
 
+    //nav height 
+    const [navHeight, setNavHeight] = useState(0);
 
   // Copy current page URL to clipboard
   const copyLink = () => {
@@ -217,7 +222,10 @@ export default function QADetailPage() {
   if (!qa) return <div className="p-6">Loading...</div>;
 
   return (
-    <>
+    
+    <div>
+       <Navbar setNavHeight={setNavHeight} />
+       <div  style={{ paddingTop: `${navHeight}px` }} >
       <Head>
         <title>{qa.question} | ইসলামি প্রশ্নোত্তর</title>
         <meta
@@ -346,7 +354,7 @@ export default function QADetailPage() {
           </div>
 
           <div
-            className="bg-white p-4 border rounded-xl shadow leading-relaxed text-justify"
+            className="bg-white p-4 border rounded-xl shadow leading-relaxed text-justify text-black"
             dangerouslySetInnerHTML={{ __html: decorateBanglaAnswer(qa.answer) }}
           ></div>
 
@@ -399,7 +407,7 @@ export default function QADetailPage() {
                   {/* Twitter */}
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                      item.question + " " + `https://yourdomain.com/qa/${item.id}`
+                      item.question + " " + `https://muslimshub.vercel.app/qa/${item.id}`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -412,7 +420,7 @@ export default function QADetailPage() {
                   {/* Facebook */}
                   <a
                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      `https://yourdomain.com/qa/${item.id}`
+                      `https://muslimshub.vercel.app/qa/${item.id}`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -425,7 +433,7 @@ export default function QADetailPage() {
                   {/* WhatsApp */}
                   <a
                     href={`https://wa.me/?text=${encodeURIComponent(
-                      item.question + " " + `https://yourdomain.com/qa/${item.id}`
+                      item.question + " " + `https://muslimshub.vercel.app/qa/${item.id}`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -441,8 +449,9 @@ export default function QADetailPage() {
         </aside>
 
 
-
+        </div>
+        <Footer />
       </div>
-    </>
+    </div>
   );
 }

@@ -16,12 +16,56 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Al-Quran by siam",
-  description: "learn quran simply",
+  title: "Muslims Hub",
+  description:
+    "বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।",
   icons: {
     icon: "/favicon.ico",
   },
+  metadataBase: new URL("https://muslimshub.vercel.app"),
+  openGraph: {
+    title: "Muslims Hub",
+    description:
+      "বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ইসলামিক ভিডিও ও টেক্সট কোর্স, রুকিয়াহ, বই, প্রশ্নোত্তর এবং নাশিদ শুনুন।",
+    url: "https://muslimshub.vercel.app",
+    siteName: "Muslims Hub",
+    locale: "bn_BD",
+    type: "website",
+    images: [
+      {
+        url: "/gg.jpg", // make sure this image exists in your public folder
+        width: 1200,
+        height: 630,
+        alt: "Muslims Hub - ইসলামিক হাব",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Muslims Hub",
+    description:
+      "বাংলা ও আরবিতে কুরআন পড়ুন, ইসলামিক কোর্স শিখুন এবং বই, প্রশ্নোত্তর ও নাশিদ শুনুন।",
+    images: ["/og-image.jpg"], // optional: customize if different from OG
+    creator: "@your_twitter_handle", // optional
+  },
+  alternates: {
+    canonical: "https://muslimshub.vercel.app",
+  },
+  keywords: [
+    "কুরআন",
+    "ইসলামিক প্রশ্নোত্তর",
+    "নাশিদ",
+    "রুকিয়াহ",
+    "ইসলামিক বই",
+    "ইসলাম",
+    "শিখুন কুরআন",
+    "বাংলা কুরআন",
+    "আরবি কুরআন",
+    "Muslims Hub",
+  ],
+  category: "Religion",
 };
+
 
 export default function RootLayout({
   children,

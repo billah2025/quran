@@ -5,6 +5,8 @@ import { books } from "@/data/books";
 import Link from "next/link";
 import { useState } from "react";
 import SEO from "@/app/components/seo";
+import Navbar from "../components/Navbar";
+import Footer from "@/app/components/Footer";
 
 export default function LibraryPage() {
   const [search, setSearch] = useState("");
@@ -49,6 +51,8 @@ export default function LibraryPage() {
       },
     })),
   };
+  //nav height 
+  const [navHeight, setNavHeight] = useState(0);
 
   const allKeywordsSet = new Set<string>();
   books.forEach((book) => {
@@ -59,6 +63,10 @@ export default function LibraryPage() {
   const allKeywords = Array.from(allKeywordsSet);
 
   return (
+<div>
+    <div>
+      <Navbar setNavHeight={setNavHeight} />
+      <div style={{ paddingTop: `${navHeight}px` }} />
     <div className="p-4 mx-auto font-serif bg-[#f9fdfb] min-h-screen">
       <SEO
         title="ইসলামি বই লাইব্রেরি - বৃহৎ সংগ্রহ থেকে ইসলামিক বই পড়ুন"
@@ -159,6 +167,10 @@ export default function LibraryPage() {
           ))}
         </div>
       )}
+      </div>
     </div>
+    <Footer />
+    </div>
+   
   );
 }

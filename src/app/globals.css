@@ -140,3 +140,9 @@ body {
 .animate-fadeInUp {
   animation: fadeInUp 0.6s ease-out forwards;
 }
+iframe[src*="cusdis.com"] {
+  width: 100% !important;
+  height: auto !important;
+  overflow: hidden !important;
+  border: none !important;
+}

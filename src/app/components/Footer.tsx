@@ -31,11 +31,10 @@ export default function Footer() {
         {/* 1️⃣ Company Info */}
         <div>
           <h2 className="text-3xl font-extrabold mb-4 text-yellow-300 font-serif">
-            🕌 MyCompany
+            Muslims Hub
           </h2>
           <p className="text-gray-300 leading-relaxed text-sm">
-            Digital solutions inspired by Islamic values. We help you design,
-            build, and scale ideas into blessings of success, In Sha Allah.
+          Let's go to jannah togather. Muslims Hub is a platform dedicated to providing valuable resources and information for the Muslim community. Our mission is to promote knowledge, understanding, and unity among Muslims worldwide. We offer a wide range of content, including articles, videos, and interactive tools, all designed to enhance your Islamic journey. Join us in our quest to spread knowledge and strengthen our faith.
           </p>
         </div>
 
@@ -45,9 +44,9 @@ export default function Footer() {
             📬 যোগাযোগ করুন
           </h3>
           <ul className="text-gray-300 space-y-2 text-sm">
-            <li>📧 ইমেইল: support@mycompany.com</li>
-            <li>📞 ফোন: +880 1234-567890</li>
-            <li>🏠 ঠিকানা: 123 রাস্তা, ঢাকা, বাংলাদেশ</li>
+            <li>📧 ইমেইল:muslimshub@gmail.com</li>
+           
+            <li>🏠 ঠিকানা:ঢাকা, বাংলাদেশ</li>
           </ul>
         </div>
 
@@ -100,7 +99,7 @@ export default function Footer() {
           {/* Prayer Times */}
           <div className=" justify-left  text-gray-300 hover:text-blue-500 transition text-xl ">
 
-            © {new Date().getFullYear()} MyCompany. সমস্ত অধিকার সংরক্ষিত।
+            © {new Date().getFullYear()} Muslims Hub. সমস্ত অধিকার সংরক্ষিত।
           </div>
 
 
