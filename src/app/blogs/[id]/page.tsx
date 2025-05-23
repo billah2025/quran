@@ -25,6 +25,9 @@ import ShareButtons from "../../components/ShareButtons";
 import React, { useEffect, useState } from "react";
 import SEO from "../../components/seo";
 
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
+
 type BlogPageProps = {
   params: {
     id: string;
@@ -35,7 +38,8 @@ export default function BlogDetail({ params }: BlogPageProps) {
   const [blog, setBlog] = useState<any>(null);
   const [popularBlogs, setPopularBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  //nav height 
+  const [navHeight, setNavHeight] = useState(0);
   useEffect(() => {
     async function fetchBlog() {
       const docRef = doc(db, "blogs", params.id);
@@ -87,7 +91,9 @@ export default function BlogDetail({ params }: BlogPageProps) {
   const keywordsArray = blog.keyword?.split(",").filter(Boolean) ?? [];
 
   return (
-    <>
+    <div>
+ <Navbar setNavHeight={setNavHeight} />
+    <div style={{ paddingTop: `${navHeight}px` }}>
       <SEO
         title={blog.title || "Blog"}
         description={blog.subtitle || ""}
@@ -230,7 +236,7 @@ export default function BlogDetail({ params }: BlogPageProps) {
           </div>
         </div>
       </div>
-
-    </>
+<Footer />
+    </div></div>
   );
 }
