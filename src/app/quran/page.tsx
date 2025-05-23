@@ -10,14 +10,16 @@ type Surah = {
   englishNameTranslation: string
   revelationType: string // <-- add this here
 }
-
+import Navbar from "../components/Navbar";
+import Footer from "@/app/components/Footer";
 
 
 export default function QuranPage() {
   const [surahs, setSurahs] = useState<Surah[]>([])
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState<string>('')
-
+  //nav height 
+  const [navHeight, setNavHeight] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,6 +54,10 @@ export default function QuranPage() {
   )
 
   return (
+    <div>
+        <Navbar setNavHeight={setNavHeight} />
+
+        <div style={{ marginTop: `${navHeight}px` }}>
     <div className="min-h-screen bg-green-50 p-6">
          <SEO
         title="কুরআন সূরা তালিকা | Quranbysiam"
@@ -99,6 +105,9 @@ export default function QuranPage() {
           ))}
         </div>
       )}
+    </div>
+    <Footer/>
+    </div>
     </div>
   )
 }

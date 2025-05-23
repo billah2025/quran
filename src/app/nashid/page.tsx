@@ -167,7 +167,7 @@ const structuredData = {
           {/* Top Info */}
           <div className="flex items-center gap-4 mb-4">
             <Image
-              src="/album-cover.jpg"
+              src="/player.gif"
               alt="Album Cover"
               width={80}
               height={80}
