@@ -12,7 +12,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import BreadcrumbsBlog from "../../components/Breadcrumbsblog";
-import CusdisComments from "../../components/CusdisComments";
+import  DisqusComments from "../../components/CusdisComments";
 import { db } from "@/utils/firebase";
 import { BsCalendarDate } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
@@ -169,11 +169,12 @@ export default function BlogDetail({ params }: BlogPageProps) {
               
             </div>
             <div className="h-full w-full">
-                <CusdisComments
-                  id={params.id}
-                  title={blog.title}
-                  url={`https://muslimshub.vercel.app/blogs/${params.id}`}
-                />
+            <DisqusComments
+  id={blog.id}
+  title={blog.title}
+  url={`https://muslimshub.vercel.app/${blog.id}`}
+/>
+
               </div>
           </div>
 
