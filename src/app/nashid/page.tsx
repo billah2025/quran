@@ -124,39 +124,39 @@ export default function CustomAudioPlayer() {
       setIsPlaying(true);
     }
   };
-//seo 
+  //seo 
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "MusicRecording",
-  "name": playlist[currentTrackIndex].title,
-  "byArtist": {
-    "@type": "MusicGroup",
-    "name": playlist[currentTrackIndex].artist || "Unknown Artist"
-  },
-  "url": `https://muslimshub.vercel.app/nashid/${encodeURIComponent(playlist[currentTrackIndex].title.toLowerCase().replace(/\s+/g, '-'))}`,
-  "image": "/default-nashid-cover.jpg",
-  "duration": "PT3M45S", // You can add real duration if you have it
-};
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "MusicRecording",
+    "name": playlist[currentTrackIndex].title,
+    "byArtist": {
+      "@type": "MusicGroup",
+      "name": playlist[currentTrackIndex].artist || "Unknown Artist"
+    },
+    "url": `https://muslimshub.vercel.app/nashid/${encodeURIComponent(playlist[currentTrackIndex].title.toLowerCase().replace(/\s+/g, '-'))}`,
+    "image": "/default-nashid-cover.jpg",
+    "duration": "PT3M45S", // You can add real duration if you have it
+  };
 
   return (
     <div>
       <SEO
-  title={`${playlist[currentTrackIndex].title} - Muslimshub Nashid`}
-  description={playlist[currentTrackIndex].src || `Listen to the Nashid titled "${playlist[currentTrackIndex].title}".`}
-  url={`https://muslimshub.vercel.app/nashid/${encodeURIComponent(playlist[currentTrackIndex].title.toLowerCase().replace(/\s+/g, '-'))}`}
-  image={ "/default-nashid-cover.jpg"}
-  type="music.song"
-  keywords={[
-    "Nashid",
-    "Islamic music",
-    "Bangla Nashid",
-    playlist[currentTrackIndex].category,
-    playlist[currentTrackIndex].title,
-  ]}
-  structuredData={structuredData}
+        title={`${playlist[currentTrackIndex].title} - Muslimshub Nashid`}
+        description={playlist[currentTrackIndex].src || `Listen to the Nashid titled "${playlist[currentTrackIndex].title}".`}
+        url={`https://muslimshub.vercel.app/nashid/${encodeURIComponent(playlist[currentTrackIndex].title.toLowerCase().replace(/\s+/g, '-'))}`}
+        image={"/default-nashid-cover.jpg"}
+        type="music.song"
+        keywords={[
+          "Nashid",
+          "Islamic music",
+          "Bangla Nashid",
+          playlist[currentTrackIndex].category,
+          playlist[currentTrackIndex].title,
+        ]}
+        structuredData={structuredData}
 
-/>
+      />
 
       <Navbar setNavHeight={setNavHeight} />
       <div className="min-h-screen bg-gray-900 text-white p-6">
@@ -179,19 +179,19 @@ const structuredData = {
           </div>
 
           {/* {searchTerm} */}
-          <div className="flex flex-col md:flex-row items-center gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch gap-4 mb-4 w-full overflow-x-hidden">
             <input
               type="text"
               placeholder="🔍 Search by title"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-600 w-full md:w-1/2"
+              className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-600 w-full sm:flex-1"
             />
 
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-600 ml-auto"
+              className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-600 w-full sm:w-auto"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat === "All" ? "all" : cat}>
@@ -199,8 +199,8 @@ const structuredData = {
                 </option>
               ))}
             </select>
-
           </div>
+
 
           {/* Controls + Seek */}
           <div className="flex flex-col gap-2">
@@ -252,8 +252,8 @@ const structuredData = {
                   ref={playlist[currentTrackIndex].src === track.src ? playingTrackRef : null}
                   key={index}
                   className={`flex justify-between items-center p-3 rounded-md cursor-pointer transition-all ${playlist[currentTrackIndex].src === track.src
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-800 hover:bg-gray-700"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-800 hover:bg-gray-700"
                     }`}
 
                 >

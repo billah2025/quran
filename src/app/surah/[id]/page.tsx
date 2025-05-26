@@ -185,7 +185,7 @@ useEffect(() => {
       className={`min-h-screen p-4 md:p-8 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-800"}`}
     >
 <SEO
-  title={`Surah ${surahInfo.englishName} (${surahInfo.name}) | Quran by Siam`}
+  title={`Surah ${surahInfo.englishName} (${surahInfo.name}) | Muslims Hub | muslimhub`  }
   description={`${surahInfo.englishNameTranslation} - Bangla translation and Arabic audio for Surah ${surahInfo.name}.`}
   url={`https://muslimshub.vercel.app/surah/${surahInfo.number}`}
   image="/cover.jpg"
@@ -199,7 +199,7 @@ useEffect(() => {
     "url": `https://muslimshub.vercel.app/surah/${surahInfo.number}`,
     "author": {
       "@type": "Organization",
-      "name": "Quran by Siam"
+      "name": "muslimshub| muslims hub",
     }
   }}
 />

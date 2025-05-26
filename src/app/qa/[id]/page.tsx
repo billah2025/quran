@@ -332,8 +332,7 @@ export default function QADetailPage() {
               >
                 {copySuccess ? copySuccess : "Copy Link"}
               </button>
-            </span>
-            <button
+               <button
               onClick={() => setShowForm(true)}
               className="ml-2 px-2 py-1 bg-green-200 text-green-800 rounded hover:bg-green-300 transition"
               style={{
@@ -344,11 +343,13 @@ export default function QADetailPage() {
                 border: "none",
                 borderRadius: 8,
                 cursor: "pointer",
-                marginTop: 40,
+             
               }}
             >
               প্রশ্ন করুন
             </button>
+            </span>
+           
 
             {showForm && <AskQuestionForm onClose={() => setShowForm(false)} />}
           </div>

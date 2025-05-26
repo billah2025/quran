@@ -146,3 +146,6 @@ iframe[src*="cusdis.com"] {
   overflow: hidden !important;
   border: none !important;
 }
+html, body {
+  overflow-x: hidden;
+}

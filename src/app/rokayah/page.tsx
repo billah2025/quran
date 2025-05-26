@@ -126,22 +126,22 @@ export default function CustomAudioPlayer() {
     }
   };
 
-   // Derive SEO title and description from current track
-   const currentTrack = playlist[currentTrackIndex];
-   const seoTitle = `${currentTrack.title} - Ruqyah Audio Player | MuslimsHub`;
-   const seoDescription = `Listen to "${currentTrack.title}" from the Ruqyah playlist. Stream and download Islamic ruqyah audio tracks for healing and peace.`;
-   const seoKeywords = [
-     "Ruqyah",
-     "Islamic audio",
-     "Muslim healing audio",
-     "Ruqyah audio player",
-     "Islamic playlist",
-     currentTrack.title,
-     currentTrack.category,
-   ];
+  // Derive SEO title and description from current track
+  const currentTrack = playlist[currentTrackIndex];
+  const seoTitle = `${currentTrack.title} - Ruqyah Audio Player | MuslimsHub`;
+  const seoDescription = `Listen to "${currentTrack.title}" from the Ruqyah playlist. Stream and download Islamic ruqyah audio tracks for healing and peace.`;
+  const seoKeywords = [
+    "Ruqyah",
+    "Islamic audio",
+    "Muslim healing audio",
+    "Ruqyah audio player",
+    "Islamic playlist",
+    currentTrack.title,
+    currentTrack.category,
+  ];
 
   return (
-    
+
     <div>
       <SEO
         title={seoTitle}
@@ -153,7 +153,7 @@ export default function CustomAudioPlayer() {
       />
 
       <Navbar setNavHeight={setNavHeight} />
-      <div className="min-h-screen bg-gray-900 text-white p-6">
+      <div className="min-h-screen bg-gray-900 text-white p-6 overflow-x-hidden ">
 
         <div style={{ paddingTop: `${navHeight}px` }} >
           <audio ref={audioRef} />
@@ -181,11 +181,10 @@ export default function CustomAudioPlayer() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-600 w-full md:w-1/2"
             />
-
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-600 ml-auto"
+              className="w-full md:w-auto px-4 py-2 rounded bg-gray-800 text-white border border-gray-600"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat === "All" ? "all" : cat}>
@@ -246,8 +245,8 @@ export default function CustomAudioPlayer() {
                   ref={playlist[currentTrackIndex].src === track.src ? playingTrackRef : null}
                   key={index}
                   className={`flex justify-between items-center p-3 rounded-md cursor-pointer transition-all ${playlist[currentTrackIndex].src === track.src
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-800 hover:bg-gray-700"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-800 hover:bg-gray-700"
                     }`}
 
                 >
