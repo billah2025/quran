@@ -67,6 +67,7 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
    
     { label: "Blog", link: "/blogs" },
     
+    
     {
       label: "Features",
       submenu: [
@@ -76,6 +77,7 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
         { label: "Rukaya", link: "/rokayah" },
         { label: "Islamic Q&A", link: "/qa" },
         { label: "Large Online Library", link: "/library" },
+        { label: " Namaj & deeds Tracker", link: "/tracker" },
       ],
     },
 
@@ -91,7 +93,7 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
 
       ],
     },
-
+{ label: "Login", link: "/user-auth" },
 
     //Contactus ,copyright,disclaimer
   ];

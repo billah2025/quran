@@ -73,9 +73,9 @@ export default function ServiceSection() {
     },
     {
       icon: <IoAnalyticsSharp className="text-5xl text-green-700 mx-auto mb-4" />,
-      title: "Prayer and Deeds tracker(upcomeing)",
-      desc: "Track your deeds and be better muslim",
-      link: "/#",
+      title: "Prayer and Deeds tracker",
+      desc: "Track your prayers and deeds to stay on the right path",
+      link: "/tracker",
       button: "Start tracking",
     },
   
