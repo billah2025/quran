@@ -76,7 +76,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
       <meta name="google-site-verification" content="lFkDv6j0V1H6bRU71y70Znt1KWG6Ci1hCnaDeKDjmZk" />
-    
+      <meta name="msvalidate.01" content="DB65A62A8EF16A8885A4E71564009230" />
         {/* Google Analytics Scripts */}
         <Script
           strategy="afterInteractive"
