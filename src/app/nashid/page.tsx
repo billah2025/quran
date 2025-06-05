@@ -6,6 +6,7 @@ import { playlistData } from "@/data/playlist"; // adjust the path as needed
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
 import SEO from "@/app/components/seo";
+import Head from "next/head";
 export default function CustomAudioPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -141,6 +142,15 @@ export default function CustomAudioPlayer() {
 
   return (
     <div>
+      <Head>
+  <title>Islamic Nasheed | ইসলামিক নাশিদ | Muslims Hub</title>
+  <meta name="description" content="Listen to peaceful, music-free Islamic nasheeds. | হৃদয়গ্রাহী ইসলামিক নাশিদ শুনুন।" />
+  <meta name="keywords" content="Islamic Nasheed, Music-free, ইসলামিক গান, ইসলামিক নাশিদ" />
+  <meta property="og:title" content="Islamic Nasheed | ইসলামিক নাশিদ" />
+  <meta property="og:url" content="https://muslimshub.vercel.app/nashid" />
+  <link rel="canonical" href={`https://muslimshub.vercel.app/nashid/${encodeURIComponent(playlist[currentTrackIndex].title.toLowerCase().replace(/\s+/g, '-'))}`} />
+</Head>
+
       <SEO
         title={`${playlist[currentTrackIndex].title} - Muslimshub Nashid`}
         description={playlist[currentTrackIndex].src || `Listen to the Nashid titled "${playlist[currentTrackIndex].title}".`}

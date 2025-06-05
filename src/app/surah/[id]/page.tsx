@@ -4,7 +4,7 @@ import SideDrawer from "@/app/components/SideDrawer";
 import { notFound, useParams } from "next/navigation";
 import { useCallback } from "react"; // Import useCallback
 import SEO from "@/app/components/seo"; // adjust the path as needed
-
+import Head from "next/head"; // Import Head for setting meta tags
 interface Ayah {
   number: number;
   numberInSurah: number;
@@ -184,6 +184,15 @@ useEffect(() => {
     <div
       className={`min-h-screen p-4 md:p-8 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-800"}`}
     >
+      <Head>
+  <title>Surah {surahInfo.englishName} - কুরআন পাঠ | Muslims Hub</title>
+  <meta name="description" content={`Read Surah ${surahInfo.englishName} with Bangla & English translation, audio recitation and tafsir. | সূরা ${surahInfo.name} বাংলা ও ইংরেজি অনুবাদ, অডিও এবং তাফসীরসহ পড়ুন।`} />
+  <meta name="keywords" content={`Surah ${surahInfo.englishName}, Quran, Bangla Tafsir, Arabic Recitation, সূরা, কুরআন`} />
+  <meta property="og:title" content={`Surah ${surahInfo.englishName} - কুরআন তিলাওয়াত ও তাফসীর`} />
+  <meta property="og:url" content={`https://muslimshub.vercel.app/surah/${id}`} />
+  <link rel="canonical" href={`https://muslimshub.vercel.app/surah/${id}`} />
+</Head>
+
 <SEO
   title={`Surah ${surahInfo.englishName} (${surahInfo.name}) | Muslims Hub | muslimhub`  }
   description={`${surahInfo.englishNameTranslation} - Bangla translation and Arabic audio for Surah ${surahInfo.name}.`}

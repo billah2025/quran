@@ -18,6 +18,7 @@ import { Timestamp ,QueryConstraint} from "firebase/firestore";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
 import SEO from "../components/seo";
+import Head from "next/head";
 type Blog = {
   id: string;
   title: string;
@@ -152,6 +153,15 @@ export default function BlogListPage() {
 
   return (
     <div>
+      <Head>
+  <title>Islamic Blog - Read Articles | ইসলামী ব্লগ | Muslims Hub</title>
+  <meta name="description" content="Read Islamic blog posts on Quran, Hadith, Fiqh and Muslim lifestyle. | কুরআন, হাদীস, ফিকহ ও জীবনঘনিষ্ঠ ইসলামী ব্লগ পড়ুন।" />
+  <meta name="keywords" content="Islamic Blog, Muslim Lifestyle, Quran Blog, Bangla Islamic Articles, ইসলামী ব্লগ, কুরআন" />
+  <meta property="og:title" content="Islamic Blog | ইসলামী ব্লগ" />
+  <meta property="og:url" content="https://muslimshub.vercel.app/blogs" />
+  <link rel="canonical" href="https://muslimshub.vercel.app/blogs" />
+</Head>
+
       <SEO
   title="ইসলামিক ব্লগ - সর্বশেষ ইসলামি তথ্য ও আলোচনা"
   description="বাংলা ইসলামিক ব্লগ পড়ুন যেখানে ধর্ম, জীবনযাপন, ইসলামিক শিক্ষা, ও ইসলামি প্রাসঙ্গিক বিষয় নিয়ে আলোচনা করা হয়। আপনার পছন্দের ক্যাটাগরিতে ব্লগ ফিল্টার করুন।"

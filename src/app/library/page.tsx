@@ -7,7 +7,7 @@ import { useState } from "react";
 import SEO from "@/app/components/seo";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import Head from "next/head";
 export default function LibraryPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
@@ -68,6 +68,15 @@ export default function LibraryPage() {
       <Navbar setNavHeight={setNavHeight} />
       <div style={{ paddingTop: `${navHeight}px` }} />
     <div className="p-4 mx-auto font-serif bg-[#f9fdfb] min-h-screen">
+      <Head>
+  <title>Islamic Books | ইসলামী বই সংগ্রহ | Muslims Hub</title>
+  <meta name="description" content="Read authentic Islamic books on Fiqh, Aqeedah, Tafsir and Hadith. | সহীহ ইসলামী বইসমূহ অনলাইনে পড়ুন।" />
+  <meta name="keywords" content="Islamic Books, Tafsir, Hadith, Aqeedah, Bangla Islamic Books, ইসলামী বই, তাফসীর, হাদীস" />
+  <meta property="og:title" content="Islamic Books - ইসলামী বই" />
+  <meta property="og:url" content="https://muslimshub.vercel.app/library" />
+  <link rel="canonical" href="https://muslimshub.vercel.app/library" />
+</Head>
+
       <SEO
         title="ইসলামি বই লাইব্রেরি - বৃহৎ সংগ্রহ থেকে ইসলামিক বই পড়ুন"
         description="বাংলায় ইসলামিক বইয়ের বিশাল সংগ্রহ থেকে আপনার পছন্দের বইগুলো পড়ুন, ইসলামিক জ্ঞান অর্জন করুন সহজে ও দ্রুত।"

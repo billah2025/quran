@@ -16,7 +16,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import Head from "next/head";
 const Button = ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
     className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 w-full sm:w-auto"
@@ -109,6 +109,16 @@ export default function QAListPage() {
 
   return (
     <div>
+      <Head>
+  <title>Islamic Q&A - প্রশ্ন ও উত্তর | Muslims Hub</title>
+  <meta name="description" content="Explore Islamic Q&A with authentic references. Daily life, salah, fiqh and more. | সহীহ দলীলসহ ইসলামিক প্রশ্নোত্তর পড়ুন।" />
+  <meta name="keywords" content="Islamic Q&A, Muslim Questions, Fatwa, প্রশ্নোত্তর, ফতোয়া" />
+  <meta property="og:title" content="Islamic Q&A - ইসলামিক প্রশ্নোত্তর" />
+  <meta property="og:url" content="https://muslimshub.vercel.app/qa" />
+  <link rel="canonical" href="https://muslimshub.vercel.app/qa" />
+</Head>
+
+      
       <Navbar setNavHeight={setNavHeight} />
       <div style={{ paddingTop: `${navHeight}px` }}>
         <div className="flex flex-col lg:flex-row p-4 sm:p-6 bg-green-50 min-h-screen">

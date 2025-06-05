@@ -11,6 +11,7 @@ import {
   limit,
   getDocs,
 } from "firebase/firestore";
+import Head from "next/head";
 import BreadcrumbsBlog from "../../components/Breadcrumbsblog";
 import  DisqusComments from "../../components/CusdisComments";
 import { db } from "@/utils/firebase";
@@ -92,6 +93,17 @@ export default function BlogDetail({ params }: BlogPageProps) {
 
   return (
     <div>
+      <Head>
+  <title>{blog.title} | Muslims Hub</title>
+  <meta name="description" content={blog.metaDescription || blog.subtitle || blog.content.slice(0, 150)} />
+  <meta name="keywords" content={(blog.tags || []).join(', ') || 'Islam, Quran, Hadith'} />
+  <meta property="og:title" content={blog.title} />
+  <meta property="og:description" content={blog.metaDescription || blog.subtitle} />
+  <meta property="og:image" content={blog.coverImage || 'https://muslimshub.vercel.app/favicon.ico'} />
+  <meta property="og:url" content={`https://muslimshub.vercel.app/blog/${blog.id}`} />
+  <link rel="canonical" href={`https://muslimshub.vercel.app/blog/${blog.id}`} />
+</Head>
+
  <Navbar setNavHeight={setNavHeight} />
     <div style={{ paddingTop: `${navHeight}px` }}>
       <SEO

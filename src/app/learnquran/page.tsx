@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import SEO from "@/app/components/seo";
+import Head from "next/head";
 const LearnQuranPage: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
@@ -12,11 +13,20 @@ const LearnQuranPage: React.FC = () => {
 
   return (
     <div>
+      <Head>
+  <title>Learn Quran Online | কুরআন শিক্ষা | Muslims Hub</title>
+  <meta name="description" content="Start learning Quran online with tajweed,harkat,latter,mad,tajbid, video lessons and practical examples. | অনলাইন কুরআন শিক্ষা নিন তাজউইদসহ।" />
+  <meta name="keywords" content="Learn Quran, Quran Video Lessons, Tajweed, Learn Islam, কুরআন শিক্ষা, তাজউইদ" />
+  <meta property="og:title" content="Learn Quran - কুরআন শিক্ষা" />
+  <meta property="og:url" content="https://muslimshub.vercel.app/learnquran" />
+  <link rel="canonical" href="https://muslimshub.vercel.app/learnquran" />
+</Head>
+
       <SEO
   title="Learn Quran Online - MuslimsHub"
   description="Start learning Quran with step-by-step lessons including Arabic alphabets, Harakat, Madd, Tajweed, practice quizzes, and more."
   url="https://muslimshub.vercel.app/learnquran"
-  image="/learn-quran-banner.jpg" // Make sure this image exists in your /public folder
+  image="/favicon.ico" // Make sure this image exists in your /public folder
   keywords={[
     "Learn Quran",
     "Quran lessons",

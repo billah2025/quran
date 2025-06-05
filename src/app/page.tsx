@@ -28,19 +28,36 @@ export default function Home() {
   };
 
   return (
-    
+
     <div
-    className={`
+      className={`
       ${amiri.className}
       ${darkMode ? "bg-gray-900 text-white" : "bg-gradient-to-br from-emerald-100 to-white text-gray-800"}
       min-h-screen transition-colors duration-300
     `}
-  >
-    <Head>
-    <meta name="google-site-verification" content="lFkDv6j0V1H6bRU71y70Znt1KWG6Ci1hCnaDeKDjmZk" />
-    
-    </Head>
-    <SEO
+    >
+      <Head>
+        <title>আল কুরআনের বাংলা ও আরবি শিক্ষা|  muslims hub</title>
+        <meta name="description" content="বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।" />
+        <meta name="keywords" content="Islam, Quran, Sunnah, Hadith, Fiqh, Islamic Blog , কুরআন শিক্ষা ,
+        কুরআন অডিও,
+        ইসলামিক প্রশ্ন,
+        বাংলা কুরআন,
+        রুকিয়াহ,
+        ইসলামিক বই,
+          ইসলামিক নাশিদ,
+           muslims hub,
+           আল কুরআনের বাংলা ও আরবি শিক্ষা ," />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Islamic Blog" />
+        <meta property="og:description" content="Learn Islam through Quran and Sunnah. Explore Quranic knowledge, learn tajweed, read Islamic books and blogs in Bangla & English.বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।" />
+        <meta property="og:image" content="/favicon.ico" />
+        <meta property="og:type" content="article" />
+          <meta property="og:url" content="https://muslimshub.vercel.app/" />
+  <link rel="canonical" href="https://muslimshub.vercel.app/" />
+      </Head>
+
+      <SEO
         title="আল কুরআনের বাংলা ও আরবি শিক্ষা| | muslims hub "
         description="বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।"
         url="https://muslimshub.vercel.app"
@@ -73,7 +90,7 @@ export default function Home() {
           },
         }}
       />
-  
+
       {/* Global Dark Mode Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <button
@@ -111,7 +128,7 @@ export default function Home() {
         <ServiceSection />
       </div>
 
-      
+
 
       <div className="mt-10">
         <Footer />

