@@ -34,6 +34,11 @@ export default function TrackerPage() {
   const [avatarOpen, setAvatarOpen] = useState(false)
   //nav height 
   const [navHeight, setNavHeight] = useState(0);
+
+ const [username, setUsername] = useState<string | null>(null)
+
+
+
    const [isPopupOpen, setPopupOpen] = useState(false)
   type Deed = {
     id: string
@@ -109,6 +114,21 @@ export default function TrackerPage() {
       [id]: value,
     }))
   }
+
+   useEffect(() => {
+  const fetchUsername = async () => {
+    if (user) {
+      const userDoc = await getDoc(doc(db, 'user-login', user.uid))
+      const userData = userDoc.data()
+      if (userData?.username) {
+        setUsername(userData.username)
+      }
+    }
+  }
+
+  fetchUsername()
+}, [user]) // 👈 Trigger when user is available
+
 
   async function loadDeeds() {
     const q = query(collection(db, 'deeds'), where('userId', '==', user.uid))
@@ -204,13 +224,20 @@ export default function TrackerPage() {
           <header className="flex justify-between items-center border-b border-black pb-4">
             <h1 className="text-3xl font-extrabold text-black">🕌 Prayer Tracker </h1>
             <div className="relative">
-              <button
-                onClick={() => setAvatarOpen(!avatarOpen)}
-                className="text-black text-4xl hover:text-green-900 transition-colors"
-                aria-label="User menu"
-              >
-                <FaUserCircle />
-              </button>
+            <div className="flex items-center gap-2">
+      {username ? (
+        <span className="text-lg font-semibold text-green-700">{username}</span>
+      ) : (
+        <span className="text-gray-500 text-sm">Loading...</span>
+      )}
+      <button
+        onClick={() => setAvatarOpen(!avatarOpen)}
+        className="text-black text-4xl hover:text-green-900 transition-colors"
+        aria-label="User menu"
+      >
+        <FaUserCircle />
+      </button>
+    </div>
               {avatarOpen && (
                 <div className="absolute right-0 mt-3 w-52 bg-white rounded-lg shadow-lg z-50 text-base text-black font-medium">
                   <div className="px-5 py-3 border-b border-black">{user.email}</div>

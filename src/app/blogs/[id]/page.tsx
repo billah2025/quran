@@ -27,7 +27,7 @@ import SEO from "../../components/seo";
 
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
-
+import CommentComponent from "../../components/CommentComponent";
 type BlogPageProps = {
   params: {
     id: string;
@@ -175,11 +175,8 @@ export default function BlogDetail({ params }: BlogPageProps) {
               
             </div>
             <div className="h-full w-full">
-            <DisqusComments
-  id={blog.id}
-  title={blog.title}
-  url={`https://muslimshub.vercel.app/${blog.id}`}
-/>
+   <CommentComponent blogId={params.id} />
+
 
               </div>
           </div>

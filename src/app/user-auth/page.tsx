@@ -15,8 +15,10 @@ export default function UserAuthPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('') // 👈 New username state
   const router = useRouter()
   const [navHeight, setNavHeight] = useState(0);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -37,6 +39,7 @@ export default function UserAuthPage() {
         const user = userCredential.user
         await setDoc(doc(db, 'user-login', user.uid), {
           email: user.email,
+          username: username, // 👈 Save username
           role: 'user',
         })
       }
@@ -61,61 +64,70 @@ export default function UserAuthPage() {
 
   return (
     <div>
-            <Navbar setNavHeight={setNavHeight} />
-            <div style={{ paddingTop: `${navHeight}px` }}>
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-blue-100  px-4 text-black">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          {isLogin ? 'User Login' : 'User Registration'}
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
-            {isLogin ? 'Login' : 'Register'}
-          </button>
-        </form>
-        {isLogin && (
-          <p className="text-sm text-center mt-2">
-            <button
-              onClick={handlePasswordReset}
-              className="text-blue-600 hover:underline"
-            >
-              Forgot Password?
-            </button>
-          </p>
-        )}
-        <p className="text-center mt-4">
-          {isLogin ? 'New user?' : 'Already have an account?'}{' '}
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-600 hover:underline"
-          >
-            {isLogin ? 'Register here' : 'Login here'}
-          </button>
-        </p>
+      <Navbar setNavHeight={setNavHeight} />
+      <div style={{ paddingTop: `${navHeight}px` }}>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-blue-100  px-4 text-black">
+          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+            <h2 className="text-2xl font-bold text-center mb-6">
+              {isLogin ? 'User Login' : 'User Registration'}
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {!isLogin && (
+                <input
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              )}
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+              >
+                {isLogin ? 'Login' : 'Register'}
+              </button>
+            </form>
+            {isLogin && (
+              <p className="text-sm text-center mt-2">
+                <button
+                  onClick={handlePasswordReset}
+                  className="text-blue-600 hover:underline"
+                >
+                  Forgot Password?
+                </button>
+              </p>
+            )}
+            <p className="text-center mt-4">
+              {isLogin ? 'New user?' : 'Already have an account?'}{' '}
+              <button
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-blue-600 hover:underline"
+              >
+                {isLogin ? 'Register here' : 'Login here'}
+              </button>
+            </p>
+          </div>
+        </div>
       </div>
+      <Footer />
     </div>
-    </div>
-    <Footer />
-    </div>
-
   )
 }

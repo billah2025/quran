@@ -1,0 +1,392 @@
+//user can only reply to there own         comment 
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    onSnapshot,
+    doc,
+    getDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    setDoc,
+    getCountFromServer,
+} from "firebase/firestore";
+import { auth, db } from "@/utils/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
+
+export default function BlogComments({ blogId }: { blogId: string }) {
+    const [user, setUser] = useState<any>(null);
+    const [role, setRole] = useState<string | null>(null);
+    const [comments, setComments] = useState<any[]>([]);
+    const [newComment, setNewComment] = useState("");
+    const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
+    const [editingCommentContent, setEditingCommentContent] = useState("");
+    const [showDeleteConfirmId, setShowDeleteConfirmId] = useState<string | null>(null);
+    const [editedComments, setEditedComments] = useState<Record<string, boolean>>({});
+    const [replyDeleteConfirm, setReplyDeleteConfirm] = useState<{ commentId: string; replyId: string } | null>(null);
+    const [editingReplyId, setEditingReplyId] = useState<string | null>(null);
+    const [editingReplyContent, setEditingReplyContent] = useState("");
+    const [editedReplies, setEditedReplies] = useState<Record<string, boolean>>({});
+    const router = useRouter();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (u) => {
+            if (u) {
+                const userDoc = await getDoc(doc(db, "user-login", u.uid));
+                const userData = userDoc.data();
+                setUser({ uid: u.uid, ...userData });
+                setRole(userData?.role);
+            } else {
+                setUser(null);
+                setRole(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        const q = query(
+            collection(db, "blogs", blogId, "comments"),
+            orderBy("createdAt", "asc")
+        );
+
+        const unsub = onSnapshot(q, async (snapshot) => {
+            const commentsData = await Promise.all(
+                snapshot.docs.map(async (docSnap) => {
+                    const repliesQuery = query(
+                        collection(db, "blogs", blogId, "comments", docSnap.id, "replies"),
+                        orderBy("createdAt", "asc")
+                    );
+                    const replies: any[] = [];
+                    const replySnap = await getDocs(repliesQuery);
+                    replySnap.forEach((r) => replies.push({ id: r.id, ...r.data() }));
+
+                    const likesSnap = await getCountFromServer(
+                        collection(db, "blogs", blogId, "comments", docSnap.id, "likes")
+                    );
+
+                    return {
+                        id: docSnap.id,
+                        ...docSnap.data(),
+                        replies,
+                        likeCount: likesSnap.data().count || 0,
+                    };
+                })
+            );
+            setComments(commentsData);
+        });
+
+        return () => unsub();
+    }, [blogId]);
+
+    const handleCommentSubmit = async () => {
+        if (!newComment.trim()) return;
+        await addDoc(collection(db, "blogs", blogId, "comments"), {
+            userId: user.uid,
+            username: user.username || "Anonymous",
+            content: newComment,
+            createdAt: new Date(),
+            edited: false, // --- NEW CODE
+        });
+        setNewComment("");
+    };
+
+    const handleReply = async (commentId: string, replyContent: string) => {
+        if (!replyContent.trim()) return;
+        await addDoc(collection(db, "blogs", blogId, "comments", commentId, "replies"), {
+            userId: user.uid,
+            username: user.username || "Admin",
+            content: replyContent,
+            createdAt: new Date(),
+            edited: false, // --- NEW CODE
+        });
+    };
+
+    const handleDeleteComment = async (commentId: string) => {
+        await deleteDoc(doc(db, "blogs", blogId, "comments", commentId));
+        setShowDeleteConfirmId(null);
+    };
+
+    const handleDeleteReply = async (commentId: string, replyId: string) => {
+        await deleteDoc(doc(db, "blogs", blogId, "comments", commentId, "replies", replyId));
+        setReplyDeleteConfirm(null);
+    };
+
+    const handleEditComment = async (commentId: string) => {
+        await updateDoc(doc(db, "blogs", blogId, "comments", commentId), {
+            content: editingCommentContent,
+            edited: true, // --- NEW CODE
+        });
+        setEditingCommentId(null);
+        setEditingCommentContent("");
+        setEditedComments((prev) => ({ ...prev, [commentId]: true }));
+    };
+
+    const handleEditReply = async (commentId: string, replyId: string) => {
+        await updateDoc(doc(db, "blogs", blogId, "comments", commentId, "replies", replyId), {
+            content: editingReplyContent,
+            edited: true, // --- NEW CODE
+        });
+        setEditingReplyId(null);
+        setEditingReplyContent("");
+        setEditedReplies((prev) => ({ ...prev, [replyId]: true }));
+    };
+
+    const hasAdminReplied = (replies: any[]) =>
+        replies?.some((r) => r.username && r.username.toLowerCase().includes("admin"));
+
+
+    const handleLike = async (commentId: string) => {
+        const likeRef = doc(db, "blogs", blogId, "comments", commentId, "likes", user.uid);
+        const likeSnap = await getDoc(likeRef);
+        if (!likeSnap.exists()) {
+            await setDoc(likeRef, { likedAt: new Date() });
+        }
+    };
+
+    const formatDate = (timestamp: any) => {
+        const date = timestamp?.toDate?.() || new Date();
+        return date.toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+    };
+
+    return (
+        <div className="p-4 border-t mt-8">
+            <h3 className="text-xl font-semibold text-emerald-800 mb-4">🗨️ Comments</h3>
+
+            {!user ? (
+                <div className="mb-4">
+                    <button
+                        onClick={() => router.push("/login")}
+                        className="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700"
+                    >
+                        Login to comment
+                    </button>
+                </div>
+            ) : role === "user" && (
+                <div className="mb-4">
+                    <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        className="w-full border rounded p-2"
+                        placeholder="Write your comment..."
+                    />
+                    <button
+                        onClick={handleCommentSubmit}
+                        className="mt-2 bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-700"
+                    >
+                        Post Comment
+                    </button>
+                </div>
+            )}
+
+            {comments.map((comment) => (
+                <div key={comment.id} className="mb-4 border-t pt-3">
+                    <div className="flex items-center gap-2 mb-1">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">
+                            {comment.username?.charAt(0)?.toUpperCase() || "A"}
+                        </div>
+                        <div>
+                            <div className="font-semibold text-gray-800">{comment.username}</div>
+                            <div className="text-xs text-gray-500">{formatDate(comment.createdAt)}</div>
+                        </div>
+                    </div>
+
+                    {editingCommentId === comment.id ? (
+                        <div className="ml-10">
+                            <textarea
+                                value={editingCommentContent}
+                                onChange={(e) => setEditingCommentContent(e.target.value)}
+                                className="w-full border rounded p-2"
+                            />
+                            <button
+                                onClick={() => handleEditComment(comment.id)}
+                                className="mt-1 mr-2 bg-green-600 text-white px-3 py-1 text-sm rounded"
+                            >
+                                Save
+                            </button>
+                            <button
+                                onClick={() => setEditingCommentId(null)}
+                                className="mt-1 bg-gray-400 text-white px-3 py-1 text-sm rounded"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    ) : (
+                        <p className="ml-10 text-gray-800">
+                            {comment.content} {(comment.edited || editedComments[comment.id]) && (
+                                <span className="text-xs text-gray-400 ml-2">(edited)</span>
+                            )}
+                        </p>
+                    )}
+
+                    <div className="ml-10 mt-1 flex gap-4">
+                        <button onClick={() => handleLike(comment.id)} className="text-sm text-green-700 hover:underline">
+                            👍 Like ({comment.likeCount || 0})
+                        </button>
+                        {(user?.uid === comment.userId || role === "admin") && (
+                            <>
+                                {user?.uid === comment.userId && (
+                                    <button
+                                        onClick={() => {
+                                            setEditingCommentId(comment.id);
+                                            setEditingCommentContent(comment.content);
+                                        }}
+                                        className="text-sm text-blue-600 hover:underline"
+                                    >
+                                        Edit
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => setShowDeleteConfirmId(comment.id)}
+                                    className="text-sm text-red-600 hover:underline"
+                                >
+                                    Delete
+                                </button>
+                            </>
+                        )}
+                    </div>
+
+                    {showDeleteConfirmId === comment.id && (
+                        <div className="ml-10 mt-1 text-sm">
+                            <p>Are you sure you want to delete this comment?</p>
+                            <button
+                                onClick={() => handleDeleteComment(comment.id)}
+                                className="mr-2 mt-1 bg-red-600 text-white px-3 py-1 rounded"
+                            >
+                                Yes, Delete
+                            </button>
+                            <button
+                                onClick={() => setShowDeleteConfirmId(null)}
+                                className="mt-1 bg-gray-400 text-white px-3 py-1 rounded"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    )}
+
+                    {comment.replies?.map((reply: any) => (
+                        <div key={reply.id} className="ml-10 mt-2 border-l pl-4 border-emerald-300">
+                            <div className="flex items-center gap-2">
+                                <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">
+                                    {reply.username?.charAt(0)?.toUpperCase() || "A"}
+                                </div>
+                                <div>
+                                    <div className="font-semibold text-sm text-gray-700">{reply.username}</div>
+                                    <div className="text-xs text-gray-400">{formatDate(reply.createdAt)}</div>
+                                </div>
+                            </div>
+                            {editingReplyId === reply.id ? (
+                                <div>
+                                    <textarea
+                                        value={editingReplyContent}
+                                        onChange={(e) => setEditingReplyContent(e.target.value)}
+                                        className="w-full border rounded p-1 text-sm"
+                                    />
+                                    <button
+                                        onClick={() => handleEditReply(comment.id, reply.id)}
+                                        className="mt-1 mr-2 bg-green-600 text-white px-2 py-1 text-sm rounded"
+                                    >
+                                        Save
+                                    </button>
+                                    <button
+                                        onClick={() => setEditingReplyId(null)}
+                                        className="mt-1 bg-gray-400 text-white px-2 py-1 text-sm rounded"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            ) : (
+                                <p className="ml-9 text-sm text-gray-700 mt-1">
+                                    {reply.content} {(reply.edited || editedReplies[reply.id]) && (
+                                        <span className="text-xs text-gray-400 ml-2">(edited)</span>
+                                    )}
+                                </p>
+                            )}
+                            {role === "admin" && (
+                                <div className="ml-9 mt-1 flex gap-2">
+                                    <button
+                                        onClick={() => {
+                                            setEditingReplyId(reply.id);
+                                            setEditingReplyContent(reply.content);
+                                        }}
+                                        className="text-xs text-blue-600 hover:underline"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => setReplyDeleteConfirm({ commentId: comment.id, replyId: reply.id })}
+                                        className="text-xs text-red-600 hover:underline"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            )}
+                            {replyDeleteConfirm?.replyId === reply.id && replyDeleteConfirm?.commentId === comment.id && (
+                                <div className="ml-9 text-sm mt-1">
+                                    <p>Are you sure you want to delete this reply?</p>
+                                    <button
+                                        onClick={() => handleDeleteReply(comment.id, reply.id)}
+                                        className="mr-2 mt-1 bg-red-600 text-white px-2 py-1 rounded"
+                                    >
+                                        Yes, Delete
+                                    </button>
+                                    <button
+                                        onClick={() => setReplyDeleteConfirm(null)}
+                                        className="mt-1 bg-gray-400 text-white px-2 py-1 rounded"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+
+                    {user && (
+                        (role === "admin") ||
+                        (role === "user" && comment.userId === user.uid && hasAdminReplied(comment.replies))
+                    ) && (
+                            <ReplyForm onReply={(text) => handleReply(comment.id, text)} />
+                        )}
+
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function ReplyForm({ onReply }: { onReply: (text: string) => void }) {
+    const [replyText, setReplyText] = useState("");
+
+    return (
+        <div className="ml-10 mt-2">
+            <textarea
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                className="w-full border rounded p-1 text-sm"
+                placeholder="Write a reply..."
+            />
+            <button
+                onClick={() => {
+                    onReply(replyText);
+                    setReplyText("");
+                }}
+                className="mt-1 bg-blue-600 text-white px-2 py-1 text-sm rounded hover:bg-blue-700"
+            >
+                Reply
+            </button>
+        </div>
+    );
+}

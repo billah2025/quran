@@ -1,3 +1,5 @@
+// Changes are marked with comments like ✅ NEW or ✅ UPDATED
+
 "use client";
 
 import { db } from "@/utils/firebase";
@@ -5,17 +7,12 @@ import {
   collection,
   query,
   orderBy,
-  limit,
-  startAfter,
-  endBefore,
   getDocs,
   getCountFromServer,
-  QueryDocumentSnapshot,
-  DocumentData,
 } from "firebase/firestore";
 import SEO from "@/app/components/seo";
 import toast, { Toaster } from "react-hot-toast";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "@/app/components/Footer";
@@ -42,108 +39,33 @@ interface QA {
 
 export default function QAListPage() {
   const router = useRouter();
-  const [qas, setQAs] = useState<QA[]>([]);
+  const [allQAs, setAllQAs] = useState<QA[]>([]); // ✅ NEW: full list
+  const [qas, setQAs] = useState<QA[]>([]); // ✅ current page
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [pageSnapshots, setPageSnapshots] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const [firstDoc, setFirstDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
-  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
-
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  //nav height 
-  const [navHeight, setNavHeight] = useState(0);
-
   const docsPerPage = 30;
 
-  const fetchTotalCount = async () => {
-    const q = query(collection(db, "qa"));
-    const snapshot = await getCountFromServer(q);
-    const total = snapshot.data().count;
-    setTotalPages(Math.ceil(total / docsPerPage));
-  };
+  const [navHeight, setNavHeight] = useState(0);
 
-  const fetchQAs = useCallback(
-    async (pageIndex: number) => {
-      if (loading) return;
-      setLoading(true);
-
-      const baseQuery = query(
-        collection(db, "qa"),
-        orderBy("createdAt", "desc"),
-        ...(pageIndex > 0 ? [startAfter(pageSnapshots[pageIndex - 1])] : []),
-        limit(docsPerPage)
-      );
-
-      const snapshot = await getDocs(baseQuery);
-      const items: QA[] = snapshot.docs.map((doc) => {
-        const data = doc.data() as QA;
-        return {
-          id: doc.id,
-          question: data.question ?? "Missing question",
-          answer: data.answer,
-          answeredBy: data.answeredBy,
-          date: data.date,
-          category: data.category,
-          createdAt: data.createdAt,
-          views: data.views ?? 0,
-        };
-      });
-
-      const filtered = items.filter((item) => {
-        const matchCategory = selectedCategory ? item.category === selectedCategory : true;
-        const matchSearch = searchQuery
-          ? item.question.toLowerCase().includes(searchQuery.toLowerCase())
-          : true;
-        return matchCategory && matchSearch;
-      });
-
-      if (filtered.length === 0) {
-        toast("No more Q&A found for this category/search.", { icon: "⚠️" });
-        setHasMore(false);
-      } else {
-        setQAs(filtered);
-        const lastVisible = snapshot.docs[snapshot.docs.length - 1];
-        const newSnapshots = [...pageSnapshots];
-        newSnapshots[pageIndex] = lastVisible;
-        setPageSnapshots(newSnapshots);
-        setCurrentPage(pageIndex);
-        if (pageIndex === 0) setFirstDoc(snapshot.docs[0]);
-        setLastDoc(lastVisible);
-      }
-
-      setLoading(false);
-    },
-    [loading, pageSnapshots, searchQuery, selectedCategory]
-  );
-
-  const goToFirstPage = () => fetchQAs(0);
-  const goToLastPage = async () => {
-    const lastPageIndex = totalPages - 1;
-    const pagesToLoad = lastPageIndex - pageSnapshots.length + 1;
-    let lastSnap = pageSnapshots[pageSnapshots.length - 1];
-
-    for (let i = 0; i < pagesToLoad; i++) {
-      const q = query(collection(db, "qa"), orderBy("createdAt", "desc"), startAfter(lastSnap), limit(docsPerPage));
-      const snap = await getDocs(q);
-      lastSnap = snap.docs[snap.docs.length - 1];
-      pageSnapshots.push(lastSnap);
-    }
-
-    fetchQAs(lastPageIndex);
-  };
-
-  const goToPrevPage = () => {
-    if (currentPage > 0) fetchQAs(currentPage - 1);
-  };
-
-  const goToNextPage = () => {
-    if (currentPage + 1 < totalPages) fetchQAs(currentPage + 1);
+  const fetchAllQAs = async () => {
+    const snapshot = await getDocs(query(collection(db, "qa"), orderBy("createdAt", "desc")));
+    const items: QA[] = snapshot.docs.map((doc) => {
+      const data = doc.data() as QA;
+      return {
+        id: doc.id,
+        question: data.question ?? "Missing question",
+        answer: data.answer,
+        answeredBy: data.answeredBy,
+        date: data.date,
+        category: data.category,
+        createdAt: data.createdAt,
+        views: data.views ?? 0,
+      };
+    });
+    setAllQAs(items);
   };
 
   const fetchCategories = async () => {
@@ -152,114 +74,138 @@ export default function QAListPage() {
     setCategories(cats);
   };
 
+  // ✅ Filtered data based on category + search
+  const filteredQAs = useMemo(() => {
+    return allQAs.filter((item) => {
+      const matchCategory = selectedCategory ? item.category === selectedCategory : true;
+      const matchSearch = searchQuery
+        ? item.question.toLowerCase().includes(searchQuery.toLowerCase())
+        : true;
+      return matchCategory && matchSearch;
+    });
+  }, [allQAs, selectedCategory, searchQuery]);
+
+  // ✅ Paginated data
+  const totalPages = Math.ceil(filteredQAs.length / docsPerPage);
+
   useEffect(() => {
+    const start = currentPage * docsPerPage;
+    const end = start + docsPerPage;
+    const currentItems = filteredQAs.slice(start, end);
+    if (currentItems.length === 0 && filteredQAs.length > 0) {
+      toast("No more Q&A found for this page.", { icon: "⚠️" });
+    }
+    setQAs(currentItems);
+  }, [filteredQAs, currentPage]);
+
+  useEffect(() => {
+    fetchAllQAs();
     fetchCategories();
-    fetchTotalCount();
   }, []);
 
   useEffect(() => {
-    fetchQAs(0);
-    setHasMore(true);
+    setCurrentPage(0); // reset page on filter change
   }, [selectedCategory, searchQuery]);
 
   return (
     <div>
       <Navbar setNavHeight={setNavHeight} />
-      <div>
+      <div style={{ paddingTop: `${navHeight}px` }}>
+        <div className="flex flex-col lg:flex-row p-4 sm:p-6 bg-green-50 min-h-screen">
+          <SEO
+            title="Islamic Q&A - Ask & Learn about Islam | MuslimsHub"
+            description="Browse and search through hundreds of Islamic questions and answers about faith, worship, Quran, Hadith, and more."
+            keywords={[
+              "Islamic questions",
+              "Islam Q&A",
+              "Islamic knowledge",
+              "Muslim questions",
+              "Quran questions",
+              "Hadith",
+              "Islamic answers",
+              "Islamic education",
+            ]}
+            url="https://muslimshub.vercel.app/qa"
+            image="https://muslimshub.vercel.app/cover.jpg"
+            type="website"
+          />
+          <Toaster position="top-center" reverseOrder={false} />
 
-        <div style={{ paddingTop: `${navHeight}px` }} >
-          <div className="flex flex-col lg:flex-row p-4 sm:p-6 bg-green-50 min-h-screen">
-            <SEO
-              title="Islamic Q&A - Ask & Learn about Islam | MuslimsHub"
-              description="Browse and search through hundreds of Islamic questions and answers about faith, worship, Quran, Hadith, and more."
-              keywords={[
-                "Islamic questions",
-                "Islam Q&A",
-                "Islamic knowledge",
-                "Muslim questions",
-                "Quran questions",
-                "Hadith",
-                "Islamic answers",
-                "Islamic education",
-              ]}
-              url="https://muslimshub.vercel.app/qa"
-              image="https://muslimshub.vercel.app/cover.jpg"
-              type="website"
+          {/* Left - Q&A List */}
+          <div className="lg:w-3/4 lg:pr-6">
+            <input
+              type="text"
+              placeholder="🔍 Search questions..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="text-black w-full p-3 border-2 border-green-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
-            <Toaster position="top-center" reverseOrder={false} />
 
-            {/* Left - Q&A List */}
-            <div className="lg:w-3/4 lg:pr-6">
-              <input
-                type="text"
-                placeholder="🔍 Search questions..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="text-black w-full p-3 border-2 border-green-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-
-              {qas.map((qa) => (
+            {qas.map((qa) => (
+              <div
+                key={qa.id}
+                className="bg-white border border-green-200 p-4 sm:p-5 mb-4 rounded-xl shadow-md hover:shadow-lg transition duration-200"
+              >
                 <div
-                  key={qa.id}
-                  className="bg-white border border-green-200 p-4 sm:p-5 mb-4 rounded-xl shadow-md hover:shadow-lg transition duration-200"
+                  onClick={() => router.push(`/qa/${qa.id}`)}
+                  className="font-semibold text-green-900 cursor-pointer text-lg sm:text-xl hover:underline"
                 >
-                  <div
-                    onClick={() => router.push(`/qa/${qa.id}`)}
-                    className="font-semibold text-green-900 cursor-pointer text-lg sm:text-xl hover:underline"
-                  >
-                    ❓ {qa.question}
-                  </div>
+                  ❓ {qa.question}
                 </div>
-              ))}
-
-              {/* Pagination Controls */}
-              <div className="flex flex-wrap justify-center gap-2 mt-6">
-                <Button onClick={goToFirstPage} disabled={currentPage === 0}>
-                  ⏮ First
-                </Button>
-                <Button onClick={goToPrevPage} disabled={currentPage === 0}>
-                  ◀ Prev
-                </Button>
-                <span className="px-4 py-2 bg-white border rounded-lg text-green-800 font-semibold">
-                  Page {currentPage + 1} of {totalPages}
-                </span>
-                <Button onClick={goToNextPage} disabled={currentPage + 1 >= totalPages}>
-                  Next ▶
-                </Button>
-                <Button onClick={goToLastPage} disabled={currentPage + 1 >= totalPages}>
-                  Last ⏭
-                </Button>
               </div>
-            </div>
+            ))}
 
-            {/* Right - Categories */}
-            <div className="lg:w-1/4 mt-10 lg:mt-0 lg:pl-6 border-t lg:border-t-0 lg:border-l border-green-200">
-              <h3 className="text-xl font-bold text-green-700 mb-4">📚 Categories</h3>
-              <ul className="space-y-2">
-                {categories.map((cat) => (
-                  <li
-                    key={cat}
-                    className={`cursor-pointer px-3 py-2 rounded-lg transition text-center ${selectedCategory === cat
+            {/* Pagination Controls */}
+            <div className="flex flex-wrap justify-center gap-2 mt-6">
+              <Button onClick={() => setCurrentPage(0)} disabled={currentPage === 0}>
+                ⏮ First
+              </Button>
+              <Button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))} disabled={currentPage === 0}>
+                ◀ Prev
+              </Button>
+              <span className="px-4 py-2 bg-white border rounded-lg text-green-800 font-semibold">
+                Page {currentPage + 1} of {totalPages || 1}
+              </span>
+              <Button
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
+                disabled={currentPage + 1 >= totalPages}
+              >
+                Next ▶
+              </Button>
+              <Button onClick={() => setCurrentPage(totalPages - 1)} disabled={currentPage + 1 >= totalPages}>
+                Last ⏭
+              </Button>
+            </div>
+          </div>
+
+          {/* Right - Categories */}
+          <div className="lg:w-1/4 mt-10 lg:mt-0 lg:pl-6 border-t lg:border-t-0 lg:border-l border-green-200">
+            <h3 className="text-xl font-bold text-green-700 mb-4">📚 Categories</h3>
+            <ul className="space-y-2">
+              {categories.map((cat) => (
+                <li
+                  key={cat}
+                  className={`cursor-pointer px-3 py-2 rounded-lg transition text-center ${
+                    selectedCategory === cat
                       ? "bg-green-600 text-white font-semibold"
                       : "text-green-800 hover:bg-green-100"
-                      }`}
-                    onClick={() => setSelectedCategory(cat)}
-                  >
-                    {cat}
-                  </li>
-                ))}
-                <li
-                  className="cursor-pointer text-sm text-green-500 mt-4 hover:underline text-center"
-                  onClick={() => setSelectedCategory(null)}
+                  }`}
+                  onClick={() => setSelectedCategory(cat)}
                 >
-                  Clear Filter
+                  {cat}
                 </li>
-              </ul>
-            </div>
+              ))}
+              <li
+                className="cursor-pointer text-sm text-green-500 mt-4 hover:underline text-center"
+                onClick={() => setSelectedCategory(null)}
+              >
+                Clear Filter
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
