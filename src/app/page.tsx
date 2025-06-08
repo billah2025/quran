@@ -49,7 +49,7 @@ export default function Home() {
            muslims hub,
            আল কুরআনের বাংলা ও আরবি শিক্ষা ," />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Islamic Blog" />
+        <meta property="og:title" content="Islamic Blog | muslims hub  " />
         <meta property="og:description" content="Learn Islam through Quran and Sunnah. Explore Quranic knowledge, learn tajweed, read Islamic books and blogs in Bangla & English.বাংলা ও আরবিতে কুরআন পড়ুন ও শিখুন। ভিডিও ও টেক্সট কোর্স, রুকিয়াহ আয়াত, বিশাল ইসলামিক বই সংগ্রহ, ইসলামিক প্রশ্নোত্তর, ও নাশিদ শুনুন।" />
         <meta property="og:image" content="/favicon.ico" />
         <meta property="og:type" content="article" />
