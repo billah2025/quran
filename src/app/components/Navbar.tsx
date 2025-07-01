@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { FaChevronDown } from "react-icons/fa";
+import UserMenu from '@/app/components/UserMenu';
 
 const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) => void; className?: string }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -61,13 +62,13 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
     },
 
 
-    
+
 
     { label: "Read Quran", link: "/quran" },
-   
+
     { label: "Blog", link: "/blogs" },
-    
-    
+
+
     {
       label: "Features",
       submenu: [
@@ -93,7 +94,7 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
 
       ],
     },
-{ label: "Login", link: "/user-auth" },
+
 
     //Contactus ,copyright,disclaimer
   ];
@@ -108,55 +109,72 @@ const Navbar = ({ setNavHeight, className }: { setNavHeight?: (height: number) =
 
         {/* Nav Menu */}
         <nav
-          className={`absolute md:relative top-full left-0 w-full md:w-auto md:flex md:items-center transition-transform duration-300 ease-in-out bg-emerald-900 md:bg-transparent ${isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+          className={`absolute lg:relative top-full left-0 w-full lg:w-auto lg:flex lg:items-center transition-transform duration-300 ease-in-out bg-emerald-900 lg:bg-transparent ${isMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
         >
-          <ul className="flex flex-col md:flex-row md:space-x-6 p-6 md:p-0">
-            {navItems.map((item) => (
-              <li key={item.label} className="relative group">
-                {item.submenu ? (
-                  <>
-                    <button
-                      onClick={() => toggleDropdown(item.label)}
-                      className="flex items-center gap-1 py-2 px-4 hover:text-yellow-300 focus:outline-none"
-                    >
-                      {item.label}
-                      <FaChevronDown
-                        className={`text-sm transition-transform duration-300 ${openDropdown === item.label ? "rotate-180" : "rotate-0"}`}
-                      />
-                    </button>
-                    <ul
-                      className={`overflow-hidden transition-all duration-300 bg-emerald-800 rounded-md shadow-md md:absolute md:min-w-[180px] md:top-full md:left-0 ${openDropdown === item.label ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
-                    >
-                      {item.submenu.map((sub) => (
-                        <li key={sub.label}>
-                          <a
-                            href={sub.link}
-                            className="block px-4 py-2 text-sm hover:bg-emerald-700 text-white"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {sub.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                ) : (
-                  <a
-                    href={item.link}
-                    className="block py-2 px-4 hover:text-yellow-300"
-                  >
-                    {item.label}
-                  </a>
-                )}
+         <ul className="flex flex-col lg:flex-row lg:space-x-6 p-6 lg:p-0">
+  {/* 👇 Mobile-only user menu */}
+ {/* 👤 UserMenu at top-right inside mobile menu */}
+  <div className="lg:hidden flex justify-end items-center p-4 border-b border-emerald-700">
+    <UserMenu />
+  </div>
+
+  {/* Your existing nav items */}
+  {navItems.map((item) => (
+    <li key={item.label} className="relative group">
+      {item.submenu ? (
+        <>
+          <button
+            onClick={() => toggleDropdown(item.label)}
+            className="flex items-center gap-1 py-2 px-4 hover:text-yellow-300 focus:outline-none"
+          >
+            {item.label}
+            <FaChevronDown
+              className={`text-sm transition-transform duration-300 ${
+                openDropdown === item.label ? "rotate-180" : "rotate-0"
+              }`}
+            />
+          </button>
+          <ul
+            className={`overflow-hidden transition-all duration-300 bg-emerald-800 rounded-md shadow-md lg:absolute lg:min-w-[180px] lg:top-full lg:left-0 ${
+              openDropdown === item.label ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            }`}
+          >
+            {item.submenu.map((sub) => (
+              <li key={sub.label}>
+                <a
+                  href={sub.link}
+                  className="block px-4 py-2 text-sm hover:bg-emerald-700 text-white"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {sub.label}
+                </a>
               </li>
             ))}
           </ul>
+        </>
+      ) : (
+        <a
+          href={item.link}
+          className="block py-2 px-4 hover:text-yellow-300"
+        >
+          {item.label}
+        </a>
+      )}
+    </li>
+  ))}
+</ul>
+
+
+            {/* Desktop avatar stays in right section */}
+  <div className="hidden lg:flex items-center space-x-4">
+    <UserMenu />
+  </div>
         </nav>
 
         {/* Hamburger */}
         <button
-          className="flex flex-col md:hidden z-50 relative"
+          className="flex flex-col lg:hidden z-50 relative"
           onClick={toggleMenu}
           aria-expanded={isMenuOpen}
           aria-controls="navLinks"

@@ -13,6 +13,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@headlessui/react": "^2.2.4",
     "@lexical/markdown": "^0.31.1",
     "@lexical/react": "^0.31.1",
     "@lexical/rich-text": "^0.31.1",

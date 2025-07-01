@@ -35,11 +35,11 @@ export default function TrackerPage() {
   //nav height 
   const [navHeight, setNavHeight] = useState(0);
 
- const [username, setUsername] = useState<string | null>(null)
+  const [username, setUsername] = useState<string | null>(null)
 
 
 
-   const [isPopupOpen, setPopupOpen] = useState(false)
+  const [isPopupOpen, setPopupOpen] = useState(false)
   type Deed = {
     id: string
     name?: string
@@ -115,19 +115,19 @@ export default function TrackerPage() {
     }))
   }
 
-   useEffect(() => {
-  const fetchUsername = async () => {
-    if (user) {
-      const userDoc = await getDoc(doc(db, 'user-login', user.uid))
-      const userData = userDoc.data()
-      if (userData?.username) {
-        setUsername(userData.username)
+  useEffect(() => {
+    const fetchUsername = async () => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'user-login', user.uid))
+        const userData = userDoc.data()
+        if (userData?.username) {
+          setUsername(userData.username)
+        }
       }
     }
-  }
 
-  fetchUsername()
-}, [user]) // 👈 Trigger when user is available
+    fetchUsername()
+  }, [user]) // 👈 Trigger when user is available
 
 
   async function loadDeeds() {
@@ -216,7 +216,7 @@ export default function TrackerPage() {
           style={{
 
 
-            
+
 
             backgroundSize: 'cover',
           }}
@@ -224,20 +224,20 @@ export default function TrackerPage() {
           <header className="flex justify-between items-center border-b border-black pb-4">
             <h1 className="text-3xl font-extrabold text-black">🕌 Prayer Tracker </h1>
             <div className="relative">
-            <div className="flex items-center gap-2">
-      {username ? (
-        <span className="text-lg font-semibold text-green-700">{username}</span>
-      ) : (
-        <span className="text-gray-500 text-sm">Loading...</span>
-      )}
-      <button
-        onClick={() => setAvatarOpen(!avatarOpen)}
-        className="text-black text-4xl hover:text-green-900 transition-colors"
-        aria-label="User menu"
-      >
-        <FaUserCircle />
-      </button>
-    </div>
+              <div className="flex items-center gap-2">
+                {username ? (
+                  <span className="text-lg font-semibold text-green-700">{username}</span>
+                ) : (
+                  <span className="text-gray-500 text-sm">Loading...</span>
+                )}
+                <button
+                  onClick={() => setAvatarOpen(!avatarOpen)}
+                  className="text-black text-4xl hover:text-green-900 transition-colors"
+                  aria-label="User menu"
+                >
+                  <FaUserCircle />
+                </button>
+              </div>
               {avatarOpen && (
                 <div className="absolute right-0 mt-3 w-52 bg-white rounded-lg shadow-lg z-50 text-base text-black font-medium">
                   <div className="px-5 py-3 border-b border-black">{user.email}</div>
@@ -247,7 +247,7 @@ export default function TrackerPage() {
                   >
                     📊 Analytics
                   </button>
-                   <div className="w-full text-left px-5 py-3 hover:bg-green-100 transition-colors" > <button
+                  <div className="w-full text-left px-5 py-3 hover:bg-green-100 transition-colors" > <button
                     onClick={() => setPopupOpen(true)}
                     className="w-full text-left p-4  bg-green-700 text-white rounded hover:bg-green-800"
                   >
@@ -255,17 +255,17 @@ export default function TrackerPage() {
                   </button>
                   </div>
                   <div className="w-full text-left px-5 py-3 hover:bg-green-100 transition-colors" >  <LogoutButton /></div>
-                 
+
 
 
                 </div>
               )}
 
-             
+
             </div>
-          
+
           </header>
-          
+
 
           <div className="flex justify-center items-center gap-6 text-black font-semibold text-lg">
             <button
@@ -275,7 +275,7 @@ export default function TrackerPage() {
               ←
             </button>
             <div>{date.format('DD MMM YYYY')}</div>
-              <div>{date.format('dddd')}</div>
+            <div>{date.format('dddd')}</div>
             <button
               onClick={goToNext}
               className={`px-4 py-2 rounded-lg shadow ${date.isSame(dayjs(), 'day')
@@ -431,9 +431,9 @@ export default function TrackerPage() {
         </div>
         <Footer />
         <div className='mt-10 ' >
-           <DeedManager isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
+          <DeedManager isOpen={isPopupOpen} onClose={() => setPopupOpen(false)} />
         </div>
-        
+
       </div>
 
     </UserAuthGuard>

@@ -5,6 +5,16 @@ import { notFound, useParams } from "next/navigation";
 import { useCallback } from "react"; // Import useCallback
 import SEO from "@/app/components/seo"; // adjust the path as needed
 import Head from "next/head"; // Import Head for setting meta tags
+import AyahActions from "@/app/components/AyahActions"; // adjust path as needed
+
+
+//firebase 
+import { db } from "@/utils/firebase"; // adjust if needed
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { Toaster, toast } from 'react-hot-toast';
+//firebase 
+
 interface Ayah {
   number: number;
   numberInSurah: number;
@@ -29,13 +39,45 @@ interface SurahData {
 export default function SurahPage() {
   const { id } = useParams();
 
-const [data, setData] = useState<SurahData | null>(null);
+  const [data, setData] = useState<SurahData | null>(null);
   const [error, setError] = useState(false);
   const [currentAyahIndex, setCurrentAyahIndex] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ayahRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [reciter, setReciter] = useState("ar.alafasy");
+  
+  const [translationLang, setTranslationLang] = useState("bn.bengali"); // Default Bangla
 
+const [displayMode, setDisplayMode] = useState("both");
+
+
+  //firebase
+const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+ 
+const saveBookmark = async (ayah: Ayah, surahNumber: number) => {
+  const user = getAuth().currentUser;
+  if (!user) {
+    toast.error("You must be logged in to bookmark.");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "bookmarks"), {
+      userId: user.uid,
+      ayahText: ayah.text,
+      ayahNumber: ayah.numberInSurah,
+      surahNumber: surahNumber,
+      timestamp: serverTimestamp(),
+    });
+    toast.success("Bookmarked!");
+  } catch (error) {
+    console.error("Error saving bookmark:", error);
+    toast.error("Failed to bookmark.");
+  }
+};
+
+//firebase 
 
 
   // Dark Mode state
@@ -51,24 +93,24 @@ const [data, setData] = useState<SurahData | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [arabicRes, banglaRes, audioRes] = await Promise.all([
+        const [arabicRes, translationRes, audioRes] = await Promise.all([
           fetch(`https://api.alquran.cloud/v1/surah/${id}/quran-uthmani`),
-          fetch(`https://api.alquran.cloud/v1/surah/${id}/bn.bengali`),
-          fetch(`https://api.alquran.cloud/v1/surah/${id}/ar.alafasy`),
+          fetch(`https://api.alquran.cloud/v1/surah/${id}/${translationLang}`),
+          fetch(`https://api.alquran.cloud/v1/surah/${id}/${reciter}`),
         ]);
 
-        if (!arabicRes.ok || !banglaRes.ok || !audioRes.ok) {
+        if (!arabicRes.ok || !translationRes.ok || !audioRes.ok) {
           setError(true);
           return;
         }
 
         const arabicData = await arabicRes.json();
-        const banglaData = await banglaRes.json();
+        const translationData = await translationRes.json();
         const audioData = await audioRes.json();
 
         setData({
           arabicAyahs: arabicData.data.ayahs,
-          banglaAyahs: banglaData.data.ayahs,
+          banglaAyahs: translationData.data.ayahs,
           audioAyahs: audioData.data.ayahs,
           surahInfo: arabicData.data,
         });
@@ -80,74 +122,88 @@ const [data, setData] = useState<SurahData | null>(null);
     if (id) {
       fetchData();
     }
-  }, [id]);
+  }, [id, reciter, translationLang]);
 
- 
-  
-// Memoize scrollToCurrentAyah
-const scrollToCurrentAyah = useCallback(() => {
-  if (currentAyahIndex !== null && ayahRefs.current[currentAyahIndex]) {
-    ayahRefs.current[currentAyahIndex].scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-  }
-}, [currentAyahIndex]);
 
-// Memoize handleAudioEnd
-const handleAudioEnd = useCallback(() => {
-  if (
-    currentAyahIndex !== null &&
-    currentAyahIndex + 1 < data!.audioAyahs.length
-  ) {
-    setCurrentAyahIndex(currentAyahIndex + 1);
-  } else {
-    setIsPlaying(false);
-  }
-}, [currentAyahIndex, data]);
 
-// Memoize playCurrentAyah
-const playCurrentAyah = useCallback(() => {
-  if (audioRef.current && currentAyahIndex !== null) {
-    const currentAudio = data!.audioAyahs[currentAyahIndex]?.audio;
-    if (currentAudio) {
-      audioRef.current.src = currentAudio;
-      audioRef.current.play();
+  // Memoize scrollToCurrentAyah
+  const scrollToCurrentAyah = useCallback(() => {
+    if (currentAyahIndex !== null && ayahRefs.current[currentAyahIndex]) {
+      ayahRefs.current[currentAyahIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
-  }
-}, [currentAyahIndex, data]);
+  }, [currentAyahIndex]);
 
-// Update useEffect (moved below the declarations)
-useEffect(() => {
-  if (!data || !audioRef.current) return;
+  // Memoize handleAudioEnd
+  const handleAudioEnd = useCallback(() => {
+    if (
+      currentAyahIndex !== null &&
+      currentAyahIndex + 1 < data!.audioAyahs.length
+    ) {
+      setCurrentAyahIndex(currentAyahIndex + 1);
+    } else {
+      setIsPlaying(false);
+    }
+  }, [currentAyahIndex, data]);
 
-  if (currentAyahIndex !== null && isPlaying) {
-    playCurrentAyah();
-    audioRef.current.addEventListener("ended", handleAudioEnd);
-  }
+  // Memoize playCurrentAyah
+  const playCurrentAyah = useCallback(() => {
+    if (audioRef.current && currentAyahIndex !== null) {
+      const currentAudio = data!.audioAyahs[currentAyahIndex]?.audio;
+      if (currentAudio) {
+        audioRef.current.src = currentAudio;
+        audioRef.current.play();
+      }
+    }
+  }, [currentAyahIndex, data]);
 
-  scrollToCurrentAyah();
+  // Update useEffect (moved below the declarations)
+  useEffect(() => {
+    if (!data || !audioRef.current) return;
 
-  return () => {
-    audioRef.current?.removeEventListener("ended", handleAudioEnd);
-  };
-}, [currentAyahIndex, isPlaying, data, handleAudioEnd, playCurrentAyah, scrollToCurrentAyah]);
+    if (currentAyahIndex !== null && isPlaying) {
+      playCurrentAyah();
+      audioRef.current.addEventListener("ended", handleAudioEnd);
+    }
 
+    scrollToCurrentAyah();
 
-
-
-
-
-
-
-
-
-
+    return () => {
+      audioRef.current?.removeEventListener("ended", handleAudioEnd);
+    };
+  }, [currentAyahIndex, isPlaying, data, handleAudioEnd, playCurrentAyah, scrollToCurrentAyah]);
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+  useEffect(() => {
+    const saved = localStorage.getItem("settings");
+    if (saved) {
+      const s = JSON.parse(saved);
+      setArabicFontSize(s.arabicFontSize || 32);
+      setBanglaFontSize(s.banglaFontSize || 18);
+      setArabicFont(s.arabicFont || "font-indopak");
+      setBanglaFont(s.banglaFont || "font-bangla");
+      setDarkMode(s.darkMode ?? false);
+      setReciter(s.reciter || "ar.alafasy");
+      setTranslationLang(s.translationLang || "bn.bengali");
+     setDisplayMode(s.displayMode || "both");
+    }
+  }, []);
 
 
 
@@ -185,33 +241,33 @@ useEffect(() => {
       className={`min-h-screen p-4 md:p-8 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-800"}`}
     >
       <Head>
-  <title>Surah {surahInfo.englishName} - কুরআন পাঠ | Muslims Hub</title>
-  <meta name="description" content={`Read Surah ${surahInfo.englishName} with Bangla & English translation, audio recitation and tafsir. | সূরা ${surahInfo.name} বাংলা ও ইংরেজি অনুবাদ, অডিও এবং তাফসীরসহ পড়ুন।`} />
-  <meta name="keywords" content={`Surah ${surahInfo.englishName}, Quran, Bangla Tafsir, Arabic Recitation, সূরা, কুরআন`} />
-  <meta property="og:title" content={`Surah ${surahInfo.englishName} - কুরআন তিলাওয়াত ও তাফসীর`} />
-  <meta property="og:url" content={`https://muslimshub.vercel.app/surah/${id}`} />
-  <link rel="canonical" href={`https://muslimshub.vercel.app/surah/${id}`} />
-</Head>
+        <title>Surah {surahInfo.englishName} - কুরআন পাঠ | Muslims Hub</title>
+        <meta name="description" content={`Read Surah ${surahInfo.englishName} with Bangla & English translation, audio recitation and tafsir. | সূরা ${surahInfo.name} বাংলা ও ইংরেজি অনুবাদ, অডিও এবং তাফসীরসহ পড়ুন।`} />
+        <meta name="keywords" content={`Surah ${surahInfo.englishName}, Quran, Bangla Tafsir, Arabic Recitation, সূরা, কুরআন`} />
+        <meta property="og:title" content={`Surah ${surahInfo.englishName} - কুরআন তিলাওয়াত ও তাফসীর`} />
+        <meta property="og:url" content={`https://muslimshub.vercel.app/surah/${id}`} />
+        <link rel="canonical" href={`https://muslimshub.vercel.app/surah/${id}`} />
+      </Head>
 
-<SEO
-  title={`Surah ${surahInfo.englishName} (${surahInfo.name}) | Muslims Hub | muslimhub`  }
-  description={`${surahInfo.englishNameTranslation} - Bangla translation and Arabic audio for Surah ${surahInfo.name}.`}
-  url={`https://muslimshub.vercel.app/surah/${surahInfo.number}`}
-  image="/cover.jpg"
-  type="article"
-  structuredData={{
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    "name": `Surah ${surahInfo.englishName} (${surahInfo.name})`,
-    "inLanguage": "bn",
-    "description": `${surahInfo.englishNameTranslation} - Bangla translation and audio.`,
-    "url": `https://muslimshub.vercel.app/surah/${surahInfo.number}`,
-    "author": {
-      "@type": "Organization",
-      "name": "muslimshub| muslims hub",
-    }
-  }}
-/>
+      <SEO
+        title={`Surah ${surahInfo.englishName} (${surahInfo.name}) | Muslims Hub | muslimhub`}
+        description={`${surahInfo.englishNameTranslation} - Bangla translation and Arabic audio for Surah ${surahInfo.name}.`}
+        url={`https://muslimshub.vercel.app/surah/${surahInfo.number}`}
+        image="/cover.jpg"
+        type="article"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
+          "name": `Surah ${surahInfo.englishName} (${surahInfo.name})`,
+          "inLanguage": "bn",
+          "description": `${surahInfo.englishNameTranslation} - Bangla translation and audio.`,
+          "url": `https://muslimshub.vercel.app/surah/${surahInfo.number}`,
+          "author": {
+            "@type": "Organization",
+            "name": "muslimshub| muslims hub",
+          }
+        }}
+      />
 
 
       <SideDrawer
@@ -224,9 +280,16 @@ useEffect(() => {
         setArabicFont={setArabicFont}
         setBanglaFont={setBanglaFont}
         setDarkMode={setDarkMode}
-       
         darkMode={darkMode}
+        reciter={reciter}
+        setReciter={setReciter}
+        translationLang={translationLang}
+        setTranslationLang={setTranslationLang}
+        displayMode={displayMode}
+  setDisplayMode={setDisplayMode}
       />
+
+<Toaster position="top-center" />
 
       {/* Surah Header */}
       <div className="flex justify-center items-center mb-6">
@@ -247,72 +310,93 @@ useEffect(() => {
         </div>
       )}
 
-      {/* Stop Playback Button */}
-      {isPlaying && (
-        <div
-          onClick={stopPlayback}
-          className="fixed bottom-10 right-10 bg-red-500 text-white w-16 h-16 flex items-center justify-center rounded-full shadow-lg cursor-pointer hover:bg-red-600 transition"
-          title="Stop Playback"
-        >
-          ❌
-        </div>
-      )}
+     {isPlaying && (
+  <div
+    onClick={stopPlayback}
+    className="fixed bottom-10 right-10 bg-red-500 text-white w-16 h-16 flex items-center justify-center rounded-full shadow-lg cursor-pointer hover:bg-red-600 transition z-50"
+    title="Stop Playback"
+  >
+    ❌
+  </div>
+)}
 
       {/* Central Audio Player */}
       <audio ref={audioRef} className="hidden" />
 
       {/* Surah Verses */}
-<div className="space-y-6">
-{arabicAyahs.map((ayah: Ayah, index: number) => (
+      <div className="space-y-6">
+  {arabicAyahs.map((ayah: Ayah, index: number) => {
+    const isArabicOnly = displayMode === "arabic";
+    const isTranslationOnly = displayMode === "translation";
+    const isReadingMode = displayMode === "reading";
 
-    <div
-      key={ayah.number}
-      ref={(el) => {
-        ayahRefs.current[index] = el;
-      }}
-      className={`p-4 md:p-6 rounded-xl shadow border 
-        ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"} 
-        ${
-          currentAyahIndex === index
-            ? darkMode
-              ? "border-green-500 bg-green-700"
-              : "border-green-500 bg-green-100"
+    const showBox = !isReadingMode;
+
+    return (
+      <div
+        key={ayah.number}
+        ref={(el) => { ayahRefs.current[index] = el; }}
+        className={
+          showBox
+            ? `relative group p-4 md:p-6 rounded-xl shadow border
+              ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"}
+              ${currentAyahIndex === index
+                ? darkMode
+                  ? "border-green-500 bg-green-700"
+                  : "border-green-500 bg-green-100"
+                : ""}
+              hover:shadow-md transition-all`
             : ""
-        } 
-        hover:shadow-md transition-all`}
-      onClick={() => playSpecificAyah(index)}
-    >
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
-        {/* Arabic Text */}
-        <div
-          className={`text-end leading-loose w-full md:w-1/2 ${arabicFont}`}
-          style={{ fontSize: `${arabicFontSize}px` }}
-        >
-          {ayah.text}
-          <span className="text-sm text-gray-400 mx-1">
-            ({ayah.numberInSurah})
-          </span>
-        </div>
+        }
+        onClick={() => !isReadingMode && playSpecificAyah(index)}
+      >
+        {!isReadingMode && (
+          <AyahActions
+            ayah={{
+              text: ayah.text,
+              numberInSurah: ayah.numberInSurah,
+              translation: banglaAyahs[index]?.text || "",
+            }}
+            surahNumber={data?.surahInfo?.number || 0}
+            onPlay={() => playSpecificAyah(index)}
+          />
+        )}
 
-        {/* Bangla Translation */}
-        <div
-          className={`mt-4 md:mt-0 md:ml-6 w-full md:w-1/2 ${banglaFont} ${
-            darkMode ? "text-gray-300" : "text-gray-800"
-          }`}
-          style={{ fontSize: `${banglaFontSize}px` }}
-        >
-        {banglaAyahs[index]?.text || "লোড হচ্ছে..."}
+        <div className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-4`}>
+          {/* Arabic Text */}
+          {!isTranslationOnly && (
+            <div
+              className={`text-end leading-loose w-full ${arabicFont}`}
+              style={{ fontSize: `${arabicFontSize}px` }}
+            >
+              {ayah.text}
+              {!isReadingMode && (
+                <span className="text-sm text-gray-400 mx-1">
+                  ({ayah.numberInSurah})
+                </span>
+              )}
+            </div>
+          )}
 
+          {/* Translation */}
+          {!isArabicOnly && (
+            <div
+              className={`w-full ${banglaFont} ${darkMode ? "text-gray-300" : "text-gray-800"}`}
+              style={{ fontSize: `${banglaFontSize}px` }}
+            >
+              {banglaAyahs[index]?.text || "লোড হচ্ছে..."}
+            </div>
+          )}
         </div>
       </div>
-    </div>
-  ))}
+    );
+  })}
 </div>
 
 
 
 
-      
+
     </div>
   );
 }
